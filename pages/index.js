@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import RegistroTempo from './registro-tempo';
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <h1>
         Welcome to <img height="100px" src="static/img/kazoo.ico.jpeg"/>
       </h1>
+      <RegistroTempo></RegistroTempo>
       <style jsx>{`
         h1 {
           text-align: center;
