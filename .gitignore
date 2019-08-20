@@ -1,6 +1,7 @@
 # npm
 .npm
 node_modules
+yarn-error.log
 # NextJS
 .next
 out/
