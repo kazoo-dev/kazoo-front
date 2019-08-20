@@ -10,8 +10,6 @@ export function TempoMarker() {
   const [tempo, setTempo] = useState()
   const [recorder, setRecorder] = useState()
   const [audio, setAudio] = useState()
-  const record = () => console.log({ tempo })
-  record()
   const restart = () => (setTempoStart(), setTempo(), setRecorder(), setAudio())
   const recordTempo = () => setTempo(Date.now() - tempoStart)
   const startTempo = () => setTempoStart(Date.now())
@@ -20,18 +18,18 @@ export function TempoMarker() {
   return (
     <div>
       {tempo
-        ? <MyButton icon="timer" theme={green} onClick={restart}>REINICIAR</MyButton>
+        ? <MyButton icon="timer_off" theme={green} onClick={restart}>REINICIAR</MyButton>
         : tempoStart
-          ? <MyButton icon="timer" theme={orange} onClick={recordTempo}>MARCANDO...</MyButton>
+          ? <MyButton icon="av_timer" theme={orange} onClick={recordTempo}>MARCANDO...</MyButton>
           : <MyButton icon="timer" theme={red} onClick={startTempo}>MARCAR TIEMPO</MyButton>
       }
       {tempo
         ? recorder
-          ? <MyButton icon="timer" theme={blue} onClick={stopRecording}>DETENER</MyButton>
-          : <MyButton icon="timer" theme={green} onClick={startRecording}>GRABAR AUDIO</MyButton>
-        : <MyButton icon="timer" disabled={true}>GRABAR AUDIO</MyButton>
+          ? <MyButton icon="mic_off" theme={blue} onClick={stopRecording}>DETENER</MyButton>
+          : <MyButton icon="mic" theme={green} onClick={startRecording}>GRABAR AUDIO</MyButton>
+        : <MyButton icon="mic_none" disabled={true}>GRABAR AUDIO</MyButton>
       }
-      <MyButton icon="timer" disabled={!audio} theme={green} onClick={() => audio.play()}>ESCUCHAR</MyButton>
+      <MyButton icon="play_arrow" disabled={!audio} theme={green} onClick={() => audio.play()}>ESCUCHAR</MyButton>
     </div>
   )
 }
