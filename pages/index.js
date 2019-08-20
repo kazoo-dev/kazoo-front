@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import { TempoMarker } from '../components/TempoMarker'
+import { MarcadorDeTempo } from '../components/MarcadorDeTempo'
 
 export default function Home() {
   return (
-    <TempoMarker></TempoMarker>
+    <MarcadorDeTempo></MarcadorDeTempo>
   )
 }

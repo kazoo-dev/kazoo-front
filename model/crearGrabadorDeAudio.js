@@ -1,12 +1,12 @@
-export async function createAudioRecorder(start) {
+export async function crearGrabadorDeAudio(debeIniciarGrabando) {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
   const recorder = new MediaRecorder(stream)
   const chunks = []
   recorder.addEventListener('dataavailable', e => chunks.push(e.data))
-  if (start) recorder.start()
+  if (debeIniciarGrabando) recorder.start()
   return {
     start: () => recorder.start(),
-    stop:() => new Promise(resolve => {
+    stop: () => new Promise(resolve => {
       recorder.addEventListener('stop', () => {
         const blob = new Blob(chunks)
         const url = URL.createObjectURL(blob)
