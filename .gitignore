@@ -1,0 +1,19 @@
+# npm
+.npm
+node_modules
+yarn-error.log
+# NextJS
+.next
+out/
+# Babel build
+dist/
+# Coverage directory used by tools like istanbul
+coverage
+# nyc test coverage
+.nyc_output
+# Temporal files
+tmp/
+# IDE related
+.vscode
+# mac
+.DS_Store
