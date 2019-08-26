@@ -1,6 +1,6 @@
 import { Button, Icon, makeStyles } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/styles';
-import { Themes } from '../model/Themes'
+import { Temas } from '../model/Temas'
 
 const useStyles = makeStyles(theme => ({
   button: { margin: theme.spacing(1) },
@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
   rightIcon: { marginLeft: theme.spacing(1) },
 }))
 
-export function MyButton({ theme = Themes.primary, className, icon, children, ...props }) {
+export function MyButton({ theme = Temas.primario, className, icon, children, ...props }) {
   const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
