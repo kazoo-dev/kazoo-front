@@ -9,12 +9,11 @@ export function MarcadorDeTempo() {
   const [inicioDelTempo, setInicioDelTempo] = useState()
   const [tempo, setTempo] = useState()
   const [grabador, setGrabador] = useState()
-  const [audio, setAudio] = useState()
-  const reiniciar = () => (setInicioDelTempo(), setTempo(), setGrabador(), setAudio())
+  const reiniciar = () => (setInicioDelTempo(), setTempo(), setGrabador())
   const guardarTempo = () => setTempo(Date.now() - inicioDelTempo)
   const iniciarTempo = () => setInicioDelTempo(Date.now())
-  const iniciarGrabacion = async () => (setGrabador(await crearGrabadorDeAudio(true)), setAudio())
-  const terminarGrabacion = async () => (setAudio(await grabador.stop()), setGrabador())
+  const iniciarGrabacion = async () => setGrabador(await crearGrabadorDeAudio(tempo * 4))
+  const terminarGrabacion = () => (grabador.stop(), setGrabador())
   return (
     <div>
       {tempo
@@ -29,7 +28,6 @@ export function MarcadorDeTempo() {
           : <MyButton icon="mic" theme={verde} onClick={iniciarGrabacion}>GRABAR AUDIO</MyButton>
         : <MyButton icon="mic_none" disabled={true}>GRABAR AUDIO</MyButton>
       }
-      <MyButton icon="play_arrow" disabled={!audio} theme={verde} onClick={() => audio.play()}>ESCUCHAR</MyButton>
     </div>
   )
 }
