@@ -1,5 +1,7 @@
 import {registrarUsuario} from '../utils/api';
 import {MyButton} from "../components/MyButton";
+import { Temas } from '../model/Temas'
+const { verde } = Temas
 
 const initialState = {
     usuario: '',
@@ -65,12 +67,20 @@ class RegistroUsuario extends React.Component {
                 <h1>Registro</h1>
 
                 <form onSubmit={this.registrarUsuario}>
-                    <label>Usuario</label>
-                    <input name="usuario" value={this.state.usuario} onChange={this.actualizarUsuario} required/>
-                    <label>Clave</label>
-                    <input name="clave" type="password" value={this.state.clave} onChange={this.actualizarClave} required/>
-                    <label>Repetir Clave</label>
-                    <input name="claveRepetida" type="password" value={this.state.claveRepetida} onChange={this.actualizarClaveRepetida} required/>
+                    <div>
+                        <label style={{ display: "block" }} >Usuario</label>
+                        <input name="usuario" value={this.state.usuario} onChange={this.actualizarUsuario} required/>
+                    </div>
+
+                    <div>
+                        <label style={{ display: "block" }} >Clave</label>
+                        <input name="clave" type="password" value={this.state.clave} onChange={this.actualizarClave} required/>
+                    </div>
+
+                    <div>
+                        <label style={{ display: "block" }} >Repetir Clave</label>
+                        <input name="claveRepetida" type="password" value={this.state.claveRepetida} onChange={this.actualizarClaveRepetida} required/>
+                    </div>
 
                     <br />
                     {!this.coincidenLasClaves() &&
