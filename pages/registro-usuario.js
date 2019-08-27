@@ -1,4 +1,5 @@
-import { registrarUsuario } from '../utils/api';
+import {registrarUsuario} from '../utils/api';
+import {MyButton} from "../components/MyButton";
 
 const initialState = {
     usuario: '',
@@ -44,7 +45,7 @@ class RegistroUsuario extends React.Component {
 
     registrarUsuario() {
         var informacionDeRegistro = {
-            usuario: this.state.usuario,
+            nombre: this.state.usuario,
             clave: this.state.clave,
         }
 
@@ -75,7 +76,7 @@ class RegistroUsuario extends React.Component {
                     {!this.coincidenLasClaves() &&
                         <p style={{ color: "red" }}>Las claves no coinciden.</p>
                     }
-                    <button type="submit" disabled={!this.esValidaInformacionDeRegistro()}>Registrarse</button>
+                    <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
                 </form>
             </div>
         );
