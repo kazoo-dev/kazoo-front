@@ -2,6 +2,9 @@ import {registrarUsuario} from '../utils/api';
 import {MyButton} from "../components/MyButton";
 import { Temas } from '../model/Temas'
 const { verde } = Temas
+import TextField from '@material-ui/core/TextField';
+import { Container, Grid, Typography, Link, Box } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const initialState = {
     usuario: '',
@@ -46,7 +49,7 @@ class RegistroUsuario extends React.Component {
     };
 
     registrarUsuario() {
-        var informacionDeRegistro = {
+        const informacionDeRegistro = {
             nombre: this.state.usuario,
             clave: this.state.clave,
         }
@@ -62,33 +65,71 @@ class RegistroUsuario extends React.Component {
     };
 
     render() {
+
         return (
-            <div style={{ textAlign: "center", position: "relative" }}>
-                <h1>Registro</h1>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div style={{ textAlign: "center", position: "relative" }}>
+                    <img height="100px" src="static/img/kazoo-logo.svg"/>
+                    <Typography component="h1" variant="h5">
+                    Registro
+                    </Typography>
+                    <form onSubmit={this.registrarUsuario}>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="usuario"
+                                label="Usuario"
+                                margin="normal"
+                                value={this.state.usuario}
+                                onChange={this.actualizarUsuario}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="clave"
+                                label="Clave"
+                                type="password"
+                                margin="normal"
+                                value={this.state.clave}
+                                onChange={this.actualizarClave}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="repetirClave"
+                                label="Repetir clave"
+                                type="password"
+                                margin="normal"
+                                value={this.state.claveRepetida}
+                                onChange={this.actualizarClaveRepetida}
+                            />
+                        </Grid>
 
-                <form onSubmit={this.registrarUsuario}>
-                    <div>
-                        <label style={{ display: "block" }} >Usuario</label>
-                        <input name="usuario" value={this.state.usuario} onChange={this.actualizarUsuario} required/>
-                    </div>
+                        <br />
+                        {!this.coincidenLasClaves() &&
+                            <p style={{ color: "red" }}>Las claves no coinciden.</p>
+                        }
+                        <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
 
-                    <div>
-                        <label style={{ display: "block" }} >Clave</label>
-                        <input name="clave" type="password" value={this.state.clave} onChange={this.actualizarClave} required/>
-                    </div>
-
-                    <div>
-                        <label style={{ display: "block" }} >Repetir Clave</label>
-                        <input name="claveRepetida" type="password" value={this.state.claveRepetida} onChange={this.actualizarClaveRepetida} required/>
-                    </div>
-
-                    <br />
-                    {!this.coincidenLasClaves() &&
-                        <p style={{ color: "red" }}>Las claves no coinciden.</p>
-                    }
-                    <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
-                </form>
-            </div>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                            <Link href="#" variant="body2">
+                                Ya tienes una cuenta? Ingresa aquí.
+                            </Link>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </div>
+                <Box mt={5}>
+                    Copyright © Kazoo {new Date().getFullYear()}.
+                </Box>
+            </Container>
         );
       }
 
