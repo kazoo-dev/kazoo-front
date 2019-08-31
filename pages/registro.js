@@ -2,6 +2,7 @@ import {registrarUsuario} from '../utils/api';
 import {MyButton} from "../components/MyButton";
 import { Temas } from '../model/Temas'
 const { verde } = Temas
+import Head from 'next/head'
 import TextField from '@material-ui/core/TextField';
 import { Container, Grid, Typography, Link, Box } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -68,6 +69,10 @@ class RegistroUsuario extends React.Component {
 
         return (
             <Container component="main" maxWidth="xs">
+                <Head>
+                    <title>Kazoo</title>
+                    <link rel="icon" href="static/img/kazoo-icon.svg"/>
+                </Head>
                 <CssBaseline />
                 <div style={{ textAlign: "center", position: "relative" }}>
                     <img height="100px" src="static/img/kazoo-logo.svg"/>
@@ -127,7 +132,9 @@ class RegistroUsuario extends React.Component {
                     </form>
                 </div>
                 <Box mt={5}>
-                    Copyright © Kazoo {new Date().getFullYear()}.
+                    <Typography variant="body2" color="textSecondary" align="center">
+                        Copyright © Kazoo {new Date().getFullYear()}.
+                    </Typography>
                 </Box>
             </Container>
         );
