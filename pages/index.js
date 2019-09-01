@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import Nota from '../components/Nota';
 import { MarcadorDeTempo } from '../components/MarcadorDeTempo';
 import React from 'react';
+import { BotonKazoo } from '../components/BotonKazoo';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
@@ -35,6 +36,7 @@ export default class Home extends React.Component {
           </Partitura>
         </div>
         <MarcadorDeTempo anteNuevoCompas={this.alRecibirCompas.bind(this)}/>
+        <BotonKazoo/>
         <style jsx>{`
       #contenedor {
         height: 100%;
