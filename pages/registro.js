@@ -1,11 +1,13 @@
 import {registrarUsuario} from '../utils/api';
 import {MyButton} from "../components/MyButton";
-import { Temas } from '../model/Temas'
-const { verde } = Temas
-import Head from 'next/head'
+import {Temas} from '../model/Temas'
 import TextField from '@material-ui/core/TextField';
-import { Container, Grid, Typography, Link, Box } from '@material-ui/core';
+import {Grid, Link, Typography} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import {Header} from "../components/Header";
+import {Footer} from "../components/Footer";
+
+const { verde } = Temas
 
 const initialState = {
     usuario: '',
@@ -68,13 +70,10 @@ class RegistroUsuario extends React.Component {
     render() {
 
         return (
-            <Container component="main" maxWidth="xs">
-                <Head>
-                    <title>Kazoo</title>
-                    <link rel="icon" href="static/img/kazoo-icon.svg"/>
-                </Head>
+            <div>
+                <Header/>
                 <CssBaseline />
-                <div style={{ textAlign: "center", position: "relative" }}>
+                <div>
                     <img height="100px" src="static/img/kazoo-logo.svg"/>
                     <Typography component="h1" variant="h5">
                     Registro
@@ -131,12 +130,24 @@ class RegistroUsuario extends React.Component {
                         </Grid>
                     </form>
                 </div>
-                <Box mt={5}>
-                    <Typography variant="body2" color="textSecondary" align="center">
-                        Copyright © Kazoo {new Date().getFullYear()}.
-                    </Typography>
-                </Box>
-            </Container>
+                <Footer/>
+                <style jsx> {`
+                          div {
+                            width:100%;
+                            height:100%;
+                            background-color: #EDF5E0;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            display: flex;
+                          }
+                          form {
+                            display:flex;
+                            flex-direction: column;
+                            width: 50%;
+                        `}
+                </style>
+            </div>
         );
       }
 
