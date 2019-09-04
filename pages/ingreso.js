@@ -1,17 +1,21 @@
 import {MyButton} from "../components/MyButton";
-import { Temas } from '../model/Temas'
-const { verde } = Temas
-import Head from 'next/head'
+import {Temas} from '../model/Temas'
 import TextField from '@material-ui/core/TextField';
-import { Container, Grid, Typography, Link, Box } from '@material-ui/core';
+import { Grid, Typography, Link } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import {Header} from "../components/Header";
+import {Footer} from "../components/Footer";
+import { ingresarUsuario } from "../utils/api";
+import Router from 'next/router';
+
+const { verde } = Temas
 
 const initialState = {
     usuario: '',
     clave: '',
 };
 
-class RegistroUsuario extends React.Component {
+class IngresoUsuario extends React.Component {
 
     constructor() {
         super();
@@ -31,12 +35,17 @@ class RegistroUsuario extends React.Component {
     };
 
     ingresar() {
+
         const informacionDeIngreso = {
             nombre: this.state.usuario,
             clave: this.state.clave,
         }
 
-        console.log(informacionDeIngreso);
+        ingresarUsuario(informacionDeIngreso)
+        .then(res => {
+            this.setState(initialState);
+            Router.push('/beat')
+        });
 
         event.preventDefault();
     };
@@ -44,11 +53,8 @@ class RegistroUsuario extends React.Component {
     render() {
 
         return (
-            <Container component="main" maxWidth="xs">
-                <Head>
-                    <title>Kazoo</title>
-                    <link rel="icon" href="static/img/kazoo-icon.svg"/>
-                </Head>
+            <div>
+                <Header/>
                 <CssBaseline />
                 <div style={{ textAlign: "center", position: "relative" }}>
                     <img height="100px" src="static/img/kazoo-logo.svg"/>
@@ -84,22 +90,34 @@ class RegistroUsuario extends React.Component {
 
                         <Grid container justify="flex-end">
                             <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="/registro" variant="body2">
                                 No tienes una cuenta? Registráte.
                             </Link>
                             </Grid>
                         </Grid>
                     </form>
                 </div>
-                <Box mt={5}>
-                    <Typography variant="body2" color="textSecondary" align="center">
-                        Copyright © Kazoo {new Date().getFullYear()}.
-                    </Typography>
-                </Box>
-            </Container>
+                <Footer/>
+                <style jsx> {`
+                          div {
+                            width:100%;
+                            height:100%;
+                            background-color: #EDF5E0;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            display: flex;
+                          }
+                          form {
+                            display:flex;
+                            flex-direction: column;
+                            width: 50%;
+                        `}
+                </style>
+            </div>
         );
       }
 
 }
 
-export default RegistroUsuario;
+export default IngresoUsuario;
