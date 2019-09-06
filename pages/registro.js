@@ -1,18 +1,34 @@
-import {registrarUsuario} from '../utils/api';
 import {MyButton} from "../components/MyButton";
 import {Temas} from '../model/Temas'
-import TextField from '@material-ui/core/TextField';
-import {Grid, Link, Typography} from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import {Grid, Link, Typography, TextField, CssBaseline, Snackbar, SnackbarContent} from '@material-ui/core';
+import ErrorIcon from '@material-ui/icons/Error';
 import {Header} from "../components/Header";
 import {Footer} from "../components/Footer";
+import { withStyles } from '@material-ui/core/styles/';
+import Backend from '../model/Backend';
 
-const { verde } = Temas
+const { verde } = Temas;
+
+const estilos = {
+    error: {
+        backgroundColor: "#d32f2f",
+    },
+    icono: {
+        fontSize: 20,
+        opacity: 0.9,
+        marginRight: 5,
+    },
+    mensaje: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+};
 
 const initialState = {
     usuario: '',
     clave: '',
-    claveRepetida: ''
+    claveRepetida: '',
+    registroConError: false,
 };
 
 class RegistroUsuario extends React.Component {
@@ -20,11 +36,6 @@ class RegistroUsuario extends React.Component {
     constructor() {
         super();
         this.state = initialState;
-
-        this.actualizarUsuario = this.actualizarUsuario.bind(this);
-        this.actualizarClave = this.actualizarClave.bind(this);
-        this.actualizarClaveRepetida = this.actualizarClaveRepetida.bind(this);
-        this.registrarUsuario = this.registrarUsuario.bind(this);
     };
 
     actualizarUsuario(event) {
@@ -47,25 +58,30 @@ class RegistroUsuario extends React.Component {
 
     coincidenLasClaves() {
         return (
-            this.state.clave == this.state.claveRepetida
+            this.state.clave === this.state.claveRepetida
         );
     };
 
-    registrarUsuario() {
+    registrarUsuario(evento) {
         const informacionDeRegistro = {
             nombre: this.state.usuario,
             clave: this.state.clave,
-        }
+        };
 
-        registrarUsuario(informacionDeRegistro)
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-
-                this.setState(initialState);
+        Backend.registrarUsuario(informacionDeRegistro)
+            .then(() => this.setState(initialState))
+            .catch(error => {
+                const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente';
+                const mensajeDeError = `Hubo un error en su registración. ${detalleDelError}`;
+                this.setState({ registroConError: true, mensajeDeError });
             });
-        event.preventDefault();
+
+        evento.preventDefault();
     };
+
+    limpiarError() {
+        this.setState({ registroConError: false, mensajeDeError: '' });
+    }
 
     render() {
 
@@ -74,11 +90,11 @@ class RegistroUsuario extends React.Component {
                 <Header/>
                 <CssBaseline />
                 <div>
-                    <img height="100px" src="static/img/kazoo-logo.svg"/>
+                    <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg"/>
                     <Typography component="h1" variant="h5">
                     Registro
                     </Typography>
-                    <form onSubmit={this.registrarUsuario}>
+                    <form onSubmit={this.registrarUsuario.bind(this)}>
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -87,7 +103,7 @@ class RegistroUsuario extends React.Component {
                                 label="Usuario"
                                 margin="normal"
                                 value={this.state.usuario}
-                                onChange={this.actualizarUsuario}
+                                onChange={this.actualizarUsuario.bind(this)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -99,7 +115,7 @@ class RegistroUsuario extends React.Component {
                                 type="password"
                                 margin="normal"
                                 value={this.state.clave}
-                                onChange={this.actualizarClave}
+                                onChange={this.actualizarClave.bind(this)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -111,7 +127,7 @@ class RegistroUsuario extends React.Component {
                                 type="password"
                                 margin="normal"
                                 value={this.state.claveRepetida}
-                                onChange={this.actualizarClaveRepetida}
+                                onChange={this.actualizarClaveRepetida.bind(this)}
                             />
                         </Grid>
 
@@ -131,6 +147,20 @@ class RegistroUsuario extends React.Component {
                     </form>
                 </div>
                 <Footer/>
+                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+                          open={this.state.registroConError} autoHideDuration={6000}
+                          onClose={this.limpiarError.bind(this)}>
+                    <SnackbarContent
+                      className={this.props.classes.error}
+                      aria-describedby="client-snackbar"
+                      message={
+                          <span id="client-snackbar" className={this.props.classes.mensaje}>
+                            <ErrorIcon className={this.props.classes.icono} />
+                              {this.state.mensajeDeError}
+                          </span>
+                      }
+                    />
+                </Snackbar>
                 <style jsx> {`
                           div {
                             width:100%;
@@ -145,6 +175,7 @@ class RegistroUsuario extends React.Component {
                             display:flex;
                             flex-direction: column;
                             width: 50%;
+                         }
                         `}
                 </style>
             </div>
@@ -153,4 +184,4 @@ class RegistroUsuario extends React.Component {
 
 }
 
-export default RegistroUsuario;
+export default withStyles(estilos)(RegistroUsuario);
