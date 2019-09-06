@@ -1,23 +1,23 @@
-export const Ripple = () =>
-  <div className="ripple">
+export const Onda = () =>
+  <div className="onda">
     <div/>
     <style jsx>{`
-      .ripple {
+      .onda {
         display: inline-block;
         position: relative;
         width: 64px;
         height: 64px;
       }
       
-      .ripple div {
+      .onda div {
         position: absolute;
         border: 4px solid #fff;
         opacity: 1;
         border-radius: 50%;
-        animation: ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        animation: onda 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
       }
       
-      @keyframes ripple {
+      @keyframes onda {
         0% {
           top: 28px;
           left: 28px;

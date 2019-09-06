@@ -33,6 +33,9 @@ export default class Partitura extends React.Component {
   render() {
     return <div ref={this.referenciaPartitura}>
       {this.compases()}
+      <style jsx>{`
+        width: 100%;
+      `}</style>
     </div>;
   }
 };

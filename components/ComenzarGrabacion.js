@@ -29,6 +29,7 @@ export const ComenzarGrabacion = ({ pulso, reiniciarPulso }) => (
       
       h1 {
         color: #05396B;
+        text-align: center;
       }
     `}
     </style>
