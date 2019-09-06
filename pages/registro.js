@@ -33,8 +33,8 @@ const initialState = {
 
 class RegistroUsuario extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = initialState;
     };
 
@@ -139,7 +139,7 @@ class RegistroUsuario extends React.Component {
 
                         <Grid container justify="flex-end">
                             <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="/ingreso" variant="body2">
                                 Ya tienes una cuenta? Ingresa aquí.
                             </Link>
                             </Grid>

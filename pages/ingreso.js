@@ -1,14 +1,12 @@
 import {MyButton} from "../components/MyButton";
 import {Temas} from '../model/Temas'
-import TextField from '@material-ui/core/TextField';
-import { Grid, Typography, Link } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { Grid, Typography, Link, TextField, CssBaseline } from '@material-ui/core';
 import {Header} from "../components/Header";
 import {Footer} from "../components/Footer";
-import { ingresarUsuario } from "../utils/api";
+import Backend from "../model/Backend";
 import Router from 'next/router';
 
-const { verde } = Temas
+const { verde } = Temas;
 
 const initialState = {
     usuario: '',
@@ -17,37 +15,33 @@ const initialState = {
 
 class IngresoUsuario extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = initialState;
-
-        this.actualizarUsuario = this.actualizarUsuario.bind(this);
-        this.actualizarClave = this.actualizarClave.bind(this);
-        this.ingresar = this.ingresar.bind(this);
     };
 
-    actualizarUsuario(event) {
-        this.setState({usuario: event.target.value});
+    actualizarUsuario(evento) {
+        this.setState({usuario: evento.target.value});
     };
 
-    actualizarClave(event) {
-        this.setState({clave: event.target.value});
+    actualizarClave(evento) {
+        this.setState({clave: evento.target.value});
     };
 
-    ingresar() {
+    ingresar(evento) {
 
         const informacionDeIngreso = {
             nombre: this.state.usuario,
             clave: this.state.clave,
-        }
+        };
 
-        ingresarUsuario(informacionDeIngreso)
-        .then(res => {
+        Backend.ingresarUsuario(informacionDeIngreso)
+        .then(() => {
             this.setState(initialState);
-            Router.push('/beat')
+            Router.push('/pulso')
         });
 
-        event.preventDefault();
+        evento.preventDefault();
     };
 
     render() {
@@ -57,11 +51,11 @@ class IngresoUsuario extends React.Component {
                 <Header/>
                 <CssBaseline />
                 <div style={{ textAlign: "center", position: "relative" }}>
-                    <img height="100px" src="static/img/kazoo-logo.svg"/>
+                    <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg"/>
                     <Typography component="h1" variant="h5">
                     Ingresar
                     </Typography>
-                    <form onSubmit={this.ingresar}>
+                    <form onSubmit={this.ingresar.bind(this)}>
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -70,7 +64,7 @@ class IngresoUsuario extends React.Component {
                                 label="Usuario"
                                 margin="normal"
                                 value={this.state.usuario}
-                                onChange={this.actualizarUsuario}
+                                onChange={this.actualizarUsuario.bind(this)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -82,7 +76,7 @@ class IngresoUsuario extends React.Component {
                                 type="password"
                                 margin="normal"
                                 value={this.state.clave}
-                                onChange={this.actualizarClave}
+                                onChange={this.actualizarClave.bind(this)}
                             />
                         </Grid>
 
@@ -112,6 +106,7 @@ class IngresoUsuario extends React.Component {
                             display:flex;
                             flex-direction: column;
                             width: 50%;
+                          }
                         `}
                 </style>
             </div>
