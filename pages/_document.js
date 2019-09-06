@@ -39,6 +39,7 @@ export default class MyDocument extends Document {
       <style jsx global>{`
           html, body, #__next {
             height: 100%;
+            font-family: 'Roboto', sans-serif;
           }
         `}</style>
       </html>
