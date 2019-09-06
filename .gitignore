@@ -17,3 +17,7 @@ tmp/
 .vscode
 # mac
 .DS_Store
+
+
+.idea/*
+yarn-error.log
