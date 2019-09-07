@@ -4,68 +4,56 @@ import { Grid, Link, Typography, TextField, CssBaseline } from '@material-ui/cor
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { MensajeDeError } from "../components/MensajeDeError";
-import Backend from '../model/Backend';
+import Backend from "../model/Backend";
+import Router from 'next/router';
 
 const { verde } = Temas;
 
 const initialState = {
     usuario: '',
     clave: '',
-    claveRepetida: '',
-    registroConError: false,
+    ingresoConError: false,
 };
 
-class RegistroUsuario extends React.Component {
+class IngresoUsuario extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = initialState;
     };
 
-    actualizarUsuario(event) {
-        this.setState({usuario: event.target.value});
+    actualizarUsuario(evento) {
+        this.setState({usuario: evento.target.value});
     };
 
-    actualizarClave(event) {
-        this.setState({clave: event.target.value});
+    actualizarClave(evento) {
+        this.setState({clave: evento.target.value});
     };
 
-    actualizarClaveRepetida(event) {
-        this.setState({claveRepetida: event.target.value});
-    };
+    ingresar(evento) {
 
-    esValidaInformacionDeRegistro() {
-        return (
-            this.coincidenLasClaves()
-        );
-    };
-
-    coincidenLasClaves() {
-        return (
-            this.state.clave === this.state.claveRepetida
-        );
-    };
-
-    registrarUsuario(evento) {
-        const informacionDeRegistro = {
+        const informacionDeIngreso = {
             nombre: this.state.usuario,
             clave: this.state.clave,
         };
 
-        Backend.registrarUsuario(informacionDeRegistro)
-            .then(() => this.setState(initialState))
+        Backend.ingresarUsuario(informacionDeIngreso)
+            .then(() => {
+                this.setState(initialState);
+                Router.push('/pulso')
+            })
             .catch(error => {
                 const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente más tarde.';
-                const mensajeDeError = `Hubo un error en su registración. ${detalleDelError}`;
-                this.setState({ registroConError: true, mensajeDeError });
+                const mensajeDeError = `Hubo un error al ingresar. ${detalleDelError}`;
+                this.setState({ ingresoConError: true, mensajeDeError });
             });
 
-        evento.preventDefault();
-    };
+            evento.preventDefault();
+        };
 
-    limpiarError() {
-        this.setState({ registroConError: false, mensajeDeError: '' });
-    }
+        limpiarError() {
+            this.setState({ ingresoConError: false, mensajeDeError: '' });
+        };
 
     render() {
 
@@ -73,12 +61,12 @@ class RegistroUsuario extends React.Component {
             <div>
                 <Header/>
                 <CssBaseline />
-                <div>
+                <div style={{ textAlign: "center", position: "relative" }}>
                     <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg"/>
                     <Typography component="h1" variant="h5">
-                    Registro
+                    Ingresar
                     </Typography>
-                    <form onSubmit={this.registrarUsuario.bind(this)}>
+                    <form onSubmit={this.ingresar.bind(this)}>
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -102,36 +90,20 @@ class RegistroUsuario extends React.Component {
                                 onChange={this.actualizarClave.bind(this)}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="repetirClave"
-                                label="Repetir clave"
-                                type="password"
-                                margin="normal"
-                                value={this.state.claveRepetida}
-                                onChange={this.actualizarClaveRepetida.bind(this)}
-                            />
-                        </Grid>
 
-                        <br />
-                        {!this.coincidenLasClaves() &&
-                            <p style={{ color: "red" }}>Las claves no coinciden.</p>
-                        }
-                        <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
+                        <MyButton type="submit" theme={verde}>Iniciar sesión</MyButton>
 
                         <Grid container justify="flex-end">
                             <Grid item>
-                            <Link href="/ingreso" variant="body2">
-                                Ya tienes una cuenta? Ingresa aquí.
+                            <Link href="/registro" variant="body2">
+                                No tienes una cuenta? Registráte.
                             </Link>
                             </Grid>
                         </Grid>
                     </form>
                 </div>
                 <Footer/>
-                <MensajeDeError open={this.state.registroConError}
+                <MensajeDeError open={this.state.ingresoConError}
                     vertical={"top"}
                     horizontal={"center"}
                     limpiarError={this.limpiarError.bind(this)}
@@ -150,7 +122,7 @@ class RegistroUsuario extends React.Component {
                             display:flex;
                             flex-direction: column;
                             width: 50%;
-                         }
+                          }
                         `}
                 </style>
             </div>
@@ -159,4 +131,4 @@ class RegistroUsuario extends React.Component {
 
 }
 
-export default RegistroUsuario;
+export default IngresoUsuario;
