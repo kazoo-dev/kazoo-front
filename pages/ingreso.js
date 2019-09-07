@@ -1,29 +1,13 @@
-import {MyButton} from "../components/MyButton";
-import {Temas} from '../model/Temas'
-import { Grid, Typography, Link, TextField, CssBaseline, Snackbar, SnackbarContent} from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
-import {Header} from "../components/Header";
-import {Footer} from "../components/Footer";
-import { withStyles } from '@material-ui/core/styles/';
+import { MyButton } from "../components/MyButton";
+import { Temas } from '../model/Temas'
+import { Grid, Link, Typography, TextField, CssBaseline } from '@material-ui/core';
+import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
+import { MensajeDeError } from "../components/MensajeDeError";
 import Backend from "../model/Backend";
 import Router from 'next/router';
 
 const { verde } = Temas;
-
-const estilos = {
-    error: {
-        backgroundColor: "#d32f2f",
-    },
-    icono: {
-        fontSize: 20,
-        opacity: 0.9,
-        marginRight: 5,
-    },
-    mensaje: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-};
 
 const initialState = {
     usuario: '',
@@ -119,20 +103,11 @@ class IngresoUsuario extends React.Component {
                     </form>
                 </div>
                 <Footer/>
-                <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
-                          open={this.state.ingresoConError} autoHideDuration={6000}
-                          onClose={this.limpiarError.bind(this)}>
-                    <SnackbarContent
-                      className={this.props.classes.error}
-                      aria-describedby="client-snackbar"
-                      message={
-                          <span id="client-snackbar" className={this.props.classes.mensaje}>
-                            <ErrorIcon className={this.props.classes.icono} />
-                              {this.state.mensajeDeError}
-                          </span>
-                      }
-                    />
-                </Snackbar>
+                <MensajeDeError open={this.state.ingresoConError}
+                    vertical={"top"}
+                    horizontal={"center"}
+                    limpiarError={this.limpiarError.bind(this)}
+                    mensajeDeError={this.state.mensajeDeError}/>
                 <style jsx> {`
                           div {
                             width:100%;
@@ -156,4 +131,4 @@ class IngresoUsuario extends React.Component {
 
 }
 
-export default withStyles(estilos)(IngresoUsuario);
+export default IngresoUsuario;
