@@ -55,7 +55,7 @@ class RegistroUsuario extends React.Component {
         Backend.registrarUsuario(informacionDeRegistro)
             .then(() => this.setState(initialState))
             .catch(error => {
-                const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente';
+                const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente más tarde.';
                 const mensajeDeError = `Hubo un error en su registración. ${detalleDelError}`;
                 this.setState({ registroConError: true, mensajeDeError });
             });
