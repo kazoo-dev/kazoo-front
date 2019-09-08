@@ -1,20 +1,25 @@
 import Link from 'next/link';
+import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 export function Navbar() {
-    return <div id="navbar">
-        <Link href="/pulso"><img src="../static/img/kazoo.-logo-color.svg" /></Link>
-        <div id="botones">
-            <Link href="/ingreso">
-                <a>Login</a>
-            </Link>
-            <Link href="/registro">
-                <a>Registro</a>
-            </Link>
-        </div>
-        <style jsx>{`
+    const classes = makeStyles({});
+
+    return (
+        <div id="navbar">
+            <Link href="/pulso"><img src="../static/img/kazoo.-logo-color.svg" /></Link>
+            <div id="botones">
+                <Link href="/ingreso">
+                    <Button color="secondary" className={classes.button}>Ingresar</Button>
+                </Link>
+                <Link href="/registro">
+                    <Button color="secondary" className={classes.button}>Registro</Button>
+                </Link>
+            </div>
+            <style jsx>{`
             #navbar {
                 height: 60px;
-                background-color: #389583;
+                background-color: #5CDB94;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -27,10 +32,12 @@ export function Navbar() {
             }
 
             #botones {
-                width: 200px;
+                width: 10%;
+                min-width: 180px;
                 display: flex;
                 justify-content: space-between;
             }
-        `}</style>
-    </div>
+            `}</style>
+        </div>
+    )
 }
