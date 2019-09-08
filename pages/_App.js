@@ -17,13 +17,9 @@ export default withStyles({
       <Container>
         <Head>
           <title>Kazoo</title>
-          <link rel="icon" href="static/img/kazoo-icon.svg"/>
         </Head>
         <ThemeProvider theme={Temas.primario}>
           <CssBaseline />
-          <h1 className={classes.h1}>
-            Welcome to <img height="100px" src="static/img/kazoo-logo.svg"/>
-          </h1>
           <Component {...pageProps} />
         </ThemeProvider>
       </Container>
