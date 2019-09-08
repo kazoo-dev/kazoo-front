@@ -48,15 +48,9 @@ export default class PaginaMarcarPulso extends React.Component {
           <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
         </div>
         <style jsx> {`
-          #contenedor {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-          }
-
           #pulso {
             height: 100%;
-            background-color: #5CDB94;
+            background-color: #389583;
             display: flex;
             flex-direction: column;
             justify-content: center;
