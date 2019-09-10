@@ -7,7 +7,7 @@ export const MarcadorFinalDePulso = () => (
     <Onda/>
     <style jsx>{`
       h1, p {
-        color: #05396B;
+        color: #EDF5E0;
         text-align: center;
       }
     `}

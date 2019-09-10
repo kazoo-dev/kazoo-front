@@ -2,6 +2,7 @@ import React from 'react';
 import { MarcadorInicioDePulso } from '../components/MarcadorInicioDePulso';
 import { MarcadorFinalDePulso } from '../components/MarcadorFinalDePulso';
 import { ComenzarGrabacion } from '../components/ComenzarGrabacion';
+import Layout from '../components/Layout';
 
 const noop = () => {
 };
@@ -42,12 +43,14 @@ export default class PaginaMarcarPulso extends React.Component {
     }
 
     return (
-      <div onClick={onClick}>
-        <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)}/>
+      <Layout>
+        <div id="pulso" onClick={onClick}>
+          <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
+        </div>
         <style jsx> {`
-          div {
+          #pulso {
             height: 100%;
-            background-color: #5CDB94;
+            background-color: #389583;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -55,7 +58,7 @@ export default class PaginaMarcarPulso extends React.Component {
           }
         `}
         </style>
-      </div>
+      </Layout>
     );
   }
 };

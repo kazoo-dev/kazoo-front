@@ -6,6 +6,7 @@ import { Footer } from "../components/Footer";
 import { MensajeDeError } from "../components/MensajeDeError";
 import Backend from "../model/Backend";
 import Router from 'next/router';
+import Layout from "../components/Layout";
 
 const { verde } = Temas;
 
@@ -23,11 +24,11 @@ class IngresoUsuario extends React.Component {
     };
 
     actualizarUsuario(evento) {
-        this.setState({usuario: evento.target.value});
+        this.setState({ usuario: evento.target.value });
     };
 
     actualizarClave(evento) {
-        this.setState({clave: evento.target.value});
+        this.setState({ clave: evento.target.value });
     };
 
     ingresar(evento) {
@@ -48,67 +49,68 @@ class IngresoUsuario extends React.Component {
                 this.setState({ ingresoConError: true, mensajeDeError });
             });
 
-            evento.preventDefault();
-        };
+        evento.preventDefault();
+    };
 
-        limpiarError() {
-            this.setState({ ingresoConError: false, mensajeDeError: '' });
-        };
+    limpiarError() {
+        this.setState({ ingresoConError: false, mensajeDeError: '' });
+    };
 
     render() {
 
         return (
-            <div>
-                <Header/>
-                <CssBaseline />
-                <div style={{ textAlign: "center", position: "relative" }}>
-                    <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg"/>
-                    <Typography component="h1" variant="h5">
-                    Ingresar
+            <Layout>
+                <div>
+                    <Header />
+                    <CssBaseline />
+                    <div style={{ textAlign: "center", position: "relative" }}>
+                        <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg" />
+                        <Typography component="h1" variant="h5">
+                            Ingresar
                     </Typography>
-                    <form onSubmit={this.ingresar.bind(this)}>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="usuario"
-                                label="Usuario"
-                                margin="normal"
-                                value={this.state.usuario}
-                                onChange={this.actualizarUsuario.bind(this)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="clave"
-                                label="Clave"
-                                type="password"
-                                margin="normal"
-                                value={this.state.clave}
-                                onChange={this.actualizarClave.bind(this)}
-                            />
-                        </Grid>
-
-                        <MyButton type="submit" theme={verde}>Iniciar sesión</MyButton>
-
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                            <Link href="/registro" variant="body2">
-                                No tienes una cuenta? Registráte.
-                            </Link>
+                        <form onSubmit={this.ingresar.bind(this)}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="usuario"
+                                    label="Usuario"
+                                    margin="normal"
+                                    value={this.state.usuario}
+                                    onChange={this.actualizarUsuario.bind(this)}
+                                />
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-                <Footer/>
-                <MensajeDeError open={this.state.ingresoConError}
-                    vertical={"top"}
-                    horizontal={"center"}
-                    limpiarError={this.limpiarError.bind(this)}
-                    mensajeDeError={this.state.mensajeDeError}/>
-                <style jsx> {`
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="clave"
+                                    label="Clave"
+                                    type="password"
+                                    margin="normal"
+                                    value={this.state.clave}
+                                    onChange={this.actualizarClave.bind(this)}
+                                />
+                            </Grid>
+
+                            <MyButton type="submit" theme={verde}>Iniciar sesión</MyButton>
+
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    <Link href="/registro" variant="body2">
+                                        No tienes una cuenta? Registráte.
+                            </Link>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </div>
+                    <Footer />
+                    <MensajeDeError open={this.state.ingresoConError}
+                        vertical={"top"}
+                        horizontal={"center"}
+                        limpiarError={this.limpiarError.bind(this)}
+                        mensajeDeError={this.state.mensajeDeError} />
+                    <style jsx> {`
                           div {
                             width:100%;
                             height:100%;
@@ -124,10 +126,11 @@ class IngresoUsuario extends React.Component {
                             width: 50%;
                           }
                         `}
-                </style>
-            </div>
+                    </style>
+                </div>
+            </Layout>
         );
-      }
+    }
 
 }
 

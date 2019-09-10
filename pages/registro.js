@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { MensajeDeError } from "../components/MensajeDeError";
 import Backend from '../model/Backend';
+import Layout from "../components/Layout";
 
 const { verde } = Temas;
 
@@ -23,15 +24,15 @@ class RegistroUsuario extends React.Component {
     };
 
     actualizarUsuario(event) {
-        this.setState({usuario: event.target.value});
+        this.setState({ usuario: event.target.value });
     };
 
     actualizarClave(event) {
-        this.setState({clave: event.target.value});
+        this.setState({ clave: event.target.value });
     };
 
     actualizarClaveRepetida(event) {
-        this.setState({claveRepetida: event.target.value});
+        this.setState({ claveRepetida: event.target.value });
     };
 
     esValidaInformacionDeRegistro() {
@@ -70,73 +71,74 @@ class RegistroUsuario extends React.Component {
     render() {
 
         return (
-            <div>
-                <Header/>
-                <CssBaseline />
+            <Layout>
                 <div>
-                    <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg"/>
-                    <Typography component="h1" variant="h5">
-                    Registro
+                    <Header />
+                    <CssBaseline />
+                    <div>
+                        <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg" />
+                        <Typography component="h1" variant="h5">
+                            Registro
                     </Typography>
-                    <form onSubmit={this.registrarUsuario.bind(this)}>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="usuario"
-                                label="Usuario"
-                                margin="normal"
-                                value={this.state.usuario}
-                                onChange={this.actualizarUsuario.bind(this)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="clave"
-                                label="Clave"
-                                type="password"
-                                margin="normal"
-                                value={this.state.clave}
-                                onChange={this.actualizarClave.bind(this)}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="repetirClave"
-                                label="Repetir clave"
-                                type="password"
-                                margin="normal"
-                                value={this.state.claveRepetida}
-                                onChange={this.actualizarClaveRepetida.bind(this)}
-                            />
-                        </Grid>
-
-                        <br />
-                        {!this.coincidenLasClaves() &&
-                            <p style={{ color: "red" }}>Las claves no coinciden.</p>
-                        }
-                        <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
-
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                            <Link href="/ingreso" variant="body2">
-                                Ya tienes una cuenta? Ingresa aquí.
-                            </Link>
+                        <form onSubmit={this.registrarUsuario.bind(this)}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="usuario"
+                                    label="Usuario"
+                                    margin="normal"
+                                    value={this.state.usuario}
+                                    onChange={this.actualizarUsuario.bind(this)}
+                                />
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-                <Footer/>
-                <MensajeDeError open={this.state.registroConError}
-                    vertical={"top"}
-                    horizontal={"center"}
-                    limpiarError={this.limpiarError.bind(this)}
-                    mensajeDeError={this.state.mensajeDeError}/>
-                <style jsx> {`
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="clave"
+                                    label="Clave"
+                                    type="password"
+                                    margin="normal"
+                                    value={this.state.clave}
+                                    onChange={this.actualizarClave.bind(this)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="repetirClave"
+                                    label="Repetir clave"
+                                    type="password"
+                                    margin="normal"
+                                    value={this.state.claveRepetida}
+                                    onChange={this.actualizarClaveRepetida.bind(this)}
+                                />
+                            </Grid>
+
+                            <br />
+                            {!this.coincidenLasClaves() &&
+                                <p style={{ color: "red" }}>Las claves no coinciden.</p>
+                            }
+                            <MyButton type="submit" disabled={!this.esValidaInformacionDeRegistro()} theme={verde}>Registrarse</MyButton>
+
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    <Link href="/ingreso" variant="body2">
+                                        Ya tienes una cuenta? Ingresa aquí.
+                            </Link>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </div>
+                    <Footer />
+                    <MensajeDeError open={this.state.registroConError}
+                        vertical={"top"}
+                        horizontal={"center"}
+                        limpiarError={this.limpiarError.bind(this)}
+                        mensajeDeError={this.state.mensajeDeError} />
+                    <style jsx> {`
                           div {
                             width:100%;
                             height:100%;
@@ -152,10 +154,11 @@ class RegistroUsuario extends React.Component {
                             width: 50%;
                          }
                         `}
-                </style>
-            </div>
+                    </style>
+                </div>
+            </Layout>
         );
-      }
+    }
 
 }
 
