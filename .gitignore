@@ -1,6 +1,7 @@
 # npm
 .npm
 node_modules
+yarn-error.log
 # NextJS
 .next
 out/
@@ -16,3 +17,7 @@ tmp/
 .vscode
 # mac
 .DS_Store
+
+
+.idea/*
+yarn-error.log
