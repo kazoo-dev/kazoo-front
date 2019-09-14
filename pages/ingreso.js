@@ -46,7 +46,7 @@ class IngresoUsuario extends React.Component {
 
         Backend.ingresarUsuario(informacionDeIngreso)
             .then(() => {
-                setUsuario('usuario', this.state.usuario);
+                setUsuario(this.state.usuario);
                 this.setState(initialState);
                 Router.push('/pulso')
             })
