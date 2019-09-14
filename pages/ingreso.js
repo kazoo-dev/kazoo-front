@@ -7,6 +7,8 @@ import { MensajeDeError } from "../components/MensajeDeError";
 import Backend from "../model/Backend";
 import Router from 'next/router';
 import Layout from "../components/Layout";
+import { redirigirSiEstaAutenticado } from "../lib/Auth"
+import { setUsuario } from "../lib/Sesion"
 
 const { verde } = Temas;
 
@@ -22,6 +24,10 @@ class IngresoUsuario extends React.Component {
         super(props);
         this.state = initialState;
     };
+
+    componentDidMount(props) {
+        redirigirSiEstaAutenticado();
+    }
 
     actualizarUsuario(evento) {
         this.setState({ usuario: evento.target.value });
@@ -40,6 +46,7 @@ class IngresoUsuario extends React.Component {
 
         Backend.ingresarUsuario(informacionDeIngreso)
             .then(() => {
+                setUsuario('usuario', this.state.usuario);
                 this.setState(initialState);
                 Router.push('/pulso')
             })
