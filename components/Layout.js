@@ -1,5 +1,5 @@
-import { Navbar } from "./Navbar";
-import { CssBaseline } from '@material-ui/core';
+import {Navbar} from "./NavBar/Navbar";
+import {CssBaseline} from '@material-ui/core';
 
 const Layout = props => (
     <div>
