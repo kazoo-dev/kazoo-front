@@ -8,6 +8,8 @@ export const AccionBotonKazoo = ({ className, indice, clickeado, children, total
     <style jsx>{`
       .accion {
         display: flex;
+        justify-content: center;
+        align-items: center;
         position: absolute;
         margin: auto;
         top: 0;

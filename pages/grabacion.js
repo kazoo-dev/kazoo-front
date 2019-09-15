@@ -1,22 +1,24 @@
 import dynamic from 'next/dynamic';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
-import { MyButton } from '../components/MyButton';
-import { Temas } from '../model/Temas';
 import Layout from '../components/Layout';
+import { BotonKazoo } from '../components/BotonKazoo';
+import { AccionBotonKazoo } from '../components/AccionBotonKazoo'
+import Icon from '@material-ui/core/Icon'
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
 
-const { azul } = Temas;
-
 class PaginaDeGrabacion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { compases: [] };
+    this.state = { 
+      compases: [],
+      grabacionTerminada: false
+    };
   }
 
   componentDidMount() {
@@ -30,6 +32,7 @@ class PaginaDeGrabacion extends React.Component {
 
   terminarGrabacion() {
     Grabador.terminarGrabacion();
+    this.setState({ grabacionTerminada: true })
   }
 
   agregarCompas(unCompas) {
@@ -55,7 +58,12 @@ class PaginaDeGrabacion extends React.Component {
               {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
             </Partitura>
           </div>
-          <MyButton icon={'mic_off'} theme={azul} onClick={this.terminarGrabacion.bind(this)}>DETENER</MyButton>
+          <BotonKazoo icono={this.state.grabacionTerminada ? 'apps' : 'stop' } 
+                      onClick={ this.state.grabacionTerminada ? null : this.terminarGrabacion.bind(this)}>
+              <AccionBotonKazoo onClick={() => Router.push('/pulso')}><Icon>delete</Icon></AccionBotonKazoo>
+              <AccionBotonKazoo><Icon>save_alt</Icon></AccionBotonKazoo>
+              <AccionBotonKazoo><Icon>edit</Icon></AccionBotonKazoo>
+          </BotonKazoo>
           <style jsx>{`
           #contenedor {
             height: 100%;
