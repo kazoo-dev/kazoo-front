@@ -6,8 +6,9 @@ import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
 import Layout from '../components/Layout';
 import { BotonKazoo } from '../components/BotonKazoo';
-import { AccionBotonKazoo } from '../components/AccionBotonKazoo'
 import Icon from '@material-ui/core/Icon'
+import { AccionBotonKazoo } from '../components/AccionBotonKazoo';
+import { SelectorTonalidad } from '../components/SelectorTonalidad';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
@@ -15,8 +16,12 @@ const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
 class PaginaDeGrabacion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       compases: [],
+      metro: { numerador: 4, denominador: 4 },
+      tonalidad: 'C',
+      modoEdicion: false,
+      edicionTonalidad: false,
       grabacionTerminada: false
     };
   }
@@ -35,6 +40,18 @@ class PaginaDeGrabacion extends React.Component {
     this.setState({ grabacionTerminada: true })
   }
 
+  abrirSelectorTonalidad() {
+    this.setState({ edicionTonalidad: true });
+  }
+
+  cerrarSelectorTonalidad() {
+    this.setState({ edicionTonalidad: false });
+  }
+
+  cambiarTonalidad(nuevaTonalidad) {
+    this.setState({ tonalidad: nuevaTonalidad, edicionTonalidad: false });
+  }
+
   agregarCompas(unCompas) {
     const compases = [...this.state.compases, unCompas];
     this.setState({ compases });
@@ -44,7 +61,7 @@ class PaginaDeGrabacion extends React.Component {
     return (
       <Compas key={unaClave}>
         {unCompas.map((nota, i) => <Nota key={i} altura={nota.pitch} duracion={nota.duration} ligada={nota.has_tie}
-          puntillo={nota.has_dot} />)}
+                                         puntillo={nota.has_dot}/>)}
       </Compas>
     );
   }
@@ -54,7 +71,7 @@ class PaginaDeGrabacion extends React.Component {
       <Layout>
         <div id="contenedor">
           <div id="partituras">
-            <Partitura metro='4/4' compases={this.state.compases}>
+            <Partitura tonalidad={this.state.tonalidad} metro={this.state.metro} compases={this.state.compases}>
               {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
             </Partitura>
           </div>
@@ -63,7 +80,13 @@ class PaginaDeGrabacion extends React.Component {
               <AccionBotonKazoo onClick={() => Router.push('/pulso')}><Icon>delete</Icon></AccionBotonKazoo>
               <AccionBotonKazoo><Icon>save_alt</Icon></AccionBotonKazoo>
               <AccionBotonKazoo><Icon>edit</Icon></AccionBotonKazoo>
+              <AccionBotonKazoo onClick={this.abrirSelectorTonalidad.bind(this)}>
+              <img src="/static/img/armadura-clave.png" alt="Modificar armadura de clave"/>
+            </AccionBotonKazoo>
           </BotonKazoo>
+          {this.state.edicionTonalidad ? <SelectorTonalidad alCancelar={this.cerrarSelectorTonalidad.bind(this)}
+                                                          alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
+          </div>
           <style jsx>{`
           #contenedor {
             height: 100%;
@@ -76,8 +99,7 @@ class PaginaDeGrabacion extends React.Component {
             display: flex;
           }
         `}
-          </style>
-        </div>
+        </style>
       </Layout>
     );
   }
