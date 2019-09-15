@@ -27,7 +27,6 @@ export class BotonKazoo extends Component {
       <style jsx>{`
       #kazoo {
         display: flex;
-        position: relative;
         justify-content: center;
         height: 36px;
         background-color: #5CDB94;
@@ -48,6 +47,11 @@ export class BotonKazoo extends Component {
         background-color: white;
         background-image: url(/static/img/kazoo-icon.svg);
         transform: scale(1.3);
+        outline: none;
+      }
+      
+      #boton::-moz-focus-inner {
+        border: none;
       }
       
       #icon {
@@ -61,6 +65,11 @@ export class BotonKazoo extends Component {
         right: 0;
         background-color: #5CDB94;
         border-radius: 50%;
+      }
+      
+      @keyframes slide-in {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
       }
     `}</style>
     </div>;

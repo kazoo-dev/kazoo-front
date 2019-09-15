@@ -25,11 +25,6 @@ export const AccionBotonKazoo = ({ className, indice, clickeado, children, total
       .on.accion {
         transform: translate3d(${Math.cos((total - indice) * Math.PI / (total + 1)) * radio}px, -${Math.sin((total - indice) * Math.PI / (total + 1)) * radio}px, 0);
       }
-        
-      @keyframes slide-in {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-      }
     `}</style>
-  </Fragment>
+  </Fragment>;
 
