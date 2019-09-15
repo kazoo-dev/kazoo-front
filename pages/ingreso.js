@@ -1,12 +1,14 @@
-import { MyButton } from "../components/MyButton";
-import { Temas } from '../model/Temas'
-import { Grid, Link, Typography, TextField, CssBaseline } from '@material-ui/core';
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { MensajeDeError } from "../components/MensajeDeError";
+import {MyButton} from "../components/MyButton";
+import {Temas} from '../model/Temas'
+import {CssBaseline, Grid, Link, TextField, Typography} from '@material-ui/core';
+import {Header} from "../components/Header";
+import {Footer} from "../components/Footer";
+import {MensajeDeError} from "../components/MensajeDeError";
 import Backend from "../model/Backend";
 import Router from 'next/router';
 import Layout from "../components/Layout";
+import {redirigirSiEstaAutenticado} from "../lib/Auth"
+import {setUsuario} from "../lib/Sesion"
 
 const { verde } = Temas;
 
@@ -22,6 +24,10 @@ class IngresoUsuario extends React.Component {
         super(props);
         this.state = initialState;
     };
+
+    componentDidMount(props) {
+        redirigirSiEstaAutenticado("/");
+    }
 
     actualizarUsuario(evento) {
         this.setState({ usuario: evento.target.value });
@@ -40,6 +46,7 @@ class IngresoUsuario extends React.Component {
 
         Backend.ingresarUsuario(informacionDeIngreso)
             .then(() => {
+                setUsuario(this.state.usuario);
                 this.setState(initialState);
                 Router.push('/pulso')
             })
