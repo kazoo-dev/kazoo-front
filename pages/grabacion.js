@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic';
-import Router, { withRouter } from 'next/router';
+import { withRouter } from 'next/router';
 import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
 import Layout from '../components/Layout';
-import { BotonKazoo } from '../components/BotonKazoo';
-import Icon from '@material-ui/core/Icon'
-import { AccionBotonKazoo } from '../components/AccionBotonKazoo';
 import { SelectorTonalidad } from '../components/SelectorTonalidad';
+import { BotonModoGrabacion } from '../components/BotonModoGrabacion';
+import { BotonModoEdicion } from '../components/BotonModoEdicion';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
@@ -57,6 +56,10 @@ class PaginaDeGrabacion extends React.Component {
     this.setState({ compases });
   }
 
+  pasarAModoEdicion() {
+    this.setState({ modoEdicion: true });
+  }
+
   dibujarCompas(unCompas, unaClave) {
     return (
       <Compas key={unaClave}>
@@ -67,6 +70,10 @@ class PaginaDeGrabacion extends React.Component {
   }
 
   render() {
+    const botonModoEdicion = <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad.bind(this)}/>;
+    const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada} 
+                                                   terminarGrabacion={this.terminarGrabacion.bind(this)} 
+                                                   pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}/>
     return (
       <Layout>
         <div id="contenedor">
@@ -75,15 +82,7 @@ class PaginaDeGrabacion extends React.Component {
               {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
             </Partitura>
           </div>
-          <BotonKazoo icono={this.state.grabacionTerminada ? 'apps' : 'stop' } 
-                      onClick={ this.state.grabacionTerminada ? null : this.terminarGrabacion.bind(this)}>
-              <AccionBotonKazoo onClick={() => Router.push('/pulso')}><Icon>delete</Icon></AccionBotonKazoo>
-              <AccionBotonKazoo><Icon>save_alt</Icon></AccionBotonKazoo>
-              <AccionBotonKazoo><Icon>edit</Icon></AccionBotonKazoo>
-              <AccionBotonKazoo onClick={this.abrirSelectorTonalidad.bind(this)}>
-              <img src="/static/img/armadura-clave.png" alt="Modificar armadura de clave"/>
-            </AccionBotonKazoo>
-          </BotonKazoo>
+          { this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion }
         </div>
         {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
                                                           alCancelar={this.cerrarSelectorTonalidad.bind(this)}
