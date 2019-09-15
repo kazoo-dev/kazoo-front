@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
@@ -8,6 +8,8 @@ import Layout from '../components/Layout';
 import { SelectorTonalidad } from '../components/SelectorTonalidad';
 import { BotonModoGrabacion } from '../components/BotonModoGrabacion';
 import { BotonModoEdicion } from '../components/BotonModoEdicion';
+import { ModalKazoo } from '../components/ModalKazoo';
+import Backend from '../model/Backend';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
@@ -21,7 +23,8 @@ class PaginaDeGrabacion extends React.Component {
       tonalidad: 'C',
       modoEdicion: false,
       edicionTonalidad: false,
-      grabacionTerminada: false
+      grabacionTerminada: false,
+      modalAbierto: false,
     };
   }
 
@@ -60,6 +63,20 @@ class PaginaDeGrabacion extends React.Component {
     this.setState({ modoEdicion: true });
   }
 
+  abrirModalGuardar() {
+    this.setState({ modalAbierto: true });
+  }
+
+  cerrarModalGuardar() {
+    this.setState({ modalAbierto: false });
+  }
+
+  guardarPartitura(nombre) {
+    const {compases, tonalidad, metro} = this.state;
+    const {numerador, denominador} = metro;
+    Backend.guardarPartitura({compases, tonalidad, numerador, denominador, nombre}).finally(() => Router.push('/'));
+  }
+
   dibujarCompas(unCompas, unaClave) {
     return (
       <Compas key={unaClave}>
@@ -73,7 +90,8 @@ class PaginaDeGrabacion extends React.Component {
     const botonModoEdicion = <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad.bind(this)}/>;
     const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada} 
                                                    terminarGrabacion={this.terminarGrabacion.bind(this)} 
-                                                   pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}/>
+                                                   pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}
+                                                   abrirModal={this.abrirModalGuardar.bind(this)}/>
     return (
       <Layout>
         <div id="contenedor">
@@ -87,6 +105,9 @@ class PaginaDeGrabacion extends React.Component {
         {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
                                                           alCancelar={this.cerrarSelectorTonalidad.bind(this)}
                                                           alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
+        <ModalKazoo abierto={this.state.modalAbierto} 
+                    alCerrar={this.cerrarModalGuardar.bind(this)} 
+                    alGuardar={this.guardarPartitura.bind(this)}/>
           <style jsx>{`
           #contenedor {
             height: 100%;

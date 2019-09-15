@@ -9,5 +9,9 @@ export default {
 
   registrarUsuario(informacionDeRegistro) {
     return axios.post(`${this.url}/usuario/registrar`, informacionDeRegistro);
+  },
+
+  guardarPartitura(partitura) {
+    return axios.post(`${this.url}/partitura`, partitura);
   }
 };
