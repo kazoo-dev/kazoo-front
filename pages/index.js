@@ -1,53 +1,64 @@
-import dynamic from 'next/dynamic';
-import Nota from '../components/Nota';
-import { MarcadorDeTempo } from '../components/MarcadorDeTempo';
 import React from 'react';
+import {MarcadorInicioDePulso} from '../components/MarcadorInicioDePulso';
+import {MarcadorFinalDePulso} from '../components/MarcadorFinalDePulso';
+import {ComenzarGrabacion} from '../components/ComenzarGrabacion';
+import Layout from '../components/Layout';
 
-const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
-const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
+const noop = () => {
+};
 
-export default class Home extends React.Component {
+export default class PaginaMarcarPulso extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { compases: [] };
+    this.state = {};
   }
 
-  alRecibirCompas(unCompas) {
-    const compases = [...this.state.compases, unCompas];
-    this.setState({ compases });
+  guardarInicioDelPulso() {
+    this.setState({ inicioDelPulso: Date.now() });
   }
 
-  dibujarCompas(unCompas, unaClave) {
-    return (
-      <Compas key={unaClave}>
-        {unCompas.map((nota, i) => <Nota key={i} altura={nota.pitch} duracion={nota.duration} ligada={nota.has_tie}
-                                         puntillo={nota.has_dot}/>)}
-      </Compas>
-    );
+  guardarPulso() {
+    const inicioDelPulso = this.state.inicioDelPulso;
+    this.setState({ pulso: Date.now() - inicioDelPulso });
+  }
+
+  reiniciarPulso() {
+    this.setState({ pulso: undefined, inicioDelPulso: undefined });
   }
 
   render() {
+    const { inicioDelPulso, pulso } = this.state;
+    let onClick;
+    let Mensaje;
+
+    if (pulso) {
+      Mensaje = ComenzarGrabacion;
+      onClick = noop;
+    } else if (inicioDelPulso) {
+      Mensaje = MarcadorFinalDePulso;
+      onClick = this.guardarPulso.bind(this);
+    } else {
+      Mensaje = MarcadorInicioDePulso;
+      onClick = this.guardarInicioDelPulso.bind(this);
+    }
+
     return (
-      <div id="contenedor">
-        <div id="partituras">
-          <Partitura metro='4/4' compases={this.state.compases}>
-            {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
-          </Partitura>
+      <Layout>
+        <div id="pulso" onClick={onClick}>
+          <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
         </div>
-        <MarcadorDeTempo anteNuevoCompas={this.alRecibirCompas.bind(this)}/>
-        <style jsx>{`
-      #contenedor {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      #partituras {
-        flex: 3;
-        display: flex;
-      }
-    `}</style>
-      </div>
+        <style jsx> {`
+          #pulso {
+            height: 100%;
+            background-color: #389583;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+        `}
+        </style>
+      </Layout>
     );
   }
-}
+};

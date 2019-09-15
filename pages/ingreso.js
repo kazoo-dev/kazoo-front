@@ -48,7 +48,7 @@ class IngresoUsuario extends React.Component {
             .then(() => {
                 setUsuario(this.state.usuario);
                 this.setState(initialState);
-                Router.push('/pulso')
+                Router.push('/')
             })
             .catch(error => {
                 const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente más tarde.';
