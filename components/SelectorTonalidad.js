@@ -6,7 +6,7 @@ import { CirculoDeQuintas } from '../model/CirculoDeQuintas';
 export class SelectorTonalidad extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tonalidad: 'C' };
+    this.state = { tonalidad: props.tonalidad || 'C' };
   }
 
   subirTonalidad() {

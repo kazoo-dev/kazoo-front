@@ -84,9 +84,10 @@ class PaginaDeGrabacion extends React.Component {
               <img src="/static/img/armadura-clave.png" alt="Modificar armadura de clave"/>
             </AccionBotonKazoo>
           </BotonKazoo>
-          {this.state.edicionTonalidad ? <SelectorTonalidad alCancelar={this.cerrarSelectorTonalidad.bind(this)}
+        </div>
+        {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
+                                                          alCancelar={this.cerrarSelectorTonalidad.bind(this)}
                                                           alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
-          </div>
           <style jsx>{`
           #contenedor {
             height: 100%;
