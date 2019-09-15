@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-const radio = 50;
+import Icon from '@material-ui/core/Icon';
 
 export class BotonKazoo extends Component {
   constructor(props) {
@@ -12,19 +11,25 @@ export class BotonKazoo extends Component {
     this.setState({ clickeado: !this.state.clickeado });
   }
 
+  renderizarAcciones() {
+    return React.Children.map(this.props.children, (accion, indice) =>
+      React.cloneElement(accion, { clickeado: this.state.clickeado, indice: indice, total: this.props.children.length || 1}))
+  }
+
   render() {
     return <div id="kazoo">
-      <button id="boton" onClick={this.alternarEstado.bind(this)}>
-        <div className={this.state.clickeado ? 'accion-1': ''} />
-        <div className={this.state.clickeado ? 'accion-2': ''} />
-        <div className={this.state.clickeado ? 'accion-3': ''} />
+      <button id="boton" onClick={ this.props.onClick || this.alternarEstado.bind(this)}>
+        <span id="icon">
+          <Icon>{ this.state.clickeado ? 'clear' : this.props.icono }</Icon>
+        </span>
+        { this.renderizarAcciones() }
       </button>
       <style jsx>{`
       #kazoo {
         display: flex;
         position: relative;
         justify-content: center;
-        height: 25px;
+        height: 36px;
         background-color: #5CDB94;
         position: fixed;
         bottom: 0;
@@ -36,43 +41,26 @@ export class BotonKazoo extends Component {
       #boton {
         position: relative;
         border-radius: 50%;
-        border: 0;
-        top: -25px;
-        width: 50px;
-        height: 50px;
+        border: none;
+        top: -40px;
+        width: 75px;
+        height: 75px;
+        background-color: white;
         background-image: url(/static/img/kazoo-icon.svg);
-        transform: scale(1.3)
+        transform: scale(1.3);
       }
       
-      #boton > div {
-        position: absolute;
-        margin:auto;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
+      #icon {
         width: 20px;
         height: 20px;
-        border-radius: 50%;
+        position: absolute;
+        margin: auto;
+        top: -3px;
+        left: -3px;
+        bottom: 0;
+        right: 0;
         background-color: #5CDB94;
-        transition: transform 300ms ease-out;
-      }
-      
-      .accion-1 {
-        transform: translate3d(${Math.cos(3 * Math.PI / 4) * radio}px, -${Math.sin(3 * Math.PI / 4) * radio}px, 0);
-      }
-      
-      .accion-2 {
-        transform: translate3d(${Math.cos(2 * Math.PI / 4) * radio}px, -${Math.sin(2 * Math.PI / 4) * radio}px, 0);
-      }
-      
-      .accion-3 {
-        transform: translate3d(${Math.cos(Math.PI / 4) * radio}px, -${Math.sin(Math.PI / 4) * radio}px, 0);
-      }
-        
-      @keyframes slide-in {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
+        border-radius: 50%;
       }
     `}</style>
     </div>;
