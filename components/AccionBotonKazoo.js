@@ -14,15 +14,19 @@ export const AccionBotonKazoo = ({ className, indice, clickeado, children, total
         left: 0;
         bottom: 0;
         right: 0;
-        width: 30px;
-        height: 30px;
+        width: 0;
+        height: 0;
         border-radius: 50%;
         background-color: #5CDB94;
-        transition: transform 300ms ease-out;
+        transition: transform 300ms ease-out, opacity 300ms ease-out, height 300ms ease-out, width 300ms ease-out;
         z-index: -1;
+        opacity: 0;
       }
       
       .on.accion {
+        width: 30px;
+        height: 30px;
+        opacity: 1;
         transform: translate3d(${Math.cos((total - indice) * Math.PI / (total + 1)) * radio}px, -${Math.sin((total - indice) * Math.PI / (total + 1)) * radio}px, 0);
       }
     `}</style>

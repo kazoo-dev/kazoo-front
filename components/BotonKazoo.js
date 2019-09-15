@@ -38,6 +38,9 @@ export class BotonKazoo extends Component {
       }
       
       #boton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         position: relative;
         border-radius: 50%;
         border: none;
@@ -54,17 +57,9 @@ export class BotonKazoo extends Component {
         border: none;
       }
       
-      #icon {
-        width: 20px;
-        height: 20px;
-        position: absolute;
-        margin: auto;
-        top: -3px;
-        left: -3px;
-        bottom: 0;
-        right: 0;
-        background-color: #5CDB94;
-        border-radius: 50%;
+      #icon {        
+        width: 25px;
+        height: 25px;
       }
       
       @keyframes slide-in {
