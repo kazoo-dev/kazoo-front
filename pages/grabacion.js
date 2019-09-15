@@ -4,19 +4,25 @@ import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
-import { MyButton } from '../components/MyButton';
-import { Temas } from '../model/Temas';
 import Layout from '../components/Layout';
+import { SelectorTonalidad } from '../components/SelectorTonalidad';
+import { BotonModoGrabacion } from '../components/BotonModoGrabacion';
+import { BotonModoEdicion } from '../components/BotonModoEdicion';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
 
-const { azul } = Temas;
-
 class PaginaDeGrabacion extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { compases: [] };
+    this.state = {
+      compases: [],
+      metro: { numerador: 4, denominador: 4 },
+      tonalidad: 'C',
+      modoEdicion: false,
+      edicionTonalidad: false,
+      grabacionTerminada: false
+    };
   }
 
   componentDidMount() {
@@ -30,6 +36,19 @@ class PaginaDeGrabacion extends React.Component {
 
   terminarGrabacion() {
     Grabador.terminarGrabacion();
+    this.setState({ grabacionTerminada: true })
+  }
+
+  abrirSelectorTonalidad() {
+    this.setState({ edicionTonalidad: true });
+  }
+
+  cerrarSelectorTonalidad() {
+    this.setState({ edicionTonalidad: false });
+  }
+
+  cambiarTonalidad(nuevaTonalidad) {
+    this.setState({ tonalidad: nuevaTonalidad, edicionTonalidad: false });
   }
 
   agregarCompas(unCompas) {
@@ -37,25 +56,37 @@ class PaginaDeGrabacion extends React.Component {
     this.setState({ compases });
   }
 
+  pasarAModoEdicion() {
+    this.setState({ modoEdicion: true });
+  }
+
   dibujarCompas(unCompas, unaClave) {
     return (
       <Compas key={unaClave}>
         {unCompas.map((nota, i) => <Nota key={i} altura={nota.pitch} duracion={nota.duration} ligada={nota.has_tie}
-          puntillo={nota.has_dot} />)}
+                                         puntillo={nota.has_dot}/>)}
       </Compas>
     );
   }
 
   render() {
+    const botonModoEdicion = <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad.bind(this)}/>;
+    const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada} 
+                                                   terminarGrabacion={this.terminarGrabacion.bind(this)} 
+                                                   pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}/>
     return (
       <Layout>
         <div id="contenedor">
           <div id="partituras">
-            <Partitura metro='4/4' compases={this.state.compases}>
+            <Partitura tonalidad={this.state.tonalidad} metro={this.state.metro} compases={this.state.compases}>
               {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
             </Partitura>
           </div>
-          <MyButton icon={'mic_off'} theme={azul} onClick={this.terminarGrabacion.bind(this)}>DETENER</MyButton>
+          { this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion }
+        </div>
+        {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
+                                                          alCancelar={this.cerrarSelectorTonalidad.bind(this)}
+                                                          alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
           <style jsx>{`
           #contenedor {
             height: 100%;
@@ -68,8 +99,7 @@ class PaginaDeGrabacion extends React.Component {
             display: flex;
           }
         `}
-          </style>
-        </div>
+        </style>
       </Layout>
     );
   }
