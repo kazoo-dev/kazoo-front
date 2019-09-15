@@ -26,7 +26,7 @@ class IngresoUsuario extends React.Component {
     };
 
     componentDidMount(props) {
-        redirigirSiEstaAutenticado();
+        redirigirSiEstaAutenticado("/");
     }
 
     actualizarUsuario(evento) {
