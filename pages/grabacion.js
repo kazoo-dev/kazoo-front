@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
-import { withRouter } from 'next/router';
+import Router from 'next/router';
 import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
 import { MyButton } from '../components/MyButton';
 import { Temas } from '../model/Temas';
-import Layout from '../components/Layout';
+import { redirigirSiNoEstaAutenticado } from '../components/Auth'
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
@@ -20,7 +20,7 @@ class PaginaDeGrabacion extends React.Component {
   }
 
   componentDidMount() {
-    const pulso = this.props.router.query.pulso;
+    const pulso = Router.query.pulso;
     Grabador.iniciarGrabacion(4 * pulso, this.procesarCompas.bind(this));
   }
 
@@ -48,31 +48,29 @@ class PaginaDeGrabacion extends React.Component {
 
   render() {
     return (
-      <Layout>
-        <div id="contenedor">
-          <div id="partituras">
-            <Partitura metro='4/4' compases={this.state.compases}>
-              {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
-            </Partitura>
-          </div>
-          <MyButton icon={'mic_off'} theme={azul} onClick={this.terminarGrabacion.bind(this)}>DETENER</MyButton>
-          <style jsx>{`
-          #contenedor {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-          }
-          
-          #partituras {
-            flex: 3;
-            display: flex;
-          }
-        `}
-          </style>
+      <div id="contenedor">
+        <div id="partituras">
+          <Partitura metro='4/4' compases={this.state.compases}>
+            {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
+          </Partitura>
         </div>
-      </Layout>
+        <MyButton icon={'mic_off'} theme={azul} onClick={this.terminarGrabacion.bind(this)}>DETENER</MyButton>
+        <style jsx>{`
+        #contenedor {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        #partituras {
+          flex: 3;
+          display: flex;
+        }
+      `}
+        </style>
+      </div>
     );
   }
 }
 
-export default withRouter(PaginaDeGrabacion);
+export default redirigirSiNoEstaAutenticado(PaginaDeGrabacion);

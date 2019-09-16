@@ -2,12 +2,12 @@ import React from 'react';
 import {MarcadorInicioDePulso} from '../components/MarcadorInicioDePulso';
 import {MarcadorFinalDePulso} from '../components/MarcadorFinalDePulso';
 import {ComenzarGrabacion} from '../components/ComenzarGrabacion';
-import Layout from '../components/Layout';
+import { redirigirSiNoEstaAutenticado } from '../components/Auth';
 
 const noop = () => {
 };
 
-export default class PaginaMarcarPulso extends React.Component {
+class PaginaMarcarPulso extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -43,10 +43,8 @@ export default class PaginaMarcarPulso extends React.Component {
     }
 
     return (
-      <Layout>
-        <div id="pulso" onClick={onClick}>
-          <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
-        </div>
+      <div id="pulso" onClick={onClick}>
+        <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
         <style jsx> {`
           #pulso {
             height: 100%;
@@ -58,7 +56,9 @@ export default class PaginaMarcarPulso extends React.Component {
           }
         `}
         </style>
-      </Layout>
+      </div>
     );
   }
 };
+
+export default redirigirSiNoEstaAutenticado(PaginaMarcarPulso)

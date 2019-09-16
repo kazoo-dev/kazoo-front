@@ -1,6 +1,7 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheets } from '@material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline'
+import ServerStyleSheets from '@material-ui/styles/ServerStyleSheets';
 import { Colores } from '../model/Temas';
 
 export default class MyDocument extends Document {
@@ -20,30 +21,30 @@ export default class MyDocument extends Document {
         </React.Fragment>,
       ],
     };
-  };
+  }
 
   render() {
     return (
       <html lang="en">
-      <Head>
-        <meta charSet="utf-8"/>
-        <meta name="theme-color" content={Colores.primario.main}/>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico" />
-      </Head>
-      <body>
-      <Main/>
-      <NextScript/>
-      </body>
-      <style jsx global>{`
+        <Head>
+          <meta charSet="utf-8"/>
+          <meta name="theme-color" content={Colores.primario.main}/>
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"/>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+          <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico" />
+        </Head>
+        <style jsx global>{`
           html, body, #__next {
-            height: 100%;
             font-family: 'Roboto', sans-serif;
+            height: 100%;
           }
         `}</style>
+        <body>
+          <Main/>
+          <NextScript/>
+        </body>
       </html>
-    );
+    )
   }
 }
