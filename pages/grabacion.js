@@ -39,7 +39,7 @@ class PaginaDeGrabacion extends React.Component {
 
   terminarGrabacion() {
     Grabador.terminarGrabacion();
-    this.setState({ grabacionTerminada: true })
+    this.setState({ grabacionTerminada: true });
   }
 
   abrirSelectorTonalidad() {
@@ -72,9 +72,10 @@ class PaginaDeGrabacion extends React.Component {
   }
 
   guardarPartitura(nombre) {
-    const {compases, tonalidad, metro} = this.state;
-    const {numerador, denominador} = metro;
-    Backend.guardarPartitura({compases, tonalidad, numerador, denominador, nombre}).finally(() => Router.push('/'));
+    const { compases, tonalidad, metro } = this.state;
+    const { numerador, denominador } = metro;
+    Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre })
+      .finally(() => Router.push('/'));
   }
 
   dibujarCompas(unCompas, unaClave) {
@@ -88,10 +89,10 @@ class PaginaDeGrabacion extends React.Component {
 
   render() {
     const botonModoEdicion = <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad.bind(this)}/>;
-    const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada} 
-                                                   terminarGrabacion={this.terminarGrabacion.bind(this)} 
+    const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
+                                                   terminarGrabacion={this.terminarGrabacion.bind(this)}
                                                    pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}
-                                                   abrirModal={this.abrirModalGuardar.bind(this)}/>
+                                                   abrirModal={this.abrirModalGuardar.bind(this)}/>;
     return (
       <Layout>
         <div id="contenedor">
@@ -100,15 +101,15 @@ class PaginaDeGrabacion extends React.Component {
               {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
             </Partitura>
           </div>
-          { this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion }
+          {this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion}
         </div>
         {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
                                                           alCancelar={this.cerrarSelectorTonalidad.bind(this)}
                                                           alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
-        <ModalKazoo abierto={this.state.modalAbierto} 
-                    alCerrar={this.cerrarModalGuardar.bind(this)} 
+        <ModalKazoo abierto={this.state.modalAbierto}
+                    alCerrar={this.cerrarModalGuardar.bind(this)}
                     alGuardar={this.guardarPartitura.bind(this)}/>
-          <style jsx>{`
+        <style jsx>{`
           #contenedor {
             height: 100%;
             display: flex;

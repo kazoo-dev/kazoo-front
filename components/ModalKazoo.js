@@ -1,44 +1,37 @@
 import Modal from '@material-ui/core/Modal';
 import { Fragment, useState } from 'react';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
-import {Temas} from '../model/Temas';
-import {MyButton} from './MyButton';
-
-const {rojo, verde} = Temas;
+import { Button, TextField, Card, CardContent, CardActions } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-      modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      contenedor: {
-        height: '300px',
-        width: '500px',
-        backgroundColor: 'white',
-      }
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   }),
 );
 
 export const ModalKazoo = ({ abierto, alCerrar, alGuardar }) => {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [nombre, actualizarNombre] = useState()
+  const [nombre, actualizarNombre] = useState();
 
-    return(
-        <Fragment>
-            <Modal className={classes.modal} open={abierto} onClose={alCerrar}>
-                <div className={classes.contenedor}>
-                    <p>Ingresá un nombre para tu partitura</p>
-                    <TextField value={nombre} onChange={(evento) => actualizarNombre(evento.target.value)}></TextField>
-                    <MyButton theme={rojo} onClick={alCerrar}>Cancelar</MyButton>
-                    <MyButton type="submit" theme={verde} onClick={() => alGuardar(nombre)}>Guardar</MyButton>
-                </div>
-                
-            </Modal>
-            
-        </Fragment>
-    )
-}
+  return (
+    <Fragment>
+      <Modal className={classes.modal} open={abierto} onClose={alCerrar}>
+        <Card>
+          <CardContent>
+            <p>Ingresá un nombre para tu partitura</p>
+            <TextField value={nombre} onChange={(evento) => actualizarNombre(evento.target.value)}/>
+          </CardContent>
+          <CardActions>
+            <Button size="small" onClick={alCerrar}>Cancelar</Button>
+            <Button type="submit" disabled={!nombre} size="small" onClick={() => alGuardar(nombre)}>Guardar</Button>
+          </CardActions>
+        </Card>
+      </Modal>
+    </Fragment>
+  );
+};
