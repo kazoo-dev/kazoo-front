@@ -4,7 +4,7 @@ import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
-import { redirigirSiNoEstaAutenticado } from '../components/Auth'
+import { redirigirSiNoEstaAutenticado } from '../model/Auth'
 import { SelectorTonalidad } from '../components/SelectorTonalidad';
 import { BotonModoGrabacion } from '../components/BotonModoGrabacion';
 import { BotonModoEdicion } from '../components/BotonModoEdicion';

@@ -8,7 +8,7 @@ import { Footer } from '../components/Footer'
 import { MensajeDeError } from '../components/MensajeDeError'
 import Backend from '../model/Backend'
 import Router from 'next/router'
-import { setUsuario, redirigirSiEstaAutenticado } from '../components/Auth'
+import { setUsuario, redirigirSiEstaAutenticado } from '../model/Auth'
 
 const { verde } = Temas
 

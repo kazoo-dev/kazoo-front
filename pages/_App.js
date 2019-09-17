@@ -3,7 +3,7 @@ import Head from 'next/head'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import { Temas, Colores } from '../model/Temas'
-import { AuthContext, getAuth } from '../components/Auth'
+import { AuthContext, getAuth } from '../model/Auth'
 import { Navbar } from '../components/NavBar/Navbar'
 import { basename } from 'upath'
 

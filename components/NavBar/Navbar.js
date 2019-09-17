@@ -1,5 +1,5 @@
 import {useContext} from "react";
-import {AuthContext} from '../Auth'
+import {AuthContext} from '../../model/Auth'
 import {NavbarNoAutenticado} from "./NavbarNoAutenticado";
 import {NavbarAutenticado} from "./NavbarAutenticado";
 

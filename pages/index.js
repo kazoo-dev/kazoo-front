@@ -2,7 +2,7 @@ import React from 'react';
 import {MarcadorInicioDePulso} from '../components/MarcadorInicioDePulso';
 import {MarcadorFinalDePulso} from '../components/MarcadorFinalDePulso';
 import {ComenzarGrabacion} from '../components/ComenzarGrabacion';
-import { redirigirSiNoEstaAutenticado } from '../components/Auth';
+import { redirigirSiNoEstaAutenticado } from '../model/Auth';
 
 const noop = () => {
 };
