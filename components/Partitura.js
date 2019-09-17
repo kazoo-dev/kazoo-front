@@ -15,6 +15,12 @@ export default class Partitura extends React.Component {
     renderer.resize(divContenedorDelSvg.offsetWidth, divContenedorDelSvg.offsetHeight);
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.tonalidad !== this.props.tonalidad) {
+      this.contexto.clear();
+    }
+  }
+
   compases() {
     return React.Children.map(this.props.children, (compas, index) => {
       const longitudDivContenedor = this.referenciaPartitura.current.offsetWidth;
@@ -23,6 +29,7 @@ export default class Partitura extends React.Component {
         y: index * 100,
         longitud: longitudDivContenedor,
         metro: this.props.metro,
+        tonalidad: this.props.tonalidad,
         contexto: this.contexto,
         vexflow: this.vexflow,
       };
@@ -34,8 +41,10 @@ export default class Partitura extends React.Component {
     return <div ref={this.referenciaPartitura}>
       {this.compases()}
       <style jsx>{`
+        margin: 5vh 10vw;
         width: 100%;
       `}</style>
     </div>;
   }
 };
+

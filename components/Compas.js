@@ -1,12 +1,23 @@
 import React, { Fragment } from 'react';
 
 export default class Compas extends React.Component {
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.tonalidad !== this.props.tonalidad) {
+      this.dibujarCompas();
+    }
+  }
+
   componentDidMount() {
-    const { metro, contexto, vexflow, x, y, longitud } = this.props;
+    this.dibujarCompas();
+  }
+
+  dibujarCompas() {
+    const { metro, tonalidad, contexto, vexflow, x, y, longitud } = this.props;
 
     const compas = new vexflow.Stave(x, y, longitud)
       .addClef('treble')
-      .addTimeSignature(metro)
+      .addKeySignature(tonalidad)
+      .addTimeSignature(`${metro.numerador}/${metro.denominador}`)
       .setContext(contexto)
       .draw();
 
@@ -28,8 +39,9 @@ export default class Compas extends React.Component {
       }
     });
 
-    const melodia = new vexflow.Voice({ num_beats: 4, beat_value: 4 });
+    const melodia = new vexflow.Voice({ num_beats: metro.numerador, beat_value: metro.denominador });
     melodia.addTickables(notas);
+    vexflow.Accidental.applyAccidentals([melodia], tonalidad);
     new vexflow.Formatter().joinVoices([melodia]).format([melodia], longitud);
     melodia.draw(contexto, compas);
     ligaduras.forEach(ligadura => ligadura.setContext(contexto).draw());
