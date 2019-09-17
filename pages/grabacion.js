@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import Router, { withRouter } from 'next/router';
+import Router from 'next/router';
 import Nota from '../components/Nota';
 import React from 'react';
 import Grabador from '../model/Grabador';
@@ -14,7 +14,7 @@ import Backend from '../model/Backend';
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
 const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
 
-class PaginaDeGrabacion extends React.Component {
+export default class PaginaDeGrabacion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ class PaginaDeGrabacion extends React.Component {
   }
 
   componentDidMount() {
-    const pulso = this.props.router.query.pulso;
+    const pulso = Router.query.pulso;
     Grabador.iniciarGrabacion(4 * pulso, this.procesarCompas.bind(this));
   }
 
@@ -126,5 +126,3 @@ class PaginaDeGrabacion extends React.Component {
     );
   }
 }
-
-export default withRouter(PaginaDeGrabacion);
