@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getUsuario } from '../lib/Sesion'
 
 export default {
   url: 'http://localhost:8080',
@@ -11,22 +12,22 @@ export default {
     return axios.post(`${this.url}/usuario/registrar`, informacionDeRegistro);
   },
 
-  headerNombreDeUsuario(unNombreDeUsuario) {
-    return { headers: { 'usuario-nombre': unNombreDeUsuario } };
+  headerNombreDeUsuario() {
+    return { headers: { 'usuario-nombre': getUsuario() } };
   },
 
-  obtenerPartitura(unId, unNombreDeUsuario) {
-    return axios.get(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario(unNombreDeUsuario))
+  obtenerPartitura(unId) {
+    return axios.get(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario())
       .then(respuesta => this.deserializarPartitura(respuesta.data));
   },
 
-  obtenerTodasLasPartiturasPara(unNombreDeUsuario) {
-    return axios.get(`${this.url}/partitura`, this.headerNombreDeUsuario(unNombreDeUsuario))
+  obtenerTodasLasPartiturasPara() {
+    return axios.get(`${this.url}/partitura`, this.headerNombreDeUsuario())
       .then(respuesta => respuesta.data);
   },
 
-  guardarPartitura(unaPartitura, unNombreDeUsuario) {
-    return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario(unNombreDeUsuario));
+  guardarPartitura(unaPartitura) {
+    return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
   },
 
   serializarDuracion(unaNota) {

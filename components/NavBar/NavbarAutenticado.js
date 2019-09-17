@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {Icon} from '@material-ui/core';
 
 export function NavbarAutenticado() {
     const classes = makeStyles({});
@@ -60,8 +61,8 @@ export function NavbarAutenticado() {
     }
 
     function logout() {
-        removeUsuario();
-        Router.push("/ingreso");
+      removeUsuario();
+      Router.push("/ingreso");
     }
 
     return (
@@ -86,6 +87,18 @@ export function NavbarAutenticado() {
             >
                 <StyledMenuItem>
                     <ListItemIcon>
+                      <Icon>queue_music</Icon>
+                    </ListItemIcon>
+                    <ListItemText onClick={() => Router.push("/partituras")} primary="Mis partituras" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                    <ListItemIcon>
+                      <Icon>music_video</Icon>
+                    </ListItemIcon>
+                    <ListItemText onClick={() => Router.push("/")} primary="Nueva partitura" />
+                </StyledMenuItem>
+                <StyledMenuItem>
+                    <ListItemIcon>
                         <ExitToAppIcon />
                     </ListItemIcon>
                     <ListItemText onClick={logout} primary="Logout" />
@@ -93,7 +106,7 @@ export function NavbarAutenticado() {
             </StyledMenu>
             <style jsx>{`
             #customized-menu {
-                color:#EDF5E0; 
+                color:#EDF5E0;
             }
             ListItemIcon {
                 color: #05396B;
@@ -101,7 +114,7 @@ export function NavbarAutenticado() {
             ListItemText{
                 color:#05396B;
             }
-            
+
             #navbar {
                 height: 60px;
                 background-color: #5CDB94;

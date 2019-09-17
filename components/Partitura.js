@@ -41,7 +41,7 @@ export default class Partitura extends React.Component {
     return <div ref={this.referenciaPartitura}>
       {this.compases()}
       <style jsx>{`
-        margin: 5vh 10vw;
+        margin: 0 10vw;
         width: 100%;
       `}</style>
     </div>;

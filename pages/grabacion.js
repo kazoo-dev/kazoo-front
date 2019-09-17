@@ -115,7 +115,7 @@ export default class PaginaDeGrabacion extends React.Component {
             display: flex;
             flex-direction: column;
           }
-          
+
           #partituras {
             flex: 3;
             display: flex;
