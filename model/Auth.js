@@ -41,7 +41,7 @@ function setCookie(nombre, valor, horas = 360 * 24) {
   }
   return document.cookie = cookie
 }
-const decode = s => window.atob ? atob(s) : Buffer.from(s, 'base64').toString('ascii')
+const decode = this && this.atob ? atob : s => Buffer.from(s, 'base64').toString('ascii')
 function getCookie(nombre, cookie = document.cookie) {
   const encoded = ` ${encodeURIComponent(nombre)}=`
   const start = cookie.indexOf(encoded) + encoded.length
