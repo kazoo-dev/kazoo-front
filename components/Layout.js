@@ -4,7 +4,7 @@ import {CssBaseline} from '@material-ui/core';
 const Layout = props => (
     <div>
         <CssBaseline />
-        <Navbar />
+        <Navbar titulo={props.titulo} />
         {props.children}
         <style jsx> {`
             div {

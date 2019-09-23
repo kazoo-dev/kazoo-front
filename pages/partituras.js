@@ -44,7 +44,7 @@ export default (props) => {
       {partituras
         ? partituras.map(
             p => <ListItem key={p.id} className={classes.partitura}>
-              {p.nombre}
+              {p.nombrePartitura}
               <ListItemSecondaryAction className={classes.accionesPartitura}>
                 <Link href={`/partitura/${p.id}`}><IconButton><Icon>edit</Icon></IconButton></Link>
                 <IconButton><Icon>link</Icon></IconButton>

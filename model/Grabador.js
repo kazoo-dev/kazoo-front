@@ -1,11 +1,20 @@
 import MediaStreamRecorder from 'msr';
 
+function comoArchivo(unBlob) {
+  return new File([unBlob], 'file.wav', { type: 'audio/wav' })
+}
+
 export default {
   async inicializarGrabador(anteCadaCompas) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     this.recorder = new MediaStreamRecorder(stream);
     this.recorder.mimeType = 'audio/wav';
-    this.recorder.ondataavailable = blob => anteCadaCompas(this.comoArchivo(blob))
+    let anteriorBlob = Promise.resolve()
+    this.recorder.ondataavailable = (blob) => {
+      anteriorBlob = anteriorBlob.then(
+        () => anteCadaCompas(comoArchivo(blob))
+      )
+    }
   },
 
   async iniciarGrabacion(unaLongitudDeCompas, anteCadaCompas) {
@@ -15,10 +24,6 @@ export default {
       this.recorder.clearRecordedData();
     }
     this.recorder.start(unaLongitudDeCompas);
-  },
-
-  comoArchivo(unBlob) {
-    return new File([unBlob], 'file.wav', { type: 'audio/wav' })
   },
 
   terminarGrabacion() {

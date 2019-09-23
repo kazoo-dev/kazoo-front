@@ -30,29 +30,34 @@ export default {
     return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
   },
 
-  serializarDuracion(unaNota) {
-    return {
-      ...unaNota,
-      duration: typeof unaNota.duration === 'string' ? unaNota.duration : unaNota.duration.join('-')
-    };
-  },
-
-  deserializarDuracion(unaNota) {
-    return {
-      ...unaNota,
-      duration: unaNota.duration.split('-')
-    }
-  },
-
   serializarParitura(unaPartitura) {
     const compases = unaPartitura.compases.map(compas => ({
-      notas: compas.map(this.serializarDuracion.bind(this))
+      notas: compas.map(unaNota => ({
+        ...unaNota,
+        duration: typeof unaNota.duration === 'string'
+          ? unaNota.duration
+          : unaNota.duration.join('-')
+      }))
     }));
     return { ...unaPartitura, compases };
   },
 
   deserializarPartitura(unaPartituraEnJson) {
-    const compases = unaPartituraEnJson.compases.map(compas => compas.notas.map(this.deserializarDuracion));
-    return { ...unaPartituraEnJson, compases };
+    const compases = unaPartituraEnJson.compases.map(
+      compas => compas.notas.map(unaNota => {
+        const duration = unaNota.duration.split('-')
+        return{
+          ...unaNota,
+          duration: duration.length === 1 ? duration[0] : duration
+        }
+      })
+    );
+    const { numerador, denominador, partitura_id } = unaPartituraEnJson
+    return {
+      ...unaPartituraEnJson,
+      compases,
+      id: partitura_id,
+      metro: { numerador, denominador },
+     };
   }
 };
