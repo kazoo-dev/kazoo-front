@@ -1,11 +1,12 @@
-import { MyButton } from "../components/MyButton";
-import { Temas } from '../model/Temas'
-import { Grid, Link, Typography, TextField, CssBaseline } from '@material-ui/core';
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
-import { MensajeDeError } from "../components/MensajeDeError";
+import {MyButton} from "../components/MyButton";
+import {Temas} from '../model/Temas'
+import {CssBaseline, Grid, Link, TextField, Typography} from '@material-ui/core';
+import {Header} from "../components/Header";
+import {Footer} from "../components/Footer";
+import {MensajeDeError} from "../components/MensajeDeError";
 import Backend from '../model/Backend';
 import Layout from "../components/Layout";
+import Router from 'next/router';
 
 const { verde } = Temas;
 
