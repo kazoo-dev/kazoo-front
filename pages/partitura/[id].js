@@ -16,10 +16,9 @@ export default class PaginaDeGrabacion extends React.Component {
   }
 
   render() {
-    const { tonalidad, metro, compases } = this.state
     return (
-      <Layout titulo={this.state.nombre}>
-        <Partitura tonalidad={tonalidad} metro={metro} compases={compases}></Partitura>
+      <Layout>
+        <Partitura {...this.state}></Partitura>
       </Layout>
     );
   }

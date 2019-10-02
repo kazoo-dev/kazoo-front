@@ -1,6 +1,6 @@
 import { debounce } from 'lodash'
 import { memo, useRef, useState, useEffect } from 'react'
-import { useWindowSize } from '../hooks/useWindowSize'
+import { useTamanioVentana } from '../hooks/useTamanioVentana'
 import { Renderer } from 'vexflow/src/renderer'
 import { Stave } from 'vexflow/src/stave'
 import { StaveNote } from 'vexflow/src/stavenote'
@@ -9,7 +9,7 @@ import { Voice } from 'vexflow/src/voice'
 import { Accidental } from 'vexflow/src/accidental'
 import { Formatter } from 'vexflow/src/formatter'
 
-export default memo(function Partitura({ scrollea, tonalidad, metro, compases }) {
+export default memo(function Partitura({ nombre, tonalidad, metro, compases, scrollea }) {
   const contenedorRef = useRef()
   const lienzoRef = useRef()
   const rendererRef = useRef()
@@ -21,10 +21,10 @@ export default memo(function Partitura({ scrollea, tonalidad, metro, compases })
       setEstaAlFinal(e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight)
     }, 35)
     contenedorRef.current.addEventListener('scroll', cuandoScrolea)
-    return contenedorRef.current.addEventListener('scroll', cuandoScrolea)
+    return contenedorRef.current.removeEventListener('scroll', cuandoScrolea)
   }, [])
   const finDelLienzoRef = useRef()
-  const tamanioVentana = useWindowSize()
+  const tamanioVentana = useTamanioVentana()
   // useEffect(() => {
   //   rendererRef.current.getContext().clear()
   // }, [tonalidad])
@@ -38,6 +38,8 @@ export default memo(function Partitura({ scrollea, tonalidad, metro, compases })
     rendererRef.current.resize(anchoLienzo, alturaLienzo)
     const contexto = rendererRef.current.getContext()
     contexto.clear()
+    contexto.setFont('Roboto', 25, 'italic bold')
+    contexto.fillText(nombre, '50%', 50)
     const espacioDibujable = anchoLienzo - 23
     compases.map((notasDelCompas, i) => {
       const [x, y] = [0, i * 100 + 50]
@@ -88,6 +90,13 @@ export default memo(function Partitura({ scrollea, tonalidad, metro, compases })
         <div id="lienzo" ref={lienzoRef}></div>
       </div>
       <div ref={finDelLienzoRef} />
+      <style jsx global>{`
+        text {
+          text-transform: uppercase;
+          text-anchor: middle;
+          text-align: center;
+        }
+      `}</style>
       <style jsx>{`
         #contenedor {
           display: flex;

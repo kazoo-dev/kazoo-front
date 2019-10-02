@@ -12,7 +12,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {Icon} from '@material-ui/core';
 
-export function NavbarAutenticado({ titulo }) {
+export function NavbarAutenticado() {
     const classes = makeStyles({});
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -68,7 +68,6 @@ export function NavbarAutenticado({ titulo }) {
     return (
       <div id="navbar">
         <Link href="/"><img src="../static/img/kazoo.-logo-color.svg" /></Link>
-        <h1>{titulo}</h1>
         <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"

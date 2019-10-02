@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default (props) => {
+export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
   useEffect(() => {
@@ -42,7 +42,8 @@ export default (props) => {
     <Layout>
       <List className={classes.listaPartituras}>
       {partituras
-        ? partituras.map(
+        ? partituras.length
+          ? partituras.map(
             p => <ListItem key={p.id} className={classes.partitura}>
               {p.nombrePartitura}
               <ListItemSecondaryAction className={classes.accionesPartitura}>
@@ -51,7 +52,11 @@ export default (props) => {
                 <IconButton><Icon>delete</Icon></IconButton>
               </ListItemSecondaryAction>
             </ListItem>
-        ) : 'Cargando partituras'
+          ) : <div>
+            Aun no tienes grabaciones guardadas, puedes grabar tu primer partitura
+            <Link href="/"><a>aqui</a></Link>
+          </div>
+        : 'Cargando partituras'
       }
       </List>
     </Layout>
