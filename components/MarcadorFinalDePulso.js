@@ -1,8 +1,11 @@
 import { Onda } from './Onda';
-import { Fragment } from 'react';
+import { LayoutPreGrabacion } from './LayoutPreGrabacion'
+import { ComenzarGrabacion } from './ComenzarGrabacion'
 
-export const MarcadorFinalDePulso = () => (
-  <Fragment>
+export const MarcadorFinalDePulso = ({ onSiguienteEstado, inicioDelPulso }) => (
+  <LayoutPreGrabacion onClick={
+    () => onSiguienteEstado(ComenzarGrabacion, { pulso: Date.now() - inicioDelPulso })
+  }>
     <h1>Pulsá nuevamente cuando finalice tu pulso</h1>
     <Onda/>
     <style jsx>{`
@@ -10,7 +13,6 @@ export const MarcadorFinalDePulso = () => (
         color: #EDF5E0;
         text-align: center;
       }
-    `}
-    </style>
-  </Fragment>
+    `}</style>
+  </LayoutPreGrabacion>
 );
