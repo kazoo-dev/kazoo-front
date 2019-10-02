@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import Router from 'next/router';
 import { Component, Fragment } from 'react';
 
-import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
+import { detectarArchivo, detectarFragmento } from '../model/ServicioDeDeteccion';
 import Grabador from '../model/Grabador';
 import Backend from '../model/Backend';
 
@@ -27,14 +27,16 @@ export class Grabacion extends Component {
   }
 
   componentDidMount() {
-    console.log({ file: this.props.file })
-    if (!this.props.file) {
+    if (this.props.file) {
+      detectarArchivo(this.props.file, this.props.pulso)
+        .then(compases => this.setState({ compases }))
+    } else {
       Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas.bind(this));
     }
   }
 
-  procesarCompas(unAudio) {
-    ServicioDeDeteccion.detectar(unAudio).then(this.agregarCompas.bind(this));
+  procesarCompas(unFragmentoDeAudio) {
+    detectarFragmento(unFragmentoDeAudio).then(this.agregarCompas.bind(this));
   }
 
   terminarGrabacion() {

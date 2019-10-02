@@ -1,12 +1,23 @@
 import axios from 'axios';
 
-export default {
-  confg: { headers: { 'Content-Type': 'multipart/form-data' } },
-  urlBackend: 'https://kazoo-back.herokuapp.com/detect/',
+const apiDeteccion = axios.create({
+  baseURL: 'https://kazoo-back.herokuapp.com',
+  headers: { 'Content-Type': 'multipart/form-data' },
+})
+apiDeteccion.interceptors.response.use(r => r.data)
 
-  detectar(unArchvoDeAudio) {
-    const formData = new FormData();
-    formData.append('file', unArchvoDeAudio);
-    return axios.post(this.urlBackend, formData, this.confg).then(respuesta => respuesta.data);
-  }
-};
+function toForm(file) {
+  const form = new FormData();
+  form.append('file', file);
+  return form
+}
+
+export function detectarFragmento(unFragmentoDeAudio) {
+  return apiDeteccion.post(`/detect/`, toForm(unFragmentoDeAudio))
+}
+
+export function detectarArchivo(unArchivoDeAudio, pulso) {
+  return apiDeteccion.post(`/fileDetect/`, toForm(unArchivoDeAudio), {
+    headers: { 'X-pulse' : pulso },
+  })
+}
