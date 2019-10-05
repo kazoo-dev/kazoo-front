@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import Nota from '../components/Nota';
-import React from 'react';
+import { Component } from 'react';
 import Grabador from '../model/Grabador';
 import ServicioDeDeteccion from '../model/ServicioDeDeteccion';
 import Layout from '../components/Layout';
@@ -12,9 +11,8 @@ import { ModalKazoo } from '../components/ModalKazoo';
 import Backend from '../model/Backend';
 
 const Partitura = dynamic(() => import('../components/Partitura'), { ssr: false });
-const Compas = dynamic(() => import('../components/Compas'), { ssr: false });
 
-export default class PaginaDeGrabacion extends React.Component {
+export default class PaginaDeGrabacion extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,98 +28,78 @@ export default class PaginaDeGrabacion extends React.Component {
 
   componentDidMount() {
     const pulso = Router.query.pulso;
-    Grabador.iniciarGrabacion(4 * pulso, this.procesarCompas.bind(this));
+    Grabador.iniciarGrabacion(4 * pulso, this.procesarCompas);
+  }
+  componentWillUnmount() {
+    Grabador.terminarGrabacion();
   }
 
-  procesarCompas(unAudio) {
-    ServicioDeDeteccion.detectar(unAudio).then(this.agregarCompas.bind(this));
+  procesarCompas = async (unAudio) => {
+    const compas = await ServicioDeDeteccion.detectar(unAudio)
+    this.agregarCompas(compas)
   }
 
-  terminarGrabacion() {
+  terminarGrabacion = () => {
     Grabador.terminarGrabacion();
     this.setState({ grabacionTerminada: true });
   }
 
-  abrirSelectorTonalidad() {
+  abrirSelectorTonalidad = () => {
     this.setState({ edicionTonalidad: true });
   }
 
-  cerrarSelectorTonalidad() {
+  cerrarSelectorTonalidad = () => {
     this.setState({ edicionTonalidad: false });
   }
 
-  cambiarTonalidad(nuevaTonalidad) {
+  cambiarTonalidad = (nuevaTonalidad) => {
     this.setState({ tonalidad: nuevaTonalidad, edicionTonalidad: false });
   }
 
-  agregarCompas(unCompas) {
-    const compases = [...this.state.compases, unCompas];
-    this.setState({ compases });
+  agregarCompas = (unCompas) => {
+    this.setState({ compases: [...this.state.compases, unCompas] });
   }
 
-  pasarAModoEdicion() {
+  pasarAModoEdicion = () => {
     this.setState({ modoEdicion: true });
   }
 
-  abrirModalGuardar() {
+  abrirModalGuardar = () => {
     this.setState({ modalAbierto: true });
   }
 
-  cerrarModalGuardar() {
+  cerrarModalGuardar = () => {
     this.setState({ modalAbierto: false });
   }
 
-  guardarPartitura(nombre) {
+  guardarPartitura = (nombre) => {
     const { compases, tonalidad, metro } = this.state;
     const { numerador, denominador } = metro;
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre })
       .finally(() => Router.push('/'));
   }
 
-  dibujarCompas(unCompas, unaClave) {
-    return (
-      <Compas key={unaClave}>
-        {unCompas.map((nota, i) => <Nota key={i} altura={nota.pitch} duracion={nota.duration} ligada={nota.has_tie}
-                                         puntillo={nota.has_dot}/>)}
-      </Compas>
-    );
-  }
-
   render() {
-    const botonModoEdicion = <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad.bind(this)}/>;
-    const botonModoGrabacion = <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
-                                                   terminarGrabacion={this.terminarGrabacion.bind(this)}
-                                                   pasarAModoEdicion={this.pasarAModoEdicion.bind(this)}
-                                                   abrirModal={this.abrirModalGuardar.bind(this)}/>;
+    const { tonalidad, metro, compases } = this.state
+    const botonModoEdicion = <BotonModoEdicion
+      abrirSelectorTonalidad={(this.abrirSelectorTonalidad)}/>;
+    const botonModoGrabacion = <BotonModoGrabacion
+      grabacionTerminada={this.state.grabacionTerminada}
+      terminarGrabacion={this.terminarGrabacion}
+      pasarAModoEdicion={this.pasarAModoEdicion}
+      abrirModal={this.abrirModalGuardar}/>;
     return (
       <Layout>
-        <div id="contenedor">
-          <div id="partituras">
-            <Partitura tonalidad={this.state.tonalidad} metro={this.state.metro} compases={this.state.compases}>
-              {this.state.compases.map((compas, i) => this.dibujarCompas(compas, i))}
-            </Partitura>
-          </div>
-          {this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion}
-        </div>
-        {this.state.edicionTonalidad ? <SelectorTonalidad tonalidad={this.state.tonalidad}
-                                                          alCancelar={this.cerrarSelectorTonalidad.bind(this)}
-                                                          alSeleccionar={this.cambiarTonalidad.bind(this)}/> : null}
+        <Partitura scrollea={true} tonalidad={tonalidad} metro={metro} compases={compases}></Partitura>
+        {this.state.modoEdicion ? botonModoEdicion : botonModoGrabacion}
+        {this.state.edicionTonalidad
+          ? <SelectorTonalidad tonalidad={tonalidad}
+              alCancelar={this.cerrarSelectorTonalidad}
+              alSeleccionar={this.cambiarTonalidad}/>
+          : null}
         <ModalKazoo abierto={this.state.modalAbierto}
-                    alCerrar={this.cerrarModalGuardar.bind(this)}
-                    alGuardar={this.guardarPartitura.bind(this)}/>
-        <style jsx>{`
-          #contenedor {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-          }
-          
-          #partituras {
-            flex: 3;
-            display: flex;
-          }
-        `}
-        </style>
+                    alCerrar={this.cerrarModalGuardar}
+                    alGuardar={this.guardarPartitura}/>
       </Layout>
     );
   }

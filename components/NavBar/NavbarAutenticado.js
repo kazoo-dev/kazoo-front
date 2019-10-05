@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {Icon} from '@material-ui/core';
 
 export function NavbarAutenticado() {
     const classes = makeStyles({});
@@ -60,63 +61,75 @@ export function NavbarAutenticado() {
     }
 
     function logout() {
-        removeUsuario();
-        Router.push("/ingreso");
+      removeUsuario();
+      Router.push("/ingreso");
     }
 
     return (
-        <div id="navbar">
-            <Link href="/"><img src="../static/img/kazoo.-logo-color.svg" />
-            </Link>
-            <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-            ><AccountCircle />
-            {getUsuario()}
-            </IconButton>
-            <StyledMenu
-                id="customized-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-            >
-                <StyledMenuItem>
-                    <ListItemIcon>
-                        <ExitToAppIcon />
-                    </ListItemIcon>
-                    <ListItemText onClick={logout} primary="Logout" />
-                </StyledMenuItem>
-            </StyledMenu>
-            <style jsx>{`
-            #customized-menu {
-                color:#EDF5E0; 
-            }
-            ListItemIcon {
-                color: #05396B;
-            }
-            ListItemText{
-                color:#05396B;
-            }
-            
-            #navbar {
-                height: 60px;
-                background-color: #5CDB94;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 20px;
-            }
-
-            img {
-                height: 70%;
-                cursor: pointer;
-            }
-
-           `}</style>
-
-        </div>)
+      <div id="navbar">
+        <Link href="/"><img src="../static/img/kazoo.-logo-color.svg" /></Link>
+        <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+        ><AccountCircle />
+          {getUsuario()}
+        </IconButton>
+        <StyledMenu
+            id="customized-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+          <StyledMenuItem>
+            <ListItemIcon>
+              <Icon>queue_music</Icon>
+            </ListItemIcon>
+            <ListItemText onClick={() => Router.push("/partituras")} primary="Mis partituras" />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <Icon>music_video</Icon>
+            </ListItemIcon>
+            <ListItemText onClick={() => Router.push("/")} primary="Nueva partitura" />
+          </StyledMenuItem>
+          <StyledMenuItem>
+            <ListItemIcon>
+                <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText onClick={logout} primary="Logout" />
+          </StyledMenuItem>
+        </StyledMenu>
+        <style jsx>{`
+          #navbar {
+              height: 60px;
+              background-color: #5CDB94;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0 20px;
+          }
+          #customized-menu {
+              color:#EDF5E0;
+          }
+          ListItemIcon {
+              color: #05396B;
+          }
+          ListItemText{
+              color:#05396B;
+          }
+          h1 {
+            text-align: center;
+            text-transform: uppercase;
+          }
+          img {
+              height: 70%;
+              cursor: pointer;
+          }
+        `}</style>
+      </div>
+    )
 }
