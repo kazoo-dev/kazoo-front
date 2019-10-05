@@ -24,6 +24,7 @@ export class Grabacion extends Component {
 
   componentDidMount() {
     if (this.props.file) {
+      this.pasarAModoEdicion()
       detectarArchivo(this.props.file, this.props.pulso)
         .then(compases => this.setState({ compases }))
     } else {

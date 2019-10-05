@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import { MarcadorInicioDePulso } from '../components/MarcadorInicioDePulso';
 
-export default class PaginaMarcarPulso extends React.Component {
+export default class PaginaNuevaPartitura extends React.Component {
   state = {
     Component: MarcadorInicioDePulso,
     props: null,
