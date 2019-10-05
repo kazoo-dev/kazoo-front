@@ -40,7 +40,7 @@ export class Grabacion extends Component {
   }
 
   componentWillUnmount() {
-    Grabador.terminarGrabacion();
+    if (!this.props.file) Grabador.terminarGrabacion();
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
@@ -95,7 +95,8 @@ export class Grabacion extends Component {
           metro={this.state.metro}
           compases={this.state.compases} />
         {this.state.modoEdicion
-          ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad} />
+          ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad}
+            onVolver={() => this.setState({ modoEdicion: false })} />
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
