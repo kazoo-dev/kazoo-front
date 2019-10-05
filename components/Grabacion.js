@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import {Component, Fragment} from 'react';
+import { Component, Fragment } from 'react';
 import Backend from '../model/Backend';
 import Grabador from '../model/Grabador';
-import {detectarArchivo, detectarFragmento} from '../model/ServicioDeDeteccion';
-import {BotonModoEdicion} from './BotonModoEdicion';
-import {BotonModoGrabacion} from './BotonModoGrabacion';
-import {ModalKazoo} from './ModalKazoo';
-import {SelectorTonalidad} from './SelectorTonalidad';
+import { detectarArchivo, detectarFragmento } from '../model/ServicioDeDeteccion';
+import { BotonModoEdicion } from './BotonModoEdicion';
+import { BotonModoGrabacion } from './BotonModoGrabacion';
+import { ModalKazoo } from './ModalKazoo';
+import { SelectorTonalidad } from './SelectorTonalidad';
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -18,29 +18,33 @@ export class Grabacion extends Component {
     tonalidad: 'C',
     modoEdicion: false,
     edicionTonalidad: false,
-    grabacionTerminada: false,
+    edicionAltura: false,
+    grabacionTerminada: true,
     modalAbierto: false,
-    loading:true,
+    loading: true,
   }
 
   componentDidMount() {
-    if (this.props.file) {
-      this.setState({grabacionTerminada:true});
+    if (this.props.id) {
+      Backend.obtenerPartitura(this.props.id)
+        .then(partitura => {
+          this.setState({ ...partitura, loading: false })
+        })
+    } else if (this.props.file) {
       detectarArchivo(this.props.file, this.props.pulso)
-        .then(compases => this.cargarPagina(compases))
+        .then(compases => {
+          this.setState({ compases, loading: false })
+        })
     } else {
-      this.setState({loading:false}),
-      Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas);
+      this.setState({ loading: false, grabacionTerminada: false })
+      Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas)
     }
   }
 
-  cargarPagina(compases){
-    this.setState({loading:false}),
-    this.setState({compases});
-  }
-
   componentWillUnmount() {
-    if (!this.props.file) Grabador.terminarGrabacion();
+    if (!(this.props.file || this.props.id)) {
+      Grabador.terminarGrabacion()
+    }
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
@@ -81,27 +85,33 @@ export class Grabacion extends Component {
   }
 
   guardarPartitura = (nombre) => {
-    const { compases, tonalidad, metro } = this.state;
+    const { compases, tonalidad, metro, id } = this.state;
     const { numerador, denominador } = metro;
-    Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre })
+    Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre, id })
       .finally(() => Router.push('/partituras'));
+  }
+
+  handleClickNota = ({ compas, nota }) => {
+    if (this.state.edicionAltura) {
+      this.setState({ edicionAltura: false })
+      console.log({ compas, nota })
+      this.abrirSelectorTonalidad()
+    }
   }
 
   render() {
     return (
       <Fragment>
-        <Partitura scrollea={true}
-          tonalidad={this.state.tonalidad}
-          metro={this.state.metro}
-          compases={this.state.compases} />
+        <Partitura scrollea={!this.props.id} {...this.state} onClickNota={this.handleClickNota} />
         {this.state.modoEdicion
           ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad}
+            modificarAltura={() => this.setState({ edicionAltura: true })}
             onVolver={() => this.setState({ modoEdicion: false })} />
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
             abrirModal={this.abrirModalGuardar}
-            loading={this.state.loading}/>
+            loading={this.state.loading} />
         }
         {this.state.edicionTonalidad
           && <SelectorTonalidad tonalidad={this.state.tonalidad}
