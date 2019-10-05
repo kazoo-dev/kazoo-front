@@ -1,10 +1,10 @@
 import * as PropTypes from "prop-types";
-import { BPM } from './BPM';
 import DropzoneDialogCustom from "./Dropzone/DropzoneDialogCustom";
-import { Grabacion } from './Grabacion';
-import { LayoutPreGrabacion } from './LayoutPreGrabacion';
-import { MarcadorInicioDePulso } from './MarcadorInicioDePulso';
-import { MyButton } from './MyButton';
+import {BPM} from './BPM';
+import {MyButton} from './MyButton';
+import {LayoutPreGrabacion} from './LayoutPreGrabacion'
+import {MarcadorInicioDePulso} from './MarcadorInicioDePulso'
+import {Grabacion} from './Grabacion'
 
 
 export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {

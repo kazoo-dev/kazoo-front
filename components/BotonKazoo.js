@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Icon from '@material-ui/core/Icon';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export class BotonKazoo extends Component {
   constructor(props) {
     super(props);
-    this.state = { clickeado: false };
+    this.state = { clickeado: false};
   }
 
   alternarEstado() {
@@ -18,12 +19,15 @@ export class BotonKazoo extends Component {
 
   render() {
     return <div id="kazoo">
-      <button id="boton" onClick={ this.props.onClick || this.alternarEstado.bind(this)}>
-        <span id="icon">
-          <Icon>{ this.state.clickeado ? 'clear' : this.props.icono }</Icon>
-        </span>
-        { this.renderizarAcciones() }
-      </button>
+      {this.props.loading?
+        <CircularProgress id="load" size={60} />:
+          <button id="boton" onClick={ this.props.onClick || this.alternarEstado.bind(this)}>
+            <span id="icon">
+                <Icon>{ this.state.clickeado ? 'clear' : this.props.icono }</Icon>
+            </span>
+            { this.renderizarAcciones() }
+          </button>}
+
       <style jsx>{`
       #kazoo {
         display: flex;

@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import { Component, Fragment } from 'react';
+import {Component, Fragment} from 'react';
 import Backend from '../model/Backend';
 import Grabador from '../model/Grabador';
-import { detectarArchivo, detectarFragmento } from '../model/ServicioDeDeteccion';
-import { BotonModoEdicion } from './BotonModoEdicion';
-import { BotonModoGrabacion } from './BotonModoGrabacion';
-import { ModalKazoo } from './ModalKazoo';
-import { SelectorTonalidad } from './SelectorTonalidad';
+import {detectarArchivo, detectarFragmento} from '../model/ServicioDeDeteccion';
+import {BotonModoEdicion} from './BotonModoEdicion';
+import {BotonModoGrabacion} from './BotonModoGrabacion';
+import {ModalKazoo} from './ModalKazoo';
+import {SelectorTonalidad} from './SelectorTonalidad';
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -20,16 +20,23 @@ export class Grabacion extends Component {
     edicionTonalidad: false,
     grabacionTerminada: false,
     modalAbierto: false,
+    loading:true,
   }
 
   componentDidMount() {
     if (this.props.file) {
-      this.pasarAModoEdicion()
+      this.setState({grabacionTerminada:true});
       detectarArchivo(this.props.file, this.props.pulso)
-        .then(compases => this.setState({ compases }))
+        .then(compases => this.cargarPagina(compases))
     } else {
+      this.setState({loading:false}),
       Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas);
     }
+  }
+
+  cargarPagina(compases){
+    this.setState({loading:false}),
+    this.setState({compases});
   }
 
   componentWillUnmount() {
@@ -77,7 +84,7 @@ export class Grabacion extends Component {
     const { compases, tonalidad, metro } = this.state;
     const { numerador, denominador } = metro;
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre })
-      .finally(() => Router.push('/'));
+      .finally(() => Router.push('/partituras'));
   }
 
   render() {
@@ -93,7 +100,8 @@ export class Grabacion extends Component {
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
-            abrirModal={this.abrirModalGuardar} />
+            abrirModal={this.abrirModalGuardar}
+            loading={this.state.loading}/>
         }
         {this.state.edicionTonalidad
           && <SelectorTonalidad tonalidad={this.state.tonalidad}
