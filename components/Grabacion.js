@@ -33,7 +33,7 @@ export class Grabacion extends Component {
   }
 
   componentWillUnmount() {
-    Grabador.terminarGrabacion();
+    if (!this.props.file) Grabador.terminarGrabacion();
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
