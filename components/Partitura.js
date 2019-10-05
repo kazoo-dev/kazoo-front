@@ -1,15 +1,18 @@
 import { debounce } from 'lodash'
-import { memo, useRef, useState, useEffect } from 'react'
-import { useTamanioVentana } from '../hooks/useTamanioVentana'
+import { memo, useEffect, useRef, useState } from 'react'
+import { Accidental } from 'vexflow/src/accidental'
+import { Formatter } from 'vexflow/src/formatter'
 import { Renderer } from 'vexflow/src/renderer'
 import { Stave } from 'vexflow/src/stave'
 import { StaveNote } from 'vexflow/src/stavenote'
 import { StaveTie } from 'vexflow/src/stavetie'
+import { Vex } from 'vexflow/src/vex'
 import { Voice } from 'vexflow/src/voice'
-import { Accidental } from 'vexflow/src/accidental'
-import { Formatter } from 'vexflow/src/formatter'
+import { useTamanioVentana } from '../hooks/useTamanioVentana'
 
-export default memo(function Partitura({ nombre, tonalidad, metro, compases, scrollea }) {
+export default memo(function Partitura({
+  nombre, tonalidad, metro, compases, scrollea, onClickNota = () => { }
+}) {
   const contenedorRef = useRef()
   const lienzoRef = useRef()
   const rendererRef = useRef()
@@ -51,25 +54,27 @@ export default memo(function Partitura({ nombre, tonalidad, metro, compases, scr
         .draw()
       const notas = []
       const ligaduras = []
+      const notasClickHandlersMap = new Map()
       notasDelCompas.forEach(nota => {
-        // Estas dos cosas se tiene que solucionar desde el back
+        const notaClickHandler = () => onClickNota({ compas: notasDelCompas, nota })
         const altura = nota.pitch === 'r' ? 'g/4' : nota.pitch
-        const crearNota = duracion => new StaveNote({
-          keys: [altura],
-          duration: nota.pitch === 'r' ? duracion + 'r' : duracion,
-        })
+        const agregarNota = duracion => {
+          const notaVexflow = new StaveNote({
+            keys: [altura],
+            duration: nota.pitch === 'r' ? duracion + 'r' : duracion,
+          })
+          notas.push(notaVexflow)
+          notasClickHandlersMap.set(Vex.Prefix(notaVexflow.attrs.id), notaClickHandler)
+          return notaVexflow
+        }
         if (nota.has_tie) {
           const [primeraDuracion, segundaDuracion] = nota.duration
-          const primeraNota = crearNota(primeraDuracion)
-          notas.push(primeraNota)
-          const segundaNota = crearNota(segundaDuracion)
-          notas.push(segundaNota)
           ligaduras.push(new StaveTie({
-            first_note: primeraNota, first_indices: [0],
-            last_note: segundaNota, last_indices: [0]
+            first_note: agregarNota(primeraDuracion), first_indices: [0],
+            last_note: agregarNota(segundaDuracion), last_indices: [0]
           }))
         } else {
-          notas.push(crearNota(nota.duration))
+          agregarNota(nota.duration)
         }
       })
       const melodia = new Voice({
@@ -82,6 +87,13 @@ export default memo(function Partitura({ nombre, tonalidad, metro, compases, scr
         .format([melodia], espacioDibujable)
       melodia.draw(contexto, compas)
       ligaduras.forEach(ligadura => ligadura.setContext(contexto).draw())
+      const notesDibujadas = [...document.getElementsByClassName('vf-stavenote')]
+      notesDibujadas.forEach(
+        n => n.addEventListener('click', notasClickHandlersMap.get(n.id))
+      )
+      return () => notesDibujadas.forEach(
+        n => n.removeEventListener('click', notasClickHandlersMap.get(n.id))
+      )
     })
   }, [tonalidad, metro, compases, tamanioVentana])
   return (
