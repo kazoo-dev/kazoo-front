@@ -1,63 +1,34 @@
-import React from 'react';
-import {MarcadorInicioDePulso} from '../components/MarcadorInicioDePulso';
-import {MarcadorFinalDePulso} from '../components/MarcadorFinalDePulso';
-import {ComenzarGrabacion} from '../components/ComenzarGrabacion';
+import Router from 'next/router';
+import { Component } from 'react';
 import Layout from '../components/Layout';
+import { MarcadorInicioDePulso } from '../components/MarcadorInicioDePulso';
 
-const noop = () => {
-};
+const ESTADO_INICIAL = {
+  Component: MarcadorInicioDePulso,
+  props: null,
+}
 
-export default class PaginaMarcarPulso extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+export default class PaginaNuevaPartitura extends Component {
+  state = ESTADO_INICIAL
+  restartState = () => this.setState(ESTADO_INICIAL)
+  componentDidMount() {
+    Router.events.on('routeChangeComplete', this.restartState)
   }
-
-  guardarInicioDelPulso() {
-    this.setState({ inicioDelPulso: Date.now() });
+  componentWillUnmount() {
+    Router.events.off('routeChangeComplete', this.restartState)
   }
-
-  guardarPulso() {
-    const inicioDelPulso = this.state.inicioDelPulso;
-    this.setState({ pulso: Date.now() - inicioDelPulso });
-  }
-
-  reiniciarPulso() {
-    this.setState({ pulso: undefined, inicioDelPulso: undefined });
+  handleSiguienteEstado = (siguienteComponente, propsDelSiguienteEstado) => {
+    this.setState({
+      Component: siguienteComponente,
+      props: propsDelSiguienteEstado,
+    });
   }
 
   render() {
-    const { inicioDelPulso, pulso } = this.state;
-    let onClick;
-    let Mensaje;
-
-    if (pulso) {
-      Mensaje = ComenzarGrabacion;
-      onClick = noop;
-    } else if (inicioDelPulso) {
-      Mensaje = MarcadorFinalDePulso;
-      onClick = this.guardarPulso.bind(this);
-    } else {
-      Mensaje = MarcadorInicioDePulso;
-      onClick = this.guardarInicioDelPulso.bind(this);
-    }
-
+    const { Component, props } = this.state
     return (
       <Layout>
-        <div id="pulso" onClick={onClick}>
-          <Mensaje pulso={pulso} reiniciarPulso={this.reiniciarPulso.bind(this)} />
-        </div>
-        <style jsx> {`
-          #pulso {
-            height: 100%;
-            background-color: #389583;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-        `}
-        </style>
+        <Component {...props} onSiguienteEstado={this.handleSiguienteEstado}></Component>
       </Layout>
     );
   }

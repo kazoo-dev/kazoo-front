@@ -1,14 +1,15 @@
-import { BotonKazoo } from './BotonKazoo';
+import Icon from '@material-ui/core/Icon';
+import Link from 'next/link';
 import { AccionBotonKazoo } from './AccionBotonKazoo';
-import Icon from '@material-ui/core/Icon'
-import Router from 'next/router';
+import { BotonKazoo } from './BotonKazoo';
 
+export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal, loading }) => (
+  <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop'}
+    onClick={grabacionTerminada ? null : terminarGrabacion}
+    loading={loading}>
 
-export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal }) => (
-    <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop' } 
-                onClick={ grabacionTerminada ? null : terminarGrabacion}>
-        <AccionBotonKazoo onClick={() => Router.push('/')}><Icon>delete</Icon></AccionBotonKazoo>
-        <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo>
-        <AccionBotonKazoo onClick={pasarAModoEdicion}><Icon>edit</Icon></AccionBotonKazoo>
-    </BotonKazoo>
+    <AccionBotonKazoo><Link href="/"><Icon>delete</Icon></Link></AccionBotonKazoo>
+    <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo>
+    <AccionBotonKazoo onClick={pasarAModoEdicion}><Icon>edit</Icon></AccionBotonKazoo>
+  </BotonKazoo>
 )
