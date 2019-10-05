@@ -15,6 +15,8 @@ export class Navbar extends React.Component{
   }
 
   render(){
-        return this.state.estaAutenticado ?  <NavbarAutenticado/> : <NavbarNoAutenticado/>
+    return this.state.estaAutenticado
+      ?  <NavbarAutenticado {...this.props}/>
+      : <NavbarNoAutenticado {...this.props}/>
   }
 }

@@ -18,6 +18,6 @@ export function detectarFragmento(unFragmentoDeAudio) {
 
 export function detectarArchivo(unArchivoDeAudio, pulso) {
   return apiDeteccion.post(`/fileDetect/`, toForm(unArchivoDeAudio), {
-    headers: { 'X-pulse' : pulso },
+    headers: { 'X-pulse': pulso },
   })
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getUsuario } from '../lib/Sesion'
 
 export default {
   url: 'http://localhost:8080',
@@ -11,47 +12,52 @@ export default {
     return axios.post(`${this.url}/usuario/registrar`, informacionDeRegistro);
   },
 
-  headerNombreDeUsuario(unNombreDeUsuario) {
-    return { headers: { 'usuario-nombre': unNombreDeUsuario } };
+  headerNombreDeUsuario() {
+    return { headers: { 'usuario-nombre': getUsuario() } };
   },
 
-  obtenerPartitura(unId, unNombreDeUsuario) {
-    return axios.get(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario(unNombreDeUsuario))
+  obtenerPartitura(unId) {
+    return axios.get(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario())
       .then(respuesta => this.deserializarPartitura(respuesta.data));
   },
 
-  obtenerTodasLasPartiturasPara(unNombreDeUsuario) {
-    return axios.get(`${this.url}/partitura`, this.headerNombreDeUsuario(unNombreDeUsuario))
+  obtenerTodasLasPartiturasPara() {
+    return axios.get(`${this.url}/partitura`, this.headerNombreDeUsuario())
       .then(respuesta => respuesta.data);
   },
 
-  guardarPartitura(unaPartitura, unNombreDeUsuario) {
-    return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario(unNombreDeUsuario));
-  },
-
-  serializarDuracion(unaNota) {
-    return {
-      ...unaNota,
-      duration: typeof unaNota.duration === 'string' ? unaNota.duration : unaNota.duration.join('-')
-    };
-  },
-
-  deserializarDuracion(unaNota) {
-    return {
-      ...unaNota,
-      duration: unaNota.duration.split('-')
-    }
+  guardarPartitura(unaPartitura) {
+    return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
   },
 
   serializarParitura(unaPartitura) {
     const compases = unaPartitura.compases.map(compas => ({
-      notas: compas.map(this.serializarDuracion.bind(this))
+      notas: compas.map(unaNota => ({
+        ...unaNota,
+        duration: typeof unaNota.duration === 'string'
+          ? unaNota.duration
+          : unaNota.duration.join('-')
+      }))
     }));
     return { ...unaPartitura, compases };
   },
 
   deserializarPartitura(unaPartituraEnJson) {
-    const compases = unaPartituraEnJson.compases.map(compas => compas.notas.map(this.deserializarDuracion));
-    return { ...unaPartituraEnJson, compases };
+    const compases = unaPartituraEnJson.compases.map(
+      compas => compas.notas.map(unaNota => {
+        const duration = unaNota.duration.split('-')
+        return{
+          ...unaNota,
+          duration: duration.length === 1 ? duration[0] : duration
+        }
+      })
+    );
+    const { numerador, denominador, partitura_id } = unaPartituraEnJson
+    return {
+      ...unaPartituraEnJson,
+      compases,
+      id: partitura_id,
+      metro: { numerador, denominador },
+     };
   }
 };
