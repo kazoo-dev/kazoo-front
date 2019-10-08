@@ -13,8 +13,9 @@ export class BotonKazoo extends Component {
   }
 
   renderizarAcciones() {
-    return React.Children.map(this.props.children, (accion, indice) =>
-      React.cloneElement(accion, { clickeado: this.state.clickeado, indice: indice, total: this.props.children.length || 1}))
+    const childrenValidos = React.Children.toArray(this.props.children).filter(Boolean);
+    return childrenValidos.map((accion, indice) =>
+      React.cloneElement(accion, { clickeado: this.state.clickeado, indice: indice, total: childrenValidos.length || 1}))
   }
 
   render() {

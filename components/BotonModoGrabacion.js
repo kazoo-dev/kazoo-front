@@ -4,31 +4,13 @@ import { AccionBotonKazoo } from './AccionBotonKazoo';
 import { BotonKazoo } from './BotonKazoo';
 import { getUsuario } from "../lib/Sesion";
 
-export const estaAutenticado = () => getUsuario();
+export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal, loading }) => (
+  <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop'}
+    onClick={grabacionTerminada ? null : terminarGrabacion}
+    loading={loading}>
 
-export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal, loading }) => {
-  const acciones = [
-    {
-      children: <Link href="/"><Icon>delete</Icon></Link>
-    },    
-    {
-      onClick: pasarAModoEdicion,
-      children: <Icon>edit</Icon>
-    }
-  ]
-
-  if(estaAutenticado()) {
-    acciones.push({
-      onClick: abrirModal,
-      children: <Icon>save_alt</Icon>
-    })
-  }
-
-  return(
-    <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop'}
-      onClick={grabacionTerminada ? null : terminarGrabacion}
-      loading={loading}>
-      {acciones.map(props => <AccionBotonKazoo {...props}/>)}
-    </BotonKazoo>
-  )
-}
+    <AccionBotonKazoo><Link href="/"><Icon>delete</Icon></Link></AccionBotonKazoo>
+    { getUsuario() && <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo> }
+    <AccionBotonKazoo onClick={pasarAModoEdicion}><Icon>edit</Icon></AccionBotonKazoo>
+  </BotonKazoo>
+)
