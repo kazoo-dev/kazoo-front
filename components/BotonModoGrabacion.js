@@ -2,6 +2,7 @@ import Icon from '@material-ui/core/Icon';
 import Link from 'next/link';
 import { AccionBotonKazoo } from './AccionBotonKazoo';
 import { BotonKazoo } from './BotonKazoo';
+import { getUsuario } from "../lib/Sesion";
 
 export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal, loading }) => (
   <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop'}
@@ -9,7 +10,7 @@ export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasa
     loading={loading}>
 
     <AccionBotonKazoo><Link href="/"><Icon>delete</Icon></Link></AccionBotonKazoo>
-    <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo>
+    { getUsuario() && <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo> }
     <AccionBotonKazoo onClick={pasarAModoEdicion}><Icon>edit</Icon></AccionBotonKazoo>
   </BotonKazoo>
 )
