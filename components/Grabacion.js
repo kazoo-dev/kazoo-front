@@ -8,7 +8,7 @@ import {BotonModoEdicion} from './BotonModoEdicion';
 import {BotonModoGrabacion} from './BotonModoGrabacion';
 import {ModalKazoo} from './ModalKazoo';
 import {SelectorTonalidad} from './SelectorTonalidad';
-import {SelectorAltura} from './SelectorAltura';
+import {SelectorAltura} from "./SelectorAltura";
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -21,7 +21,7 @@ export class Grabacion extends Component {
     edicionTonalidad: false,
     edicionAltura: false,
     mostrarSelectorAltura: false,
-    grabacionTerminada: true,
+    grabacionTerminada: false,
     modalAbierto: false,
     nombre:'',
     loading: true,
@@ -29,19 +29,25 @@ export class Grabacion extends Component {
 
   componentDidMount() {
     if (this.props.id) {
+      this.setState({grabacionTerminada:true});
       Backend.obtenerPartitura(this.props.id)
         .then(partitura => {
           this.setState({ ...partitura, loading: false })
         })
     } else if (this.props.file) {
-      detectarArchivo(this.props.file, this.props.pulso)
-        .then(compases => {
-          this.setState({ compases, loading: false })
-        })
+      this.setState({grabacionTerminada:true});
+      detectarArchivo(this.props.file, this.props.pulso,this.props.metro)
+        .then(compases => this.cargarPagina(compases))
+
     } else {
-      this.setState({ loading: false, grabacionTerminada: false })
+      this.setState({ loading: false })
       Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas)
     }
+  }
+
+  cargarPagina(compases){
+    this.setState({loading:false});
+    this.setState({compases});
   }
 
   componentWillUnmount() {
@@ -51,7 +57,7 @@ export class Grabacion extends Component {
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
-    detectarFragmento(unFragmentoDeAudio).then(this.agregarCompas);
+    detectarFragmento(unFragmentoDeAudio, this.props.metro).then(this.agregarCompas);
   }
 
   terminarGrabacion = () => {
@@ -112,8 +118,8 @@ export class Grabacion extends Component {
   }
 
   guardarPartitura = (nombre) => {
-    const { compases, tonalidad, metro, id } = this.state;
-    const { numerador, denominador } = metro;
+    const { compases, tonalidad,  id } = this.state;
+    const { numerador, denominador } = this.props.metro;
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre, id })
       .finally(() => Router.push('/partituras'));
   }
@@ -122,7 +128,7 @@ export class Grabacion extends Component {
     this.setState({ notaSeleccionada: nota })
 
     if (this.state.edicionAltura) {
-      this.setState({ edicionAltura: false })
+      this.setState({ edicionAltura: false });
       this.abrirSelectorAltura()
     }
   }
@@ -130,7 +136,11 @@ export class Grabacion extends Component {
   render() {
     return (
       <Fragment>
-        <Partitura scrollea={!this.props.id} {...this.state} onClickNota={this.handleClickNota} />
+        <Partitura scrollea={!this.props.id} {...this.state}
+                   tonalidad={this.state.tonalidad}
+                   metro={this.state.metro}
+                   compases={this.state.compases}
+                   onClickNota={this.handleClickNota}/>
         {this.state.modoEdicion
           ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad}
             modificarAltura={() => this.setState({ edicionAltura: true })}

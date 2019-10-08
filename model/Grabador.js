@@ -18,11 +18,7 @@ export default {
   },
 
   async iniciarGrabacion(unaLongitudDeCompas, anteCadaCompas) {
-    if (!this.recorder) {
-      await this.inicializarGrabador(anteCadaCompas);
-    } else {
-      this.recorder.clearRecordedData();
-    }
+    await this.inicializarGrabador(anteCadaCompas);
     this.recorder.start(unaLongitudDeCompas);
   },
 
