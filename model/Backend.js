@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUsuario } from '../lib/Sesion';
+import {getUsuario} from '../lib/Sesion';
 
 export default {
   url: 'http://localhost:8080',
@@ -28,6 +28,10 @@ export default {
 
   guardarPartitura(unaPartitura) {
     return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
+  },
+
+  modificarPartitura(unaPartitura) {
+    return axios.put(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
   },
 
   serializarParitura(unaPartitura) {

@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import { Component, Fragment } from 'react';
+import {Component, Fragment} from 'react';
 import Backend from '../model/Backend';
 import Grabador from '../model/Grabador';
-import { detectarArchivo, detectarFragmento } from '../model/ServicioDeDeteccion';
-import { BotonModoEdicion } from './BotonModoEdicion';
-import { BotonModoGrabacion } from './BotonModoGrabacion';
-import { ModalKazoo } from './ModalKazoo';
-import { SelectorTonalidad } from './SelectorTonalidad';
-import { SelectorAltura } from './SelectorAltura';
+import {detectarArchivo, detectarFragmento} from '../model/ServicioDeDeteccion';
+import {BotonModoEdicion} from './BotonModoEdicion';
+import {BotonModoGrabacion} from './BotonModoGrabacion';
+import {ModalKazoo} from './ModalKazoo';
+import {SelectorTonalidad} from './SelectorTonalidad';
+import {SelectorAltura} from './SelectorAltura';
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -23,6 +23,7 @@ export class Grabacion extends Component {
     mostrarSelectorAltura: false,
     grabacionTerminada: true,
     modalAbierto: false,
+    nombre:'',
     loading: true,
   }
 
@@ -79,7 +80,19 @@ export class Grabacion extends Component {
   }
 
   cambiarAltura = (nuevaAltura) => {
-    this.setState({ altura: nuevaAltura, mostrarSelectorAltura: false });
+    let notaModificada = this.state.notaSeleccionada;
+    notaModificada.pitch = nuevaAltura;
+    this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
+    const { compases, tonalidad, metro, id, nombre} = this.state;
+    const { numerador, denominador } = metro;
+    this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
+
+
+  }
+
+  modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
+    Backend.modificarPartitura({compases, tonalidad, numerador, denominador, nombre, id})
+      .finally(() => Router.push('/partitura/' + id));
   }
 
   agregarCompas = (unCompas) => {
