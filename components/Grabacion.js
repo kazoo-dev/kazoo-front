@@ -8,6 +8,7 @@ import { BotonModoEdicion } from './BotonModoEdicion';
 import { BotonModoGrabacion } from './BotonModoGrabacion';
 import { ModalKazoo } from './ModalKazoo';
 import { SelectorTonalidad } from './SelectorTonalidad';
+import { SelectorAltura } from './SelectorAltura';
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -19,6 +20,7 @@ export class Grabacion extends Component {
     modoEdicion: false,
     edicionTonalidad: false,
     edicionAltura: false,
+    mostrarSelectorAltura: false,
     grabacionTerminada: true,
     modalAbierto: false,
     loading: true,
@@ -64,8 +66,20 @@ export class Grabacion extends Component {
     this.setState({ edicionTonalidad: false });
   }
 
+  abrirSelectorAltura = () => {
+    this.setState({ mostrarSelectorAltura: true });
+  }
+
+  cerrarSelectorAltura = () => {
+    this.setState({ mostrarSelectorAltura: false });
+  }
+
   cambiarTonalidad = (nuevaTonalidad) => {
     this.setState({ tonalidad: nuevaTonalidad, edicionTonalidad: false });
+  }
+
+  cambiarAltura = (nuevaAltura) => {
+    this.setState({ altura: nuevaAltura, mostrarSelectorAltura: false });
   }
 
   agregarCompas = (unCompas) => {
@@ -92,10 +106,11 @@ export class Grabacion extends Component {
   }
 
   handleClickNota = ({ compas, nota }) => {
+    this.setState({ notaSeleccionada: nota })
+
     if (this.state.edicionAltura) {
       this.setState({ edicionAltura: false })
-      console.log({ compas, nota })
-      this.abrirSelectorTonalidad()
+      this.abrirSelectorAltura()
     }
   }
 
@@ -117,6 +132,11 @@ export class Grabacion extends Component {
           && <SelectorTonalidad tonalidad={this.state.tonalidad}
             alCancelar={this.cerrarSelectorTonalidad}
             alSeleccionar={this.cambiarTonalidad} />
+        }
+        {this.state.mostrarSelectorAltura
+          && <SelectorAltura altura={this.state.notaSeleccionada.pitch}
+            alCancelar={this.cerrarSelectorAltura}
+            alSeleccionar={this.cambiarAltura} />
         }
         <ModalKazoo abierto={this.state.modalAbierto}
           alCerrar={this.cerrarModalGuardar}
