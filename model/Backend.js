@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getUsuario } from '../lib/Sesion'
+import {getUsuario} from '../lib/Sesion';
 
 export default {
   url: 'http://localhost:8080',
@@ -30,6 +30,10 @@ export default {
     return axios.post(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
   },
 
+  modificarPartitura(unaPartitura) {
+    return axios.put(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
+  },
+
   serializarParitura(unaPartitura) {
     const compases = unaPartitura.compases.map(compas => ({
       notas: compas.map(unaNota => ({
@@ -39,14 +43,17 @@ export default {
           : unaNota.duration.join('-')
       }))
     }));
-    return { ...unaPartitura, compases };
+    return {
+      ...unaPartitura, compases,
+      partitura_id: unaPartitura.id || 0,
+    };
   },
 
   deserializarPartitura(unaPartituraEnJson) {
     const compases = unaPartituraEnJson.compases.map(
       compas => compas.notas.map(unaNota => {
         const duration = unaNota.duration.split('-')
-        return{
+        return {
           ...unaNota,
           duration: duration.length === 1 ? duration[0] : duration
         }
@@ -58,6 +65,6 @@ export default {
       compases,
       id: partitura_id,
       metro: { numerador, denominador },
-     };
+    };
   }
 };

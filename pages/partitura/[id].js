@@ -1,24 +1,15 @@
-import dynamic from 'next/dynamic';
+import { get } from 'lodash';
 import Router from 'next/router';
 import React from 'react';
+import { Grabacion } from '../../components/Grabacion';
 import Layout from '../../components/Layout';
-import Backend from '../../model/Backend';
-
-const Partitura = dynamic(() => import('../../components/Partitura'), { ssr: false });
 
 export default class PaginaDeGrabacion extends React.Component {
-  state = { compases: [] }
-  async componentDidUpdate() {
-    const { id } = Router.router.query
-    if (!id || id == this.state.id) return
-    const partitura = await Backend.obtenerPartitura(id)
-    this.setState(partitura)
-  }
-
   render() {
+    const id = get(Router, 'router.query.id')
     return (
       <Layout>
-        <Partitura {...this.state}></Partitura>
+        {id && <Grabacion id={id} />}
       </Layout>
     );
   }
