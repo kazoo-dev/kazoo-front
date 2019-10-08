@@ -15,7 +15,6 @@ export class MarcadorInicioDePulso extends React.Component {
 
   actualizarPulso(evento) {
     this.setState({pulso: evento.target.value});
-    console.log(evento.target.value)
   }
 
   submitPulso(evento) {
@@ -34,7 +33,7 @@ export class MarcadorInicioDePulso extends React.Component {
         <Onda/>
       </LayoutPreGrabacion>
        <div id="ingreso">
-        <p>ó ingresalo acá</p>
+        <p>o ingresalo acá</p>
         <form id="pulso-ingresado" onSubmit={this.submitPulso.bind(this)}>
           <Grid item xs={12}>
             <TextField
