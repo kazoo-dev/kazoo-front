@@ -5,11 +5,19 @@ import {MyButton} from './MyButton';
 import {LayoutPreGrabacion} from './LayoutPreGrabacion'
 import {MarcadorInicioDePulso} from './MarcadorInicioDePulso'
 import {Grabacion} from './Grabacion'
+import { useState } from 'react';
+import { SelectorMetro } from './SelectorMetro';
 
 
 export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {
+  const [edicionMetro, setEdicionMetro] = useState(false);
+  const [metro, setMetro] = useState({ numerador: 4, denominador: 4});
+
   return (
     <LayoutPreGrabacion>
+      {edicionMetro && <SelectorMetro metro={metro}
+                                      alCancelar={() => setEdicionMetro(false)}
+                                      alSeleccionar={(metro) => { setMetro(metro); setEdicionMetro(false) } } />}
       <div id="contenedor">
         <h1>Ya podés empezar la grabación de tu melodía!</h1>
         <BPM style={{ height: '1.5rem' }} pulso={pulso} />
@@ -18,10 +26,11 @@ export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {
             () => onSiguienteEstado(MarcadorInicioDePulso)
           }>Reiniciar</MyButton>
           <MyButton icon='mic' onClick={
-            () => onSiguienteEstado(Grabacion, { pulso })
+            () => onSiguienteEstado(Grabacion, { metro, pulso })
           }>Grabar</MyButton>
+          <MyButton icon="alarm" onClick={() => setEdicionMetro(true)}>Cambiar metro</MyButton>
           <DropzoneDialogCustom onSave={
-            ([file]) => onSiguienteEstado(Grabacion, { pulso, file })
+            ([file]) => onSiguienteEstado(Grabacion, { metro, pulso, file })
           } />
         </div>
       </div>

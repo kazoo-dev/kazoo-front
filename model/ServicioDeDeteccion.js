@@ -12,12 +12,14 @@ function toForm(file) {
   return form
 }
 
-export function detectarFragmento(unFragmentoDeAudio) {
-  return apiDeteccion.post(`/detect/`, toForm(unFragmentoDeAudio))
+export function detectarFragmento(unFragmentoDeAudio, metro) {
+  return apiDeteccion.post(`/detect/`, toForm(unFragmentoDeAudio), {
+    headers: { 'X-numerator': metro.numerador, 'X-denominator': metro.denominador }
+  })
 }
 
-export function detectarArchivo(unArchivoDeAudio, pulso) {
+export function detectarArchivo(unArchivoDeAudio, pulso, metro) {
   return apiDeteccion.post(`/fileDetect/`, toForm(unArchivoDeAudio), {
-    headers: { 'X-pulse': pulso },
+    headers: { 'X-pulse': pulso, 'X-numerator': metro.numerador, 'X-denominator': metro.denominador },
   })
 }
