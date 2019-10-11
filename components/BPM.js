@@ -1,5 +1,7 @@
+import { conversorPulsoBPM } from '../model/Bpm';
+
 export const BPM = ({ pulso }) => {
-  const bpm = Math.round(60 * 1000 / pulso);
+  const bpm = conversorPulsoBPM(pulso);
 
   return <span>
     <img src="/static/img/negra.png" alt={`BPM=${bpm}`}/> = { bpm }
