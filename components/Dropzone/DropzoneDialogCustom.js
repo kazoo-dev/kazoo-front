@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import {DropzoneDialog} from 'material-ui-dropzone'
 import {MyButton} from "../MyButton";
 
@@ -32,7 +32,7 @@ export default class DropzoneDialogCustom extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <MyButton icon="cloud_upload" onClick={this.handleOpen.bind(this)}>
           subir audio
         </MyButton>
@@ -55,7 +55,7 @@ export default class DropzoneDialogCustom extends Component {
           }
         `}
         </style>
-      </div>
+      </Fragment>
     );
   }
 }

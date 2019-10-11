@@ -50,6 +50,13 @@ export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {
           color: #EDF5E0;
           text-align: center;
         }
+        
+        @media only screen and (max-width: 767px) {
+          #botonera {
+            flex-direction: column;
+            justify-content: center;
+          }
+        }
       `}</style>
     </LayoutPreGrabacion>
   )
