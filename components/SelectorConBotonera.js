@@ -28,6 +28,12 @@ export const SelectorConBotonera = ({ alSeleccionar, alCancelar, children }) => 
         width: 50%;
         margin-top: 5vh;
       }
+      
+       @media only screen and (max-width: 767px) {
+        #selector {
+          background-color: rgb(0, 0, 0, 0.9);
+        }
+      }
     `}</style>
   </div>
 );

@@ -52,6 +52,7 @@ export class SelectorMetro extends Component {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        top: 0;
       }
       
       .numero {
@@ -86,6 +87,12 @@ export class SelectorMetro extends Component {
         justify-content: space-between;
         width: 50%;
         margin-top: 5vh;
+      }
+      
+       @media only screen and (max-width: 767px) {
+        #selector-metro {
+          background-color: rgb(0, 0, 0, 0.9);
+        }
       }
     `}</style>
     </div>;
