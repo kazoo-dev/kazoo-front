@@ -15,7 +15,6 @@ const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 export class Grabacion extends Component {
   state = {
     compases: [],
-    metro: { numerador: 4, denominador: 4 },
     tonalidad: 'C',
     modoEdicion: false,
     edicionTonalidad: false,
@@ -89,8 +88,8 @@ export class Grabacion extends Component {
     let notaModificada = this.state.notaSeleccionada;
     notaModificada.pitch = nuevaAltura;
     this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
-    const { compases, tonalidad, metro, id, nombre} = this.state;
-    const { numerador, denominador } = metro;
+    const { compases, tonalidad, id, nombre} = this.state;
+    const { numerador, denominador } = this.props.metro;
     this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
 
 
@@ -138,7 +137,7 @@ export class Grabacion extends Component {
       <Fragment>
         <Partitura scrollea={!this.props.id} {...this.state}
                    tonalidad={this.state.tonalidad}
-                   metro={this.state.metro}
+                   metro={this.props.metro}
                    compases={this.state.compases}
                    onClickNota={this.handleClickNota}/>
         {this.state.modoEdicion
