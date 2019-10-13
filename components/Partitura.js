@@ -1,4 +1,4 @@
-import { debounce } from 'lodash'
+import { debounce, last, isEmpty } from 'lodash'
 import { memo, useEffect, useRef, useState } from 'react'
 import { Accidental } from 'vexflow/src/accidental'
 import { Formatter } from 'vexflow/src/formatter'
@@ -8,7 +8,9 @@ import { StaveNote } from 'vexflow/src/stavenote'
 import { StaveTie } from 'vexflow/src/stavetie'
 import { Vex } from 'vexflow/src/vex'
 import { Voice } from 'vexflow/src/voice'
+import { Beam } from 'vexflow/src/beam';
 import { useTamanioVentana } from '../hooks/useTamanioVentana'
+import { esCorchea, esEnlazable, esSemi, esSilencio } from '../model/Notas';
 
 export default memo(function Partitura({
   nombre, tonalidad, metro, compases, scrollea, onClickNota = () => { }
@@ -19,7 +21,6 @@ export default memo(function Partitura({
   const [estaAlFinal, setEstaAlFinal] = useState(true)
   useEffect(() => {
     rendererRef.current = new Renderer(lienzoRef.current, Renderer.Backends.SVG)
-    // lienzoRef.current
     const cuandoScrolea = debounce(e => {
       setEstaAlFinal(e.target.scrollTop + e.target.offsetHeight === e.target.scrollHeight)
     }, 35)
@@ -28,9 +29,6 @@ export default memo(function Partitura({
   }, [])
   const finDelLienzoRef = useRef()
   const tamanioVentana = useTamanioVentana()
-  // useEffect(() => {
-  //   rendererRef.current.getContext().clear()
-  // }, [tonalidad])
   useEffect(() => {
     const anchoLienzo = lienzoRef.current.offsetWidth
     const alturaLienzo = compases.length * 100 + 200
@@ -55,6 +53,9 @@ export default memo(function Partitura({
       const notas = []
       const ligaduras = []
       const notasClickHandlersMap = new Map()
+      const enlaces = []
+      let enlaceActual = []
+      let notaAnterior = { duration: '' }
       notasDelCompas.forEach(nota => {
         const notaClickHandler = () => onClickNota({ compas: notasDelCompas, nota })
         const altura = nota.pitch === 'r' ? 'g/4' : nota.pitch
@@ -76,6 +77,18 @@ export default memo(function Partitura({
         } else {
           agregarNota(nota.duration)
         }
+
+        if (!esSilencio(nota) && ([nota, notaAnterior].every(esCorchea) || [nota, notaAnterior].every(esSemi))) {
+          enlaceActual.push(last(notas))
+        } else if (isEmpty(enlaceActual) && esEnlazable(nota)) {
+          enlaceActual.push(last(notas))
+        } else if (enlaceActual.length > 1  && esEnlazable(nota)) {
+          enlaces.push(new Beam(enlaceActual))
+          enlaceActual = [last(notas)]
+        } else {
+          enlaceActual = []
+        }
+        notaAnterior = nota
       })
       const melodia = new Voice({
         num_beats: metro.numerador,
@@ -87,6 +100,7 @@ export default memo(function Partitura({
         .format([melodia], espacioDibujable)
       melodia.draw(contexto, compas)
       ligaduras.forEach(ligadura => ligadura.setContext(contexto).draw())
+      enlaces.forEach(enlace => enlace.setContext(contexto).draw())
       const notesDibujadas = [...document.getElementsByClassName('vf-stavenote')]
       notesDibujadas.forEach(
         n => n.addEventListener('click', notasClickHandlersMap.get(n.id))
