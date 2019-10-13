@@ -4,6 +4,7 @@ import {MarcadorFinalDePulso} from './MarcadorFinalDePulso'
 import {MyButton} from "./MyButton";
 import {Grid, TextField} from '@material-ui/core';
 import {ComenzarGrabacion} from "./ComenzarGrabacion";
+import { conversorPulsoBPM } from '../model/Bpm';
 
 
 export class MarcadorInicioDePulso extends React.Component {
@@ -18,7 +19,7 @@ export class MarcadorInicioDePulso extends React.Component {
   }
 
   submitPulso(evento) {
-    this.props.onSiguienteEstado(ComenzarGrabacion, {pulso:this.state.pulso})
+    this.props.onSiguienteEstado(ComenzarGrabacion, {pulso: conversorPulsoBPM(this.state.pulso)})
   }
 
   render() {
