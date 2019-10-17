@@ -19,6 +19,7 @@ export class Grabacion extends Component {
     modoEdicion: false,
     edicionTonalidad: false,
     edicionAltura: false,
+    metro: {},
     mostrarSelectorAltura: false,
     grabacionTerminada: false,
     modalAbierto: false,
@@ -33,6 +34,7 @@ export class Grabacion extends Component {
         .then(partitura => {
           this.setState({ ...partitura, loading: false })
         })
+
     } else if (this.props.file) {
       this.setState({grabacionTerminada:true});
       detectarArchivo(this.props.file, this.props.pulso,this.props.metro)
@@ -41,6 +43,9 @@ export class Grabacion extends Component {
     } else {
       this.setState({ loading: false })
       Grabador.iniciarGrabacion(4 * this.props.pulso, this.procesarCompas)
+    }
+    if(this.props.metro){
+      this.setState({metro: this.props.metro});
     }
   }
 
@@ -56,7 +61,7 @@ export class Grabacion extends Component {
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
-    detectarFragmento(unFragmentoDeAudio, this.props.metro).then(this.agregarCompas);
+    detectarFragmento(unFragmentoDeAudio, this.state.metro).then(this.agregarCompas);
   }
 
   terminarGrabacion = () => {
@@ -88,8 +93,8 @@ export class Grabacion extends Component {
     let notaModificada = this.state.notaSeleccionada;
     notaModificada.pitch = nuevaAltura;
     this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
-    const { compases, tonalidad, id, nombre} = this.state;
-    const { numerador, denominador } = this.props.metro;
+    const { compases, tonalidad,  metro, id, nombre} = this.state;
+    const { numerador, denominador } = this.state.metro;
     this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
 
 
@@ -118,13 +123,13 @@ export class Grabacion extends Component {
 
   guardarPartitura = (nombre) => {
     const { compases, tonalidad,  id } = this.state;
-    const { numerador, denominador } = this.props.metro;
+    const { numerador, denominador } = this.state.metro;
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre, id })
       .finally(() => Router.push('/partituras'));
   }
 
   handleClickNota = ({ compas, nota }) => {
-    this.setState({ notaSeleccionada: nota })
+    this.setState({ notaSeleccionada: nota });
 
     if (this.state.edicionAltura) {
       this.setState({ edicionAltura: false });
@@ -137,7 +142,7 @@ export class Grabacion extends Component {
       <Fragment>
         <Partitura scrollea={!this.props.id} {...this.state}
                    tonalidad={this.state.tonalidad}
-                   metro={this.props.metro}
+                   metro={this.state.metro}
                    compases={this.state.compases}
                    onClickNota={this.handleClickNota}/>
         {this.state.modoEdicion
