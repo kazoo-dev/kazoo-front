@@ -140,11 +140,10 @@ export class Grabacion extends Component {
   render() {
     return (
       <Fragment>
-        <Partitura scrollea={!this.props.id} {...this.state}
-                   tonalidad={this.state.tonalidad}
-                   metro={this.state.metro}
-                   compases={this.state.compases}
-                   onClickNota={this.handleClickNota}/>
+        <Partitura scrollea={!this.props.id}
+                   pulso={this.props.pulso}
+                   onClickNota={this.handleClickNota}
+                   {...this.state} />
         {this.state.modoEdicion
           ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad}
             modificarAltura={() => this.setState({ edicionAltura: true })}

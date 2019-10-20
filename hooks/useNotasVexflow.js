@@ -3,6 +3,7 @@ import { Accidental } from 'vexflow/src/accidental'
 import { Formatter } from 'vexflow/src/formatter'
 import { compasAVexflow, calcularEnlaces, melodiaAVexflow, notasAVexflow } from '../model/AdaptadorVexflow'
 import { useTamanioVentana } from './useTamanioVentana'
+import { useVexRenderer } from './useVexRenderer'
 
 const dibujarTodo = (contexto, anchoDibujable, melodia, tonalidad, compas, ligaduras, enlaces) => {
   Accidental.applyAccidentals([melodia], tonalidad)
@@ -30,7 +31,8 @@ const obtenerAnchoDibujable = (lienzoRef, compases, renderer) => {
   return anchoLienzo - 23
 }
 
-export const useNotasVexflow = (renderer, lienzoRef, compases, nombre, tonalidad, metro, onClickNota) => {
+export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro, onClickNota) => {
+  const renderer = useVexRenderer(lienzoRef)
   const tamanioVentana = useTamanioVentana()
   const notasClickHandlers = new Map()
   let notasTraducidas = []

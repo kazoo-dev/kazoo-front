@@ -2,21 +2,29 @@ import { memo, useRef } from 'react'
 import { useScrollAutomatico } from '../hooks/useScrollAutomatico'
 import { useNotasVexflow } from '../hooks/useNotasVexflow'
 import { useNotasClickHandlers } from '../hooks/useNotasClickHandler'
-import { useVexRenderer } from '../hooks/useVexRenderer'
+import { useReproductor } from '../hooks/useReproductor'
+import { conversorPulsoBPM } from '../model/Bpm'
+import { LinkReproduccion } from './LinkReproduccion'
+import('../model/VexflowExtensions')
 
-export default memo(function Partitura({nombre, tonalidad, metro, compases, scrollea, onClickNota = () => {}}) {
+export default memo(function Partitura({nombre, tonalidad, metro, compases, scrollea, pulso, onClickNota = () => {}}) {
   const contenedorRef = useRef()
   const lienzoRef = useRef()
   const finDelLienzoRef = useRef()
   const alturaLienzo = compases.length * 100 + 200
-  const renderer = useVexRenderer(lienzoRef)
   useScrollAutomatico(alturaLienzo, lienzoRef, scrollea, finDelLienzoRef, contenedorRef)
-  const [_, clickHandlers] = useNotasVexflow(renderer, lienzoRef, compases, nombre, tonalidad, metro, onClickNota)
+  const [notasVexflow, clickHandlers] = useNotasVexflow(lienzoRef, compases, nombre, tonalidad, metro, onClickNota)
   useNotasClickHandlers(clickHandlers)
+  const [reproducir, detener, estaReproduciendo] = useReproductor(conversorPulsoBPM(pulso), notasVexflow)
+
   return (
     <div id="contenedor" ref={contenedorRef}>
       <div id="partitura">
         <div id="lienzo" ref={lienzoRef}/>
+        {estaReproduciendo ?
+          <LinkReproduccion icono="stop" onClick={detener}>Detener</LinkReproduccion> :
+          <LinkReproduccion icono="play_arrow" mostrar={notasVexflow.length} onClick={reproducir}>Reproducir</LinkReproduccion>
+        }
       </div>
       <div ref={finDelLienzoRef}/>
       <style jsx global>{`
@@ -39,6 +47,7 @@ export default memo(function Partitura({nombre, tonalidad, metro, compases, scro
           padding: 0 10vw;
         }
         #lienzo {
+          display: flex;
           width: 100%
         }
       `}</style>
