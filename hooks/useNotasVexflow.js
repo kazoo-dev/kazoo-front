@@ -51,6 +51,6 @@ export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro, o
       })
       setNotasVexflow(notasTraducidas)
     }
-  }, [tonalidad, metro, compases, tamanioVentana])
+  }, [renderer, tonalidad, metro, compases, tamanioVentana])
   return [notasVexflow, notasClickHandlers]
 }

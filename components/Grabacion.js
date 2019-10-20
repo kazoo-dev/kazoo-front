@@ -33,6 +33,7 @@ export class Grabacion extends Component {
       Backend.obtenerPartitura(this.props.id)
         .then(partitura => {
           this.setState({ ...partitura, loading: false })
+          console.log({partitura})
         })
 
     } else if (this.props.file) {
@@ -92,12 +93,15 @@ export class Grabacion extends Component {
   cambiarAltura = (nuevaAltura) => {
     let notaModificada = this.state.notaSeleccionada;
     notaModificada.pitch = nuevaAltura;
-    this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
-    const { compases, tonalidad,  metro, id, nombre} = this.state;
-    const { numerador, denominador } = this.state.metro;
-    this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
-
-
+    this.setState({
+      notaSeleccionada: null,
+      mostrarSelectorAltura: false,
+      // TODO: encontrar un mejor forma de notificar cambios en notas
+      metro: { ...this.state.metro },
+    });
+    // const { compases, tonalidad,  metro, id, nombre} = this.state;
+    // const { numerador, denominador } = this.state.metro;
+    // this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
   }
 
   modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
@@ -138,10 +142,11 @@ export class Grabacion extends Component {
   }
 
   render() {
+    console.log(this.props.pulso , this.state.pulso)
     return (
       <Fragment>
         <Partitura scrollea={!this.props.id}
-                   pulso={this.props.pulso}
+                   pulso={this.props.pulso || this.state.pulso || 666}
                    onClickNota={this.handleClickNota}
                    {...this.state} />
         {this.state.modoEdicion

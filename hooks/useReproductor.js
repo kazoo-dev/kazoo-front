@@ -19,6 +19,7 @@ export const useReproductor = (bpm, notas) => {
   const reproducir = () => {
     if (reproductor) {
       const eventos = notas.flatMap(nota => nota.getPlayEvents(playInfo))
+      console.log(eventos)
       reproductor.addEvents(eventos)
       reproductor.onPlayFinished(() => setReproduciendo(false))
       setReproduciendo(true)

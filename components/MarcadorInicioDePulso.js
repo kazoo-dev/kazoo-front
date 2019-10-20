@@ -32,8 +32,6 @@ export class MarcadorInicioDePulso extends React.Component {
         <p>Para marcar el pulso de tu melodía</p>
         <br/>
         <Onda/>
-      </LayoutPreGrabacion>
-       <div id="ingreso">
         <p>o ingresalo acá</p>
         <form id="pulso-ingresado" onSubmit={this.submitPulso.bind(this)}>
           <Grid item xs={12}>
@@ -42,21 +40,17 @@ export class MarcadorInicioDePulso extends React.Component {
               margin="normal"
               value={this.state.pulso}
               onChange={this.actualizarPulso.bind(this)}
+              onClick={e => e.stopPropagation()}
             />
           </Grid>
 
-          <MyButton type="submit">Ingresar</MyButton>
+          <MyButton type="submit" onClick={e => e.stopPropagation()}>Ingresar</MyButton>
 
         </form>
-       </div>
+      </LayoutPreGrabacion>
         <style jsx>{`
           #marcador-pulso{
-            height:45%;
-          }
-
-          #ingreso{
-            height:100%;
-            background-color: #389583;
+            height: calc(100% - 60px);
             text-align: center;
           }
           h1, p {

@@ -12,7 +12,7 @@ export class Reproductor {
 
   loadInstrument(instrumentName) {
     MIDI.loadPlugin({
-      soundfontUrl: './static/soundfont/',
+      soundfontUrl: '/static/soundfont/',
       instrument: instrumentName,
     })
   }
