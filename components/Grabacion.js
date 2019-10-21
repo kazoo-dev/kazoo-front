@@ -27,6 +27,8 @@ export class Grabacion extends Component {
   }
 
   componentDidMount() {
+    debugger;
+    this.setState({nombre:this.props.nombre});
     if (this.props.id) {
       this.setState({grabacionTerminada:true});
       Backend.obtenerPartitura(this.props.id)
