@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Colores } from '../model/Temas'
 import Backend from '../model/Backend'
 import {MensajeDeError} from "../components/MensajeDeError";
+import { ModalCompartir } from '../components/ModalCompartir';
 
 const useStyles = makeStyles(theme => ({
   listaPartituras: {
@@ -36,6 +37,8 @@ export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
   const [error, setError] = useState(false)
+  const [modalAbierto, setModalAbierto] = useState()
+  const [partituraSeleccionadaId, setPartituraSeleccionadaId] = useState()
 
   useEffect(() => {
     Backend.obtenerTodasLasPartiturasPara().then(setPartituras)
@@ -59,6 +62,13 @@ export default () => {
     setError(false);
   };
 
+  const publicarPartitura = (id) => {
+    Backend.publicarPartitura(id).then(() => {
+      setPartituraSeleccionadaId(id)
+      setModalAbierto(true)
+    })    
+  }
+
   return (
     <Layout>
       <List className={classes.listaPartituras}>
@@ -69,7 +79,7 @@ export default () => {
               {p.nombrePartitura}
               <ListItemSecondaryAction className={classes.accionesPartitura}>
                 <Link href={`/partitura/${p.id}`}><IconButton><Icon>edit</Icon></IconButton></Link>
-                <IconButton><Icon>link</Icon></IconButton>
+                <IconButton onClick={() => publicarPartitura(p.id)}><Icon>{p.nombre}link</Icon></IconButton>
                 <IconButton onClick={() => eliminarPartitura(p)}><Icon>delete</Icon></IconButton>
               </ListItemSecondaryAction>
             </ListItem>
@@ -84,6 +94,7 @@ export default () => {
                         horizontal={"center"}
                         limpiarError={() => limpiarError()}
                         mensajeDeError={error} />
+      <ModalCompartir abierto={modalAbierto} alCerrar={() => setModalAbierto(false)} partituraId={partituraSeleccionadaId}/>
     </Layout>
   );
 }
