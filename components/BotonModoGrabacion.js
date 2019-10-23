@@ -4,13 +4,13 @@ import { AccionBotonKazoo } from './AccionBotonKazoo';
 import { BotonKazoo } from './BotonKazoo';
 import { getUsuario } from "../lib/Sesion";
 
-export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, abrirModal, loading }) => (
+export const BotonModoGrabacion = ({ grabacionTerminada, terminarGrabacion, pasarAModoEdicion, guardarPartitura, loading }) => (
   <BotonKazoo icono={grabacionTerminada ? 'apps' : 'stop'}
     onClick={grabacionTerminada ? null : terminarGrabacion}
     loading={loading}>
 
     <AccionBotonKazoo><Link href="/"><Icon>delete</Icon></Link></AccionBotonKazoo>
-    { getUsuario() && <AccionBotonKazoo onClick={abrirModal}><Icon>save_alt</Icon></AccionBotonKazoo> }
+    { getUsuario() && <AccionBotonKazoo onClick={guardarPartitura}><Icon>save_alt</Icon></AccionBotonKazoo> }
     <AccionBotonKazoo onClick={pasarAModoEdicion}><Icon>edit</Icon></AccionBotonKazoo>
   </BotonKazoo>
 )
