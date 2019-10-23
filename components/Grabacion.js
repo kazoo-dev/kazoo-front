@@ -33,7 +33,6 @@ export class Grabacion extends Component {
       Backend.obtenerPartitura(this.props.id)
         .then(partitura => {
           this.setState({ ...partitura, loading: false })
-          console.log({partitura})
         })
 
     } else if (this.props.file) {
@@ -103,7 +102,6 @@ export class Grabacion extends Component {
     // const { numerador, denominador } = this.state.metro;
     // this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
   }
-
   modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
     Backend.modificarPartitura({compases, tonalidad, numerador, denominador, nombre, id})
       .finally(() => Router.push('/partitura/' + id));
@@ -132,7 +130,7 @@ export class Grabacion extends Component {
       .finally(() => Router.push('/partituras'));
   }
 
-  handleClickNota = ({ compas, nota }) => {
+  handleClickNota = (nota) => {
     this.setState({ notaSeleccionada: nota });
 
     if (this.state.edicionAltura) {

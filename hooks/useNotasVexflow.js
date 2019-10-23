@@ -31,10 +31,9 @@ const obtenerAnchoDibujable = (lienzoRef, compases, renderer) => {
   return anchoLienzo - 23
 }
 
-export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro, onClickNota) => {
+export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro) => {
   const renderer = useVexRenderer(lienzoRef)
   const tamanioVentana = useTamanioVentana()
-  const notasClickHandlers = new Map()
   let notasTraducidas = []
   const [notasVexflow, setNotasVexflow] = useState([])
   useEffect(() => {
@@ -42,7 +41,7 @@ export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro, o
       const anchoDibujable = obtenerAnchoDibujable(lienzoRef, compases, renderer)
       const contexto = obtenerContexto(renderer, nombre)
       compases.forEach((notasDelCompas, numeroDeCompas) => {
-        const [notas, ligaduras] = notasAVexflow(notasDelCompas, notasClickHandlers, onClickNota)
+        const [notas, ligaduras] = notasAVexflow(notasDelCompas)
         const enlaces = calcularEnlaces(notas)
         const melodia = melodiaAVexflow(metro, notas)
         const compas = compasAVexflow(numeroDeCompas * 100 + 50, anchoDibujable, tonalidad, metro)
@@ -52,5 +51,5 @@ export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro, o
       setNotasVexflow(notasTraducidas)
     }
   }, [renderer, tonalidad, metro, compases, tamanioVentana])
-  return [notasVexflow, notasClickHandlers]
+  return notasVexflow
 }

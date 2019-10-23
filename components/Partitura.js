@@ -13,9 +13,8 @@ export default memo(function Partitura({nombre, tonalidad, metro, compases, scro
   const finDelLienzoRef = useRef()
   const alturaLienzo = compases.length * 100 + 200
   useScrollAutomatico(alturaLienzo, lienzoRef, scrollea, finDelLienzoRef, contenedorRef)
-  const [notasVexflow, clickHandlers] = useNotasVexflow(lienzoRef, compases, nombre, tonalidad, metro, onClickNota)
-  console.log(notasVexflow)
-  useNotasClickHandlers(clickHandlers)
+  const notasVexflow = useNotasVexflow(lienzoRef, compases, nombre, tonalidad, metro)
+  useNotasClickHandlers(notasVexflow, onClickNota)
   const [reproducir, detener, estaReproduciendo] = useReproductor(conversorPulsoBPM(pulso), notasVexflow)
 
   return (
