@@ -79,7 +79,7 @@ export default () => {
               {p.nombrePartitura}
               <ListItemSecondaryAction className={classes.accionesPartitura}>
                 <Link href={`/partitura/${p.id}`}><IconButton><Icon>edit</Icon></IconButton></Link>
-                <IconButton onClick={() => publicarPartitura(p.id)}><Icon>{p.nombre}link</Icon></IconButton>
+                <IconButton onClick={() => publicarPartitura(p.id)}><Icon>link</Icon></IconButton>
                 <IconButton onClick={() => eliminarPartitura(p)}><Icon>delete</Icon></IconButton>
               </ListItemSecondaryAction>
             </ListItem>
