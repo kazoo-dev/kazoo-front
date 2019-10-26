@@ -1,6 +1,6 @@
 import Modal from '@material-ui/core/Modal';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
-import { Button, Card, CardContent, CardActions } from '@material-ui/core';
+import { Button, Card, CardContent, CardActions, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -9,6 +9,17 @@ const useStyles = makeStyles((theme) =>
       alignItems: 'center',
       justifyContent: 'center',
     },
+
+    card: {
+      minWidth: '350px',      
+      border: '3px solid #5CDB94',
+      backgroundColor: '#8DE4AF',
+      outline: 'none',
+    },
+
+    button: {
+      color: '#2A784C',
+    }
   }),
 );
 
@@ -17,13 +28,16 @@ export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
 
   return (
     <Modal className={classes.modal} open={abierto} onClose={alCerrar}>
-      <Card>
+      <Card className={classes.card}>
         <CardContent>
+          <Typography variant="h5">
+            Ya publicaste tu partitura!
+          </Typography>
           <p>Copia este link y compartilo con tus amiguis!</p>
           <p>http://localhost:3000/partituras/{partituraId}</p>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={alCerrar}>OK</Button>
+          <Button className={classes.button} size="large" onClick={alCerrar}>OK</Button>
         </CardActions>
       </Card>
     </Modal>

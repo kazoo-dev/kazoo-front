@@ -37,7 +37,7 @@ export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
   const [error, setError] = useState(false)
-  const [modalAbierto, setModalAbierto] = useState()
+  const [modalAbierto, setModalAbierto] = useState(false)
   const [partituraSeleccionadaId, setPartituraSeleccionadaId] = useState()
 
   useEffect(() => {
