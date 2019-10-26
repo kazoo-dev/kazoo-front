@@ -45,7 +45,7 @@ export class MarcadorInicioDePulso extends React.Component {
             />
           </Grid>
 
-          <MyButton type="submit">Ingresar</MyButton>
+          <MyButton disabled={!this.state.pulso} type="submit">Ingresar</MyButton>
 
         </form>
        </div>

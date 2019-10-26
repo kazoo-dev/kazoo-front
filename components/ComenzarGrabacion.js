@@ -33,21 +33,17 @@ export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {
           />
         </Grid>
         <div id="botonera">
-          <MyButton icon="timer_off" onClick={
-            () => onSiguienteEstado(MarcadorInicioDePulso)
-          }>Reiniciar</MyButton>
-          <MyButton icon="alarm" onClick={() => setEdicionMetro(true)}>Cambiar metro</MyButton>
-          <DropzoneDialogCustom onSave={
-            ([file]) => onSiguienteEstado(Grabacion, { metro, pulso, file, nombre})
-          } />
-        </div>
-        <div id="botonera">
-          {
-            nombre &&
-              <MyButton icon='mic' onClick={
-                () => onSiguienteEstado(Grabacion, { metro, pulso, nombre })
-              }>Grabar</MyButton>
-          }
+          <MyButton icon="timer_off" onClick={() => onSiguienteEstado(MarcadorInicioDePulso)}>
+            Reiniciar
+          </MyButton>
+          <MyButton icon="alarm" onClick={() => setEdicionMetro(true)}>
+            Cambiar metro
+          </MyButton>
+          <DropzoneDialogCustom disabled={ !nombre }
+                                onSave={([file]) => onSiguienteEstado(Grabacion, { metro, pulso, file, nombre })} />
+          <MyButton icon='mic' disabled={ !nombre } onClick={() => onSiguienteEstado(Grabacion, { metro, pulso, nombre })}>
+            Grabar
+          </MyButton>
         </div>
       </div>
       <style jsx>{`
