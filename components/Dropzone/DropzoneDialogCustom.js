@@ -33,7 +33,7 @@ export default class DropzoneDialogCustom extends Component {
   render() {
     return (
       <Fragment>
-        <MyButton icon="cloud_upload" onClick={this.handleOpen.bind(this)}>
+        <MyButton disabled={this.props.disabled} icon="cloud_upload" onClick={this.handleOpen.bind(this)}>
           subir audio
         </MyButton>
         <div id="#dropzone">
