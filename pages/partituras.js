@@ -9,6 +9,7 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import { Colores } from '../model/Temas'
 import Backend from '../model/Backend'
+import {MensajeDeError} from "../components/MensajeDeError";
 
 const useStyles = makeStyles(theme => ({
   listaPartituras: {
@@ -34,9 +35,29 @@ const useStyles = makeStyles(theme => ({
 export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     Backend.obtenerTodasLasPartiturasPara().then(setPartituras)
   }, [])
+
+  function eliminarPartitura (partitura) {
+    Backend.eliminarPartitura(partitura.id)
+      .then(function(){
+        const nuevasPartituras = [...partituras];
+        nuevasPartituras.splice(nuevasPartituras.indexOf(partitura), 1);
+        setPartituras(nuevasPartituras);
+      })
+      .catch(function(error){
+        const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
+        const mensajeDeError = `Hubo un error al eliminar la partitura. ${detalleDelError}`;
+        setError(mensajeDeError);
+      })
+  }
+
+  function limpiarError() {
+    setError(false);
+  };
 
   return (
     <Layout>
@@ -49,16 +70,20 @@ export default () => {
               <ListItemSecondaryAction className={classes.accionesPartitura}>
                 <Link href={`/partitura/${p.id}`}><IconButton><Icon>edit</Icon></IconButton></Link>
                 <IconButton><Icon>link</Icon></IconButton>
-                <IconButton><Icon>delete</Icon></IconButton>
+                <IconButton onClick={() => eliminarPartitura(p)}><Icon>delete</Icon></IconButton>
               </ListItemSecondaryAction>
             </ListItem>
           ) : <div>
-            Aun no tienes grabaciones guardadas, puedes grabar tu primer partitura
-            <Link href="/"><a>aqui</a></Link>
+            Aun no tienes grabaciones guardadas, puedes grabar tu primer partitura <Link href="/"><a>aqui</a></Link>
           </div>
         : 'Cargando partituras'
       }
       </List>
+      <MensajeDeError open={error}
+                        vertical={"top"}
+                        horizontal={"center"}
+                        limpiarError={() => limpiarError()}
+                        mensajeDeError={error} />
     </Layout>
   );
 }
