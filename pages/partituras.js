@@ -35,8 +35,7 @@ const useStyles = makeStyles(theme => ({
 export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
-  const [listadoConError, setListadoConError] = useState()
-  const [mensajeDeError, setMensajeDeError] = useState()
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     Backend.obtenerTodasLasPartiturasPara().then(setPartituras)
@@ -52,14 +51,12 @@ export default () => {
       .catch(function(error){
         const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
         const mensajeDeError = `Hubo un error al eliminar la partitura. ${detalleDelError}`;
-        setListadoConError(true);
-        setMensajeDeError(mensajeDeError);
+        setError(mensajeDeError);
       })
   }
 
   function limpiarError() {
-    setListadoConError(false);
-    setMensajeDeError('');
+    setError(false);
   };
 
   return (
@@ -82,11 +79,11 @@ export default () => {
         : 'Cargando partituras'
       }
       </List>
-      <MensajeDeError open={listadoConError}
+      <MensajeDeError open={error}
                         vertical={"top"}
                         horizontal={"center"}
                         limpiarError={() => limpiarError()}
-                        mensajeDeError={mensajeDeError} />
+                        mensajeDeError={error} />
     </Layout>
   );
 }
