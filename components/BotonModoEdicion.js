@@ -5,7 +5,7 @@ import { BotonKazoo } from "./BotonKazoo";
 export const BotonModoEdicion = ({ abrirSelectorTonalidad, onVolver, modificarAltura }) => (
   <BotonKazoo icono='edit'>
     <AccionBotonKazoo onClick={abrirSelectorTonalidad}>
-      <img src="/static/img/armadura-clave.png" alt="Modificar armadura de clave" />
+      <img src="/public/img/armadura-clave.png" alt="Modificar armadura de clave" />
       <style jsx>{`
         img { width: 100%; }
       `}</style>

@@ -59,7 +59,7 @@ export function NavbarAutenticado() {
 
   return (
     <div id="navbar">
-      <Link href="/"><img src="../static/img/kazoo.-logo-color.svg" /></Link>
+      <Link href="/"><img src="../public/img/kazoo.-logo-color.svg" /></Link>
       <IconButton
         aria-label="account of current user"
         aria-controls="menu-appbar"

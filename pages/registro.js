@@ -80,7 +80,7 @@ class RegistroUsuario extends React.Component {
                     <Header />
                     <CssBaseline />
                     <div>
-                        <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg" />
+                        <img alt="kazoo" height="100px" src="public/img/kazoo-logo.svg" />
                         <Typography component="h1" variant="h5">
                             Registro
                     </Typography>

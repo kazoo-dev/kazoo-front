@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="public/img/favicon.ico" />
       </Head>
       <body>
       <Main/>
