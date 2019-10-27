@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiDeteccion = axios.create({
-  baseURL: 'https://kazoo-back.herokuapp.com',
+  baseURL: process.env.API_DETECCION,
   headers: { 'Content-Type': 'multipart/form-data' },
 })
 apiDeteccion.interceptors.response.use(r => r.data)

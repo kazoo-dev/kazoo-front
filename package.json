@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "export": "next export"
   },
   "dependencies": {
@@ -18,9 +18,9 @@
     "lodash": "^4.17.15",
     "material-ui-dropzone": "^2.4.1",
     "msr": "^1.3.4",
-    "next": "^9.0.3",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "next": "^9.1.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "vexflow": "^1.2.89"
   }
 }
