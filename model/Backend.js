@@ -2,7 +2,7 @@ import axios from 'axios';
 import {getUsuario} from '../lib/Sesion';
 
 export default {
-  url: 'http://localhost:8080',
+  url: process.env.API_BACK,
 
   ingresarUsuario(informacionDeIngreso) {
     return axios.post(`${this.url}/usuario/login`, informacionDeIngreso);

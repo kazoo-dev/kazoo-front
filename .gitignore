@@ -18,6 +18,8 @@ tmp/
 # mac
 .DS_Store
 
+env.js
 
 .idea/*
 yarn-error.log
+package-lock.json
