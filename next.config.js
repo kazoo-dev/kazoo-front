@@ -5,6 +5,7 @@ catch(e){}
 module.exports = {
   env: {
     API_BACK: env.API_BACK,
+    URL_FRONT: env.URL_FRONT,
     API_DETECCION: env.API_DETECCION,
   },
 }
