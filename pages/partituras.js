@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
 export default () => {
   const classes = useStyles()
   const [partituras, setPartituras] = useState()
-  const [error, setError] = useState(false)
+  const [listadoConError, setListadoConError] = useState(false)
+  const [mensajeDeError, setMensajeDeError] = useState('')
   const [modalAbierto, setModalAbierto] = useState(false)
   const [partituraSeleccionadaId, setPartituraSeleccionadaId] = useState()
 
@@ -44,29 +45,37 @@ export default () => {
     Backend.obtenerTodasLasPartiturasPara().then(setPartituras)
   }, [])
 
-  function eliminarPartitura (partitura) {
+  const eliminarPartitura = (partitura) => {
     Backend.eliminarPartitura(partitura.id)
       .then(function(){
         const nuevasPartituras = [...partituras];
         nuevasPartituras.splice(nuevasPartituras.indexOf(partitura), 1);
         setPartituras(nuevasPartituras);
       })
-      .catch(function(error){
+      .catch((error) => {
         const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
         const mensajeDeError = `Hubo un error al eliminar la partitura. ${detalleDelError}`;
-        setError(mensajeDeError);
+        setListadoConError(true);
+        setMensajeDeError(mensajeDeError);
       })
   }
 
-  function limpiarError() {
-    setError(false);
+  const limpiarError = () => {
+    setListadoConError(false);
+    setMensajeDeError('');
   };
 
   const publicarPartitura = (id) => {
     Backend.publicarPartitura(id).then(() => {
       setPartituraSeleccionadaId(id)
       setModalAbierto(true)
-    })    
+    })
+    .catch((error) => {
+      const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
+      const mensajeDeError = `Hubo un error al publicar la partitura. ${detalleDelError}`;
+      setListadoConError(true);
+      setMensajeDeError(mensajeDeError);
+    })
   }
 
   return (
@@ -89,11 +98,11 @@ export default () => {
         : 'Cargando partituras'
       }
       </List>
-      <MensajeDeError open={error}
+      <MensajeDeError open={listadoConError}
                         vertical={"top"}
                         horizontal={"center"}
                         limpiarError={() => limpiarError()}
-                        mensajeDeError={error} />
+                        mensajeDeError={mensajeDeError} />
       <ModalCompartir abierto={modalAbierto} alCerrar={() => setModalAbierto(false)} partituraId={partituraSeleccionadaId}/>
     </Layout>
   );

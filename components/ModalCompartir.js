@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) =>
 );
 
 export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
+  const frontendUrl = process.env.URL_FRONT
   const classes = useStyles();
 
   return (
@@ -34,7 +35,7 @@ export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
             Ya publicaste tu partitura!
           </Typography>
           <p>Copia este link y compartilo con tus amiguis!</p>
-          <p>http://localhost:3000/partitura/{partituraId}</p>
+          <p>{frontendUrl}/partitura/{partituraId}</p>
         </CardContent>
         <CardActions>
           <Button className={classes.button} size="large" onClick={alCerrar}>OK</Button>
