@@ -22,12 +22,12 @@ export class Grabacion extends Component {
     metro: {},
     mostrarSelectorAltura: false,
     grabacionTerminada: false,
-    modalAbierto: false,
     nombre:'',
     loading: true,
   }
 
   componentDidMount() {
+    this.setState({nombre:this.props.nombre});
     if (this.props.id) {
       this.setState({grabacionTerminada:true});
       Backend.obtenerPartitura(this.props.id)
@@ -113,14 +113,6 @@ export class Grabacion extends Component {
     this.setState({ modoEdicion: true });
   }
 
-  abrirModalGuardar = () => {
-    this.setState({ modalAbierto: true });
-  }
-
-  cerrarModalGuardar = () => {
-    this.setState({ modalAbierto: false });
-  }
-
   guardarPartitura = (nombre) => {
     const { compases, tonalidad,  id } = this.state;
     const { numerador, denominador } = this.state.metro;
@@ -152,7 +144,7 @@ export class Grabacion extends Component {
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
-            abrirModal={this.abrirModalGuardar}
+            guardarPartitura={() => {this.guardarPartitura(this.state.nombre)}}
             loading={this.state.loading} />
         }
         {this.state.edicionTonalidad
@@ -165,9 +157,6 @@ export class Grabacion extends Component {
             alCancelar={this.cerrarSelectorAltura}
             alSeleccionar={this.cambiarAltura} />
         }
-        <ModalKazoo abierto={this.state.modalAbierto}
-          alCerrar={this.cerrarModalGuardar}
-          alGuardar={this.guardarPartitura} />
         <style jsx>{`
           #contenedor {
             height: 100%;
