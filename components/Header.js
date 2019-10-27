@@ -7,7 +7,7 @@ export function Header() {
   return (
     <Head>
       <title>Kazoo</title>
-      <link rel="icon" href="static/img/kazoo-icon.svg"/>
+      <link rel="icon" href="public/img/kazoo-icon.svg"/>
     </Head>
   )
 }

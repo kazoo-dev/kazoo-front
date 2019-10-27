@@ -41,7 +41,7 @@ export class BotonKazoo extends Component {
         width: 100%;
         animation: slide-in 1s;
       }
-      
+
       #boton {
         display: flex;
         justify-content: center;
@@ -53,20 +53,20 @@ export class BotonKazoo extends Component {
         width: 75px;
         height: 75px;
         background-color: white;
-        background-image: url(/static/img/kazoo-icon.svg);
+        background-image: url(/public/img/kazoo-icon.svg);
         transform: scale(1.3);
         outline: none;
       }
-      
+
       #boton::-moz-focus-inner {
         border: none;
       }
-      
-      #icon {        
+
+      #icon {
         width: 25px;
         height: 25px;
       }
-      
+
       @keyframes slide-in {
         from { transform: translateY(100%); }
         to { transform: translateY(0); }

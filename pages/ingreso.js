@@ -71,7 +71,7 @@ class IngresoUsuario extends React.Component {
                     <Header />
                     <CssBaseline />
                     <div style={{ textAlign: "center", position: "relative" }}>
-                        <img alt="kazoo" height="100px" src="static/img/kazoo-logo.svg" />
+                        <img alt="kazoo" height="100px" src="public/img/kazoo-logo.svg" />
                         <Typography component="h1" variant="h5">
                             Ingresar
                     </Typography>

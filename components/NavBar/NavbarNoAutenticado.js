@@ -7,7 +7,7 @@ export function NavbarNoAutenticado() {
 
   return (
       <div id="navbar">
-        <Link href="/"><img src="../static/img/kazoo.-logo-color.svg" />
+        <Link href="/"><img src="../public/img/kazoo.-logo-color.svg" />
         </Link>
           <div id="botones">
         <Link href="/ingreso">
