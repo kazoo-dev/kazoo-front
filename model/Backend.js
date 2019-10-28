@@ -38,6 +38,10 @@ export default {
     return axios.delete(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario());
   },
 
+  publicarPartitura(unId) {
+    return axios.post(`${this.url}/partitura/publicar?partituraId=${unId}`, {}, this.headerNombreDeUsuario());
+  },
+
   serializarParitura(unaPartitura) {
     const compases = unaPartitura.compases.map(compas => ({
       notas: compas.map(unaNota => ({

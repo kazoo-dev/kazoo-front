@@ -6,7 +6,6 @@ import Grabador from '../model/Grabador';
 import {detectarArchivo, detectarFragmento} from '../model/ServicioDeDeteccion';
 import {BotonModoEdicion} from './BotonModoEdicion';
 import {BotonModoGrabacion} from './BotonModoGrabacion';
-import {ModalKazoo} from './ModalKazoo';
 import {SelectorTonalidad} from './SelectorTonalidad';
 import {SelectorAltura} from "./SelectorAltura";
 
@@ -61,7 +60,9 @@ export class Grabacion extends Component {
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
-    detectarFragmento(unFragmentoDeAudio, this.state.metro).then(this.agregarCompas);
+    const { metro, compases } = this.state;
+    const { nombre } = this.props;
+    detectarFragmento(unFragmentoDeAudio, metro, nombre, compases.length).then(this.agregarCompas);
   }
 
   terminarGrabacion = () => {
@@ -94,7 +95,7 @@ export class Grabacion extends Component {
     notaModificada.pitch = nuevaAltura;
     this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
     const { compases, tonalidad,  metro, id, nombre} = this.state;
-    const { numerador, denominador } = this.state.metro;
+    const { numerador, denominador } = metro;
     this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
 
 
