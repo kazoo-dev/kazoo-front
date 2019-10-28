@@ -22,8 +22,13 @@ export const ModalKazoo = ({ abierto, alCerrar, alGuardar }) => {
     <Modal className={classes.modal} open={abierto} onClose={alCerrar}>
       <Card>
         <CardContent>
-          <p>Ingresá un nombre para tu partitura</p>
-          <TextField value={nombre} onChange={(evento) => actualizarNombre(evento.target.value)}/>
+          <form onSubmit={e => {
+            alGuardar(nombre)
+            e.preventDefault()
+          }}>
+            <p>Ingresá un nombre para tu partitura</p>
+            <TextField autoFocus value={nombre} onChange={(evento) => actualizarNombre(evento.target.value)}/>
+          </form>
         </CardContent>
         <CardActions>
           <Button size="small" onClick={alCerrar}>Cancelar</Button>
