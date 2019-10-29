@@ -42,15 +42,11 @@ export class MarcadorInicioDePulso extends React.Component {
               onClick={e => e.stopPropagation()}
             />
           </Grid>
-          <MyButton type="submit" onClick={e => e.stopPropagation()}>Ingresar</MyButton>
+          <br/>
+          <MyButton disabled={!this.state.pulso} type="submit">Ingresar</MyButton>
         </form>
-      </LayoutPreGrabacion>
         <style jsx>{`
-          #marcador-pulso{
-            height: calc(100% - 60px);
-            text-align: center;
-          }
-          h1, p {
+          h1, p, form {
             color: #EDF5E0;
             text-align: center;
             margin:0;
