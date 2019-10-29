@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiDeteccion = axios.create({
-  baseURL: 'https://kazoo-back.herokuapp.com',
+  baseURL: process.env.API_DETECCION,
   headers: { 'Content-Type': 'multipart/form-data' },
 })
 apiDeteccion.interceptors.response.use(r => r.data)
@@ -12,9 +12,14 @@ function toForm(file) {
   return form
 }
 
-export function detectarFragmento(unFragmentoDeAudio, metro) {
-  return apiDeteccion.post(`/detect/`, toForm(unFragmentoDeAudio), {
-    headers: { 'X-numerator': metro.numerador, 'X-denominator': metro.denominador }
+export function detectarFragmento(unFragmentoDeAudio, metro, nombre, numeroDeCompas) {
+  return apiDeteccion.post('/detect/', toForm(unFragmentoDeAudio), {
+    headers: {
+      'X-numerator': metro.numerador,
+      'X-denominator': metro.denominador,
+      'X-name': nombre,
+      'X-measure-index': numeroDeCompas,
+    }
   })
 }
 

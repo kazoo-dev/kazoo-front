@@ -6,7 +6,6 @@ import Grabador from '../model/Grabador';
 import {detectarArchivo, detectarFragmento} from '../model/ServicioDeDeteccion';
 import {BotonModoEdicion} from './BotonModoEdicion';
 import {BotonModoGrabacion} from './BotonModoGrabacion';
-import {ModalKazoo} from './ModalKazoo';
 import {SelectorTonalidad} from './SelectorTonalidad';
 import {SelectorAltura} from "./SelectorAltura";
 
@@ -22,12 +21,12 @@ export class Grabacion extends Component {
     metro: {},
     mostrarSelectorAltura: false,
     grabacionTerminada: false,
-    modalAbierto: false,
     nombre:'',
     loading: true,
   }
 
   componentDidMount() {
+    this.setState({nombre:this.props.nombre});
     if (this.props.id) {
       this.setState({grabacionTerminada:true});
       Backend.obtenerPartitura(this.props.id)
@@ -61,7 +60,9 @@ export class Grabacion extends Component {
   }
 
   procesarCompas = (unFragmentoDeAudio) => {
-    detectarFragmento(unFragmentoDeAudio, this.state.metro).then(this.agregarCompas);
+    const { metro, compases } = this.state;
+    const { nombre } = this.props;
+    detectarFragmento(unFragmentoDeAudio, metro, nombre, compases.length).then(this.agregarCompas);
   }
 
   terminarGrabacion = () => {
@@ -93,15 +94,15 @@ export class Grabacion extends Component {
     let notaModificada = this.state.notaSeleccionada;
     notaModificada.pitch = nuevaAltura;
     this.setState({
-      notaSeleccionada: null,
+      notaSeleccionada: notaModificada,
       mostrarSelectorAltura: false,
-      // TODO: encontrar un mejor forma de notificar cambios en notas
-      metro: { ...this.state.metro },
+      // metro: { ...this.state.metro },
     });
-    // const { compases, tonalidad,  metro, id, nombre} = this.state;
-    // const { numerador, denominador } = this.state.metro;
-    // this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
+    const { compases, tonalidad,  metro, id, nombre} = this.state;
+    const { numerador, denominador } = metro;
+    this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
   }
+
   modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
     Backend.modificarPartitura({compases, tonalidad, numerador, denominador, nombre, id})
       .finally(() => Router.push('/partitura/' + id));
@@ -113,14 +114,6 @@ export class Grabacion extends Component {
 
   pasarAModoEdicion = () => {
     this.setState({ modoEdicion: true });
-  }
-
-  abrirModalGuardar = () => {
-    this.setState({ modalAbierto: true });
-  }
-
-  cerrarModalGuardar = () => {
-    this.setState({ modalAbierto: false });
   }
 
   guardarPartitura = (nombre) => {
@@ -154,7 +147,7 @@ export class Grabacion extends Component {
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
-            abrirModal={this.abrirModalGuardar}
+            guardarPartitura={() => {this.guardarPartitura(this.state.nombre)}}
             loading={this.state.loading} />
         }
         {this.state.edicionTonalidad
@@ -167,9 +160,6 @@ export class Grabacion extends Component {
             alCancelar={this.cerrarSelectorAltura}
             alSeleccionar={this.cambiarAltura} />
         }
-        <ModalKazoo abierto={this.state.modalAbierto}
-          alCerrar={this.cerrarModalGuardar}
-          alGuardar={this.guardarPartitura} />
         <style jsx>{`
           #contenedor {
             height: 100%;

@@ -1,6 +1,11 @@
+import dynamic from 'next/dynamic';
 import React, {Component, Fragment} from 'react'
-import {DropzoneDialog} from 'material-ui-dropzone'
 import {MyButton} from "../MyButton";
+
+const DropzoneDialog = dynamic(async () => {
+  const { DropzoneDialog } = await import('material-ui-dropzone')
+  return DropzoneDialog
+}, { ssr: false });
 
 export default class DropzoneDialogCustom extends Component {
 
@@ -33,7 +38,7 @@ export default class DropzoneDialogCustom extends Component {
   render() {
     return (
       <Fragment>
-        <MyButton icon="cloud_upload" onClick={this.handleOpen.bind(this)}>
+        <MyButton disabled={this.props.disabled} icon="cloud_upload" onClick={this.handleOpen.bind(this)}>
           subir audio
         </MyButton>
         <div id="#dropzone">

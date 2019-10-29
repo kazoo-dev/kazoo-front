@@ -23,10 +23,9 @@ export class MarcadorInicioDePulso extends React.Component {
   }
 
   render() {
-    return (<div id="marcador-pulso">
+    return (
       <LayoutPreGrabacion onClick={
         () => this.props.onSiguienteEstado(MarcadorFinalDePulso, {inicioDelPulso: Date.now()})}>
-
         <h1>Pulsá dos veces la pantalla</h1>
         <br/>
         <p>Para marcar el pulso de tu melodía</p>
@@ -43,9 +42,7 @@ export class MarcadorInicioDePulso extends React.Component {
               onClick={e => e.stopPropagation()}
             />
           </Grid>
-
           <MyButton type="submit" onClick={e => e.stopPropagation()}>Ingresar</MyButton>
-
         </form>
       </LayoutPreGrabacion>
         <style jsx>{`
@@ -59,8 +56,7 @@ export class MarcadorInicioDePulso extends React.Component {
             margin:0;
           }
         `}</style>
-      </div>
-
+      </LayoutPreGrabacion>
     )
   }
 }

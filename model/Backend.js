@@ -2,7 +2,7 @@ import axios from 'axios';
 import {getUsuario} from '../lib/Sesion';
 
 export default {
-  url: 'http://localhost:8080',
+  url: process.env.API_BACK,
 
   ingresarUsuario(informacionDeIngreso) {
     return axios.post(`${this.url}/usuario/login`, informacionDeIngreso);
@@ -32,6 +32,14 @@ export default {
 
   modificarPartitura(unaPartitura) {
     return axios.put(`${this.url}/partitura`, this.serializarParitura(unaPartitura), this.headerNombreDeUsuario());
+  },
+
+  eliminarPartitura(unId) {
+    return axios.delete(`${this.url}/partitura/${unId}`, this.headerNombreDeUsuario());
+  },
+
+  publicarPartitura(unId) {
+    return axios.post(`${this.url}/partitura/publicar?partituraId=${unId}`, {}, this.headerNombreDeUsuario());
   },
 
   serializarParitura(unaPartitura) {
