@@ -8,7 +8,6 @@ import {BotonModoEdicion} from './BotonModoEdicion';
 import {BotonModoGrabacion} from './BotonModoGrabacion';
 import {SelectorTonalidad} from './SelectorTonalidad';
 import {SelectorAltura} from "./SelectorAltura";
-import {ModalKazoo} from "./ModalKazoo";
 
 const Partitura = dynamic(() => import('./Partitura'), { ssr: false });
 
@@ -114,19 +113,17 @@ export class Grabacion extends Component {
     this.setState({ modoEdicion: true });
   }
 
-  abrirModalGuardar = () => {
-    this.setState({ modalAbierto: true });
-  }
-
-  cerrarModalGuardar = () => {
-    this.setState({ modalAbierto: false });
-  }
-
   guardarPartitura = (nombre) => {
     const { compases, tonalidad, id } = this.state;
     const { numerador, denominador } = this.state.metro;
+    const esNueva = !id;
+
+    if(esNueva){
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre, id })
       .finally(() => Router.push('/partituras'));
+    }else{
+      this.modificarPartitura(compases,tonalidad,numerador,denominador,nombre,id)
+    }
   }
 
   handleClickNota = ({ compas, nota }) => {
@@ -139,10 +136,9 @@ export class Grabacion extends Component {
   }
 
   render() {
-    const esNueva = !this.props.id
     return (
       <Fragment>
-        <Partitura scrollea={esNueva} {...this.state}
+        <Partitura scrollea={!this.props.id} {...this.state}
                    tonalidad={this.state.tonalidad}
                    metro={this.state.metro}
                    compases={this.state.compases}
@@ -154,16 +150,10 @@ export class Grabacion extends Component {
           : <BotonModoGrabacion grabacionTerminada={this.state.grabacionTerminada}
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
-            guardarPartitura={esNueva
-              ? () => this.guardarPartitura(this.state.nombre)
-              : this.abrirModalGuardar
-            }
+            guardarPartitura={() => {this.guardarPartitura(this.state.nombre)}}
+
             loading={this.state.loading} />
         }
-        <ModalKazoo
-          abierto={this.state.modalAbierto}
-          alCerrar={this.cerrarModalGuardar}
-          alGuardar={this.guardarPartitura} />
         {this.state.edicionTonalidad
           && <SelectorTonalidad tonalidad={this.state.tonalidad}
             alCancelar={this.cerrarSelectorTonalidad}
