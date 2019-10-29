@@ -32,16 +32,16 @@ export class MarcadorInicioDePulso extends React.Component {
         <br/>
         <Onda/>
         <p>o ingresalo acá</p>
-        <form id="pulso-ingresado"
-          onSubmit={this.submitPulso.bind(this)}
-          onClick={e => e.stopPropagation()}
-        >
-          <TextField
-            id="input"
-            margin="normal"
-            value={this.state.pulso}
-            onChange={this.actualizarPulso.bind(this)}
-          />
+        <form id="pulso-ingresado" onSubmit={this.submitPulso.bind(this)}>
+          <Grid item xs={12}>
+            <TextField
+              id="input"
+              margin="normal"
+              value={this.state.pulso}
+              onChange={this.actualizarPulso.bind(this)}
+              onClick={e => e.stopPropagation()}
+            />
+          </Grid>
           <br/>
           <MyButton disabled={!this.state.pulso} type="submit">Ingresar</MyButton>
         </form>

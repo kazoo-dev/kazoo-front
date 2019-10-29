@@ -3,6 +3,7 @@ import { Accidental } from 'vexflow/src/accidental'
 import { Formatter } from 'vexflow/src/formatter'
 import { compasAVexflow, calcularEnlaces, melodiaAVexflow, notasAVexflow } from '../model/AdaptadorVexflow'
 import { useTamanioVentana } from './useTamanioVentana'
+import { useVexRenderer } from './useVexRenderer'
 
 const dibujarTodo = (contexto, anchoDibujable, melodia, tonalidad, compas, ligaduras, enlaces) => {
   Accidental.applyAccidentals([melodia], tonalidad)
@@ -30,9 +31,9 @@ const obtenerAnchoDibujable = (lienzoRef, compases, renderer) => {
   return anchoLienzo - 23
 }
 
-export const useNotasVexflow = (renderer, lienzoRef, compases, nombre, tonalidad, metro, onClickNota) => {
+export const useNotasVexflow = (lienzoRef, compases, nombre, tonalidad, metro) => {
+  const renderer = useVexRenderer(lienzoRef)
   const tamanioVentana = useTamanioVentana()
-  const notasClickHandlers = new Map()
   let notasTraducidas = []
   const [notasVexflow, setNotasVexflow] = useState([])
   useEffect(() => {
@@ -40,7 +41,7 @@ export const useNotasVexflow = (renderer, lienzoRef, compases, nombre, tonalidad
       const anchoDibujable = obtenerAnchoDibujable(lienzoRef, compases, renderer)
       const contexto = obtenerContexto(renderer, nombre)
       compases.forEach((notasDelCompas, numeroDeCompas) => {
-        const [notas, ligaduras] = notasAVexflow(notasDelCompas, notasClickHandlers, onClickNota)
+        const [notas, ligaduras] = notasAVexflow(notasDelCompas)
         const enlaces = calcularEnlaces(notas)
         const melodia = melodiaAVexflow(metro, notas)
         const compas = compasAVexflow(numeroDeCompas * 100 + 50, anchoDibujable, tonalidad, metro)
@@ -49,6 +50,6 @@ export const useNotasVexflow = (renderer, lienzoRef, compases, nombre, tonalidad
       })
       setNotasVexflow(notasTraducidas)
     }
-  }, [tonalidad, metro, compases, tamanioVentana])
-  return [notasVexflow, notasClickHandlers]
+  }, [renderer, tonalidad, metro, compases, tamanioVentana])
+  return notasVexflow
 }

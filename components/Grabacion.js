@@ -93,7 +93,11 @@ export class Grabacion extends Component {
   cambiarAltura = (nuevaAltura) => {
     let notaModificada = this.state.notaSeleccionada;
     notaModificada.pitch = nuevaAltura;
-    this.setState({ notaSeleccionada: notaModificada, mostrarSelectorAltura: false });
+    this.setState({
+      notaSeleccionada: notaModificada,
+      mostrarSelectorAltura: false,
+      // metro: { ...this.state.metro },
+    });
     const { compases, tonalidad,  metro, id, nombre} = this.state;
     const { numerador, denominador } = metro;
     this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
@@ -125,7 +129,7 @@ export class Grabacion extends Component {
     }
   }
 
-  handleClickNota = ({ compas, nota }) => {
+  handleClickNota = (nota) => {
     this.setState({ notaSeleccionada: nota });
 
     if (this.state.edicionAltura) {
@@ -135,13 +139,13 @@ export class Grabacion extends Component {
   }
 
   render() {
+    console.log(this.props.pulso , this.state.pulso)
     return (
       <Fragment>
-        <Partitura scrollea={!this.props.id} {...this.state}
-                   tonalidad={this.state.tonalidad}
-                   metro={this.state.metro}
-                   compases={this.state.compases}
-                   onClickNota={this.handleClickNota}/>
+        <Partitura scrollea={!this.props.id}
+                   pulso={this.props.pulso || this.state.pulso || 666}
+                   onClickNota={this.handleClickNota}
+                   {...this.state} />
         {this.state.modoEdicion
           ? <BotonModoEdicion abrirSelectorTonalidad={this.abrirSelectorTonalidad}
             modificarAltura={() => this.setState({ edicionAltura: true })}
