@@ -6,10 +6,10 @@ import { esCorchea, esEnlazable, esSemi, esSilencio } from './Notas'
 import { isEmpty } from 'lodash'
 import { Beam } from 'vexflow/src/beam'
 
-const notaAVexflow = (nota, duracion) => new StaveNote({
+const notaAVexflow = (nota, duracion) => Object.assign(new StaveNote({
   keys: [nota.pitch === 'r' ? 'g/4' : nota.pitch],
   duration: nota.pitch === 'r' ? duracion + 'r' : duracion,
-});
+}), { nota });
 
 const pasarAVexflow = nota => {
   let ligadura;
