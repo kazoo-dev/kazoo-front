@@ -18,7 +18,6 @@ export class Grabacion extends Component {
     modoEdicion: false,
     edicionTonalidad: false,
     edicionAltura: false,
-    modalAbierto: false,
     metro: {},
     mostrarSelectorAltura: false,
     grabacionTerminada: false,
