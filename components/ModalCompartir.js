@@ -35,7 +35,7 @@ export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
             Ya publicaste tu partitura!
           </Typography>
           <p>Copia este link y compartilo con tus amiguis!</p>
-          <p>{frontendUrl}partitura/{partituraId}</p>
+          <p>http://www.kazoomusic.tk/partitura/{partituraId}</p>
         </CardContent>
         <CardActions>
           <Button className={classes.button} size="large" onClick={alCerrar}>OK</Button>
