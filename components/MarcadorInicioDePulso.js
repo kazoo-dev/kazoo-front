@@ -18,7 +18,8 @@ export class MarcadorInicioDePulso extends React.Component {
     this.setState({pulso: evento.target.value});
   }
 
-  submitPulso(evento) {
+  submitPulso = (evento) => {
+    evento.stopPropagation()
     this.props.onSiguienteEstado(ComenzarGrabacion, {pulso: conversorPulsoBPM(this.state.pulso)})
   }
 
@@ -32,14 +33,13 @@ export class MarcadorInicioDePulso extends React.Component {
         <br/>
         <Onda/>
         <p>o ingresalo acá</p>
-        <form id="pulso-ingresado" onSubmit={this.submitPulso.bind(this)}>
+        <form id="pulso-ingresado" onSubmit={this.submitPulso} onClick={e => e.stopPropagation()}>
           <Grid item xs={12}>
             <TextField
               id="input"
               margin="normal"
               value={this.state.pulso}
               onChange={this.actualizarPulso.bind(this)}
-              onClick={e => e.stopPropagation()}
             />
           </Grid>
           <br/>
