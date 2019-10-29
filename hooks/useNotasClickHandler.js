@@ -7,7 +7,9 @@ export const useNotasClickHandlers = (notasGeneradas, callbackNotaClickeada) => 
   useEffect(() => {
     const notasClickHandlers = new Map();
 
-    notasGeneradas.forEach(nota => notasClickHandlers.set(vexId(nota), () => callbackNotaClickeada(nota)))
+    notasGeneradas.forEach(notaVF => {
+      notasClickHandlers.set(vexId(notaVF), () => callbackNotaClickeada(notaVF.nota))
+    })
 
     const notasDibujadas = [...document.getElementsByClassName('vf-stavenote')]
     notasDibujadas.forEach(n => n.addEventListener('click', notasClickHandlers.get(n.id)))

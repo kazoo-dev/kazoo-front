@@ -91,21 +91,16 @@ export class Grabacion extends Component {
   }
 
   cambiarAltura = (nuevaAltura) => {
-    let notaModificada = this.state.notaSeleccionada;
-    notaModificada.pitch = nuevaAltura;
+    this.state.notaSeleccionada.pitch = nuevaAltura;
     this.setState({
-      notaSeleccionada: notaModificada,
       mostrarSelectorAltura: false,
-      // metro: { ...this.state.metro },
+      metro: { ...this.state.metro },
     });
-    const { compases, tonalidad,  metro, id, nombre} = this.state;
-    const { numerador, denominador } = metro;
-    this.modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id);
   }
 
-  modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
-    Backend.modificarPartitura({compases, tonalidad, numerador, denominador, nombre, id})
-      .finally(() => Router.push('/partitura/' + id));
+  async modificarPartitura(compases, tonalidad, numerador, denominador, nombre, id) {
+    await Backend.modificarPartitura({compases, tonalidad, numerador, denominador, nombre, id})
+    Router.push('/partitura/' + id)
   }
 
   agregarCompas = (unCompas) => {
@@ -131,7 +126,6 @@ export class Grabacion extends Component {
 
   handleClickNota = (nota) => {
     this.setState({ notaSeleccionada: nota });
-
     if (this.state.edicionAltura) {
       this.setState({ edicionAltura: false });
       this.abrirSelectorAltura()
@@ -139,7 +133,7 @@ export class Grabacion extends Component {
   }
 
   render() {
-    console.log(this.props.pulso , this.state.pulso)
+    // TODO: FIXEAR PULSO EN EL BACK
     return (
       <Fragment>
         <Partitura scrollea={!this.props.id}
