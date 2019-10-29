@@ -25,24 +25,24 @@ export default class MyDocument extends Document {
   render() {
     return (
       <html lang="en">
-      <Head>
-        <meta charSet="utf-8"/>
-        <meta name="theme-color" content={Colores.primario.main}/>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico" />
-      </Head>
-      <body>
-      <Main/>
-      <NextScript/>
-      </body>
-      <style jsx global>{`
-          html, body, #__next {
-            height: 100%;
-            font-family: 'Roboto', sans-serif;
-          }
-        `}</style>
+        <Head>
+          <meta charSet="utf-8"/>
+          <meta name="theme-color" content={Colores.primario.main}/>
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"/>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+          <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico" />
+          <style>{`
+            html, body, #__next {
+              height: 100%;
+              font-family: 'Roboto', sans-serif;
+            }
+          `}</style>
+        </Head>
+        <body>
+          <Main/>
+          <NextScript/>
+        </body>
       </html>
     );
   }

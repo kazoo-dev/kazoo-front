@@ -2,7 +2,6 @@ import { StaveNote } from 'vexflow/src/stavenote'
 import { StaveTie } from 'vexflow/src/stavetie'
 import { Stave } from 'vexflow/src/stave'
 import { Voice } from 'vexflow/src/voice'
-import { Vex } from 'vexflow/src/vex'
 import { esCorchea, esEnlazable, esSemi, esSilencio } from './Notas'
 import { isEmpty } from 'lodash'
 import { Beam } from 'vexflow/src/beam'
@@ -30,17 +29,13 @@ const pasarAVexflow = nota => {
   return [notasGeneradas, ligadura];
 };
 
-export const notasAVexflow = (notasDelCompas, clickHandlers, callbackNotaClickeada) => {
+export const notasAVexflow = notasDelCompas => {
   return notasDelCompas.reduce(([notas, ligaduras], nota) => {
     const [notasGeneradas, ligadurasNuevas] = pasarAVexflow(nota);
     notas.push(...notasGeneradas);
     if (ligadurasNuevas) {
       ligaduras.push(ligadurasNuevas);
     }
-    notasGeneradas.forEach(nota => clickHandlers.set(Vex.Prefix(nota.attrs.id), () => callbackNotaClickeada({
-      compas: notasDelCompas,
-      nota
-    })))
     return [notas, ligaduras]
   }, [[], []])
 };
