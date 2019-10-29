@@ -117,10 +117,16 @@ export class Grabacion extends Component {
   }
 
   guardarPartitura = (nombre) => {
-    const { compases, tonalidad,  id } = this.state;
+    const { compases, tonalidad, id } = this.state;
     const { numerador, denominador } = this.state.metro;
+    const esNueva = !id;
+
+    if(esNueva){
     Backend.guardarPartitura({ compases, tonalidad, numerador, denominador, nombre, id })
       .finally(() => Router.push('/partituras'));
+    }else{
+      this.modificarPartitura(compases,tonalidad,numerador,denominador,nombre,id)
+    }
   }
 
   handleClickNota = (nota) => {
@@ -148,6 +154,7 @@ export class Grabacion extends Component {
             terminarGrabacion={this.terminarGrabacion}
             pasarAModoEdicion={this.pasarAModoEdicion}
             guardarPartitura={() => {this.guardarPartitura(this.state.nombre)}}
+
             loading={this.state.loading} />
         }
         {this.state.edicionTonalidad
