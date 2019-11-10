@@ -11,9 +11,15 @@ const notaAVexflow = (nota, duracion) => {
     keys: [nota.pitch === 'r' ? 'g/4' : nota.pitch],
     duration: nota.pitch === 'r' ? duracion + 'r' : duracion,
   }), { nota });
-  if (nota.error > 0.025) {
-    notaVexflow.setKeyStyle(0, { shadowColor: '#d32f2f', shadowBlur: 50 })
+
+  if (nota.has_dot) {
+    notaVexflow.addDotToAll();
   }
+
+  if (nota.error > 0.025) {
+    notaVexflow.setKeyStyle(0, { shadowColor: '#d32f2f', shadowBlur: 50 });
+  }
+  
   return notaVexflow;
 }
 
