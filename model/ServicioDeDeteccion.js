@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'axios'
+import { obtenerGrabacionDelRegistro } from './RegistroGrabaciones'
 
 const apiDeteccion = axios.create({
   baseURL: process.env.API_DETECCION,
@@ -12,8 +13,8 @@ function toForm(file) {
   return form
 }
 
-export function detectarFragmento(unFragmentoDeAudio, metro, nombre, numeroDeCompas) {
-  return apiDeteccion.post('/detect/', toForm(unFragmentoDeAudio), {
+export async function detectarFragmento(unFragmentoDeAudio, metro, nombre, numeroDeCompas) {
+  const respuestasServicio = await apiDeteccion.post('/detect/', toForm(unFragmentoDeAudio), {
     headers: {
       'X-numerator': metro.numerador,
       'X-denominator': metro.denominador,
@@ -21,10 +22,13 @@ export function detectarFragmento(unFragmentoDeAudio, metro, nombre, numeroDeCom
       'X-measure-index': numeroDeCompas,
     }
   })
+
+  return obtenerGrabacionDelRegistro(nombre, metro, numeroDeCompas) || respuestasServicio;
 }
 
-export function detectarArchivo(unArchivoDeAudio, pulso, metro) {
-  return apiDeteccion.post(`/fileDetect/`, toForm(unArchivoDeAudio), {
+export async function detectarArchivo(unArchivoDeAudio, pulso, metro) {
+  const respuestaServicio = await apiDeteccion.post(`/fileDetect/`, toForm(unArchivoDeAudio), {
     headers: { 'X-pulse': pulso, 'X-numerator': metro.numerador, 'X-denominator': metro.denominador },
   })
+  return obtenerGrabacionDelRegistro(unArchivoDeAudio.name, metro) || respuestaServicio;
 }
