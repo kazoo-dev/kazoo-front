@@ -23,10 +23,12 @@ const pasarAVexflow = nota => {
 
   if (nota.has_tie) {
     const [primeraNotaVexflow, segundaNotaVexflow] = nota.duration.map(duracion => notaAVexflow(nota, duracion));
-    ligadura = new StaveTie({
-      first_note: primeraNotaVexflow, first_indices: [0],
-      last_note: segundaNotaVexflow, last_indices: [0]
-    });
+    if (!esSilencio(nota)) {
+      ligadura = new StaveTie({
+        first_note: primeraNotaVexflow, first_indices: [0],
+        last_note: segundaNotaVexflow, last_indices: [0]
+      });
+    }
     notasGeneradas = [primeraNotaVexflow, segundaNotaVexflow];
   } else {
     notasGeneradas = [notaAVexflow(nota, nota.duration)];
