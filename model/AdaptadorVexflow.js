@@ -11,9 +11,15 @@ const notaAVexflow = (nota, duracion) => {
     keys: [nota.pitch === 'r' ? 'g/4' : nota.pitch],
     duration: nota.pitch === 'r' ? duracion + 'r' : duracion,
   }), { nota });
+
   if (nota.has_dot) {
     notaVexflow.addDotToAll();
   }
+
+  if (nota.error > 0.025) {
+    notaVexflow.setKeyStyle(0, { shadowColor: '#d32f2f', shadowBlur: 50 });
+  }
+  
   return notaVexflow;
 }
 
@@ -23,10 +29,12 @@ const pasarAVexflow = nota => {
 
   if (nota.has_tie) {
     const [primeraNotaVexflow, segundaNotaVexflow] = nota.duration.map(duracion => notaAVexflow(nota, duracion));
-    ligadura = new StaveTie({
-      first_note: primeraNotaVexflow, first_indices: [0],
-      last_note: segundaNotaVexflow, last_indices: [0]
-    });
+    if (!esSilencio(nota)) {
+      ligadura = new StaveTie({
+        first_note: primeraNotaVexflow, first_indices: [0],
+        last_note: segundaNotaVexflow, last_indices: [0]
+      });
+    }
     notasGeneradas = [primeraNotaVexflow, segundaNotaVexflow];
   } else {
     notasGeneradas = [notaAVexflow(nota, nota.duration)];

@@ -92,6 +92,7 @@ export class Grabacion extends Component {
 
   cambiarAltura = (nuevaAltura) => {
     this.state.notaSeleccionada.pitch = nuevaAltura;
+    this.state.notaSeleccionada.error = 0;
     this.setState({
       mostrarSelectorAltura: false,
       metro: { ...this.state.metro },
