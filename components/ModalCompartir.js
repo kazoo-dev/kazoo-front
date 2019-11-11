@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) =>
 export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
   const frontendUrl = process.env.URL_FRONT
   const classes = useStyles();
+  const urlPartitura = "https://kazoo-music.herokuapp.com/partitura/" + partituraId;
 
   return (
     <Modal className={classes.modal} open={abierto} onClose={alCerrar}>
@@ -34,8 +35,8 @@ export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
           <Typography variant="h5">
             Ya publicaste tu partitura!
           </Typography>
-          <p>Copia este link y compartilo con tus amiguis!</p>
-          <p>http://www.kazoomusic.tk/partitura/{partituraId}</p>
+          <p>Copia este link y compartilo!</p>
+          <a href={urlPartitura} >{urlPartitura}</a>
         </CardContent>
         <CardActions>
           <Button className={classes.button} size="large" onClick={alCerrar}>OK</Button>
