@@ -60,7 +60,7 @@ class RegistroUsuario extends React.Component {
                 Router.push('/ingreso')
             })
             .catch(error => {
-                const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente más tarde.';
+                const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
                 const mensajeDeError = `Hubo un error en su registración. ${detalleDelError}`;
                 this.setState({ registroConError: true, mensajeDeError });
             });
