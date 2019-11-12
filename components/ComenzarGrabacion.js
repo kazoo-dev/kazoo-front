@@ -30,6 +30,7 @@ export function ComenzarGrabacion({ pulso, onSiguienteEstado }) {
             label={"Nombre de la partitura"}
             required={true}
             onChange={(e) => {setNombre(e.target.value) }}
+            autoComplete="off"
           />
         </Grid>
         <div id="botonera">

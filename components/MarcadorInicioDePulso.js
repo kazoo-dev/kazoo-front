@@ -40,6 +40,8 @@ export class MarcadorInicioDePulso extends React.Component {
               margin="normal"
               value={this.state.pulso}
               onChange={this.actualizarPulso.bind(this)}
+              autoComplete="off"
+              type="tel"
             />
           </Grid>
           <br/>
