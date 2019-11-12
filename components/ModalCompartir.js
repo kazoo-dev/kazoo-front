@@ -1,6 +1,7 @@
 import Modal from '@material-ui/core/Modal';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Button, Card, CardContent, CardActions, Typography } from '@material-ui/core';
+import QRCode from'qrcode.react';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) =>
     },
 
     card: {
-      minWidth: '350px',      
+      minWidth: '350px',
       border: '3px solid #5CDB94',
       backgroundColor: '#8DE4AF',
       outline: 'none',
@@ -19,6 +20,10 @@ const useStyles = makeStyles((theme) =>
 
     button: {
       color: '#2A784C',
+    },
+    qrcode: {
+      marginTop: '20px',
+      textAlign: 'center',
     }
   }),
 );
@@ -37,6 +42,9 @@ export const ModalCompartir = ({ abierto, alCerrar, partituraId }) => {
           </Typography>
           <p>Copia este link y compartilo!</p>
           <a href={urlPartitura} >{urlPartitura}</a>
+          <div className={classes.qrcode}>
+            <QRCode value={urlPartitura} />
+          </div>
         </CardContent>
         <CardActions>
           <Button className={classes.button} size="large" onClick={alCerrar}>OK</Button>
