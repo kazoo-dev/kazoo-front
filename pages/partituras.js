@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    maxWidth: () => `calc(100% - ${window.innerWidth < smallWindow ? 25 : 135}px)`,
+    maxWidth: () => `calc(100% - ${(window && window.innerWidth < smallWindow) ? 25 : 135}px)`,
   },
   accionesPartitura: {
     marginRight: '5px',
@@ -124,7 +124,7 @@ export default () => {
             ? partituras.map(
               (p, i) => <ListItem key={p.id} className={classes.partitura}>
                 <div className={classes.titulo}>{`${i+1}. ${p.nombrePartitura}`}</div>
-                {window.innerWidth < smallWindow ? (
+                {window && window.innerWidth < smallWindow ? (
                   <ListItemSecondaryAction className={classes.accionesPartitura}>
                     <IconButton onClick={e => setMenu([e.currentTarget, p])}>
                       <Icon>more_vert</Icon>
