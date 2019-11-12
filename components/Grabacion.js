@@ -62,7 +62,7 @@ export class Grabacion extends Component {
   procesarCompas = (unFragmentoDeAudio) => {
     const { metro, compases } = this.state;
     const { nombre } = this.props;
-    detectarFragmento(unFragmentoDeAudio, metro, nombre, compases.length).then(this.agregarCompas);
+    return detectarFragmento(unFragmentoDeAudio, metro, nombre, compases.length).then(this.agregarCompas);
   }
 
   terminarGrabacion = () => {
