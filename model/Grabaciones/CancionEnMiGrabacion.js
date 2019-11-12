@@ -156,7 +156,7 @@ export const cancionEnMiGrabacion = [
       has_tie: false,
       has_dot: false,
       clarity: 1,
-      error: 0
+      error: 0.5
     },
     {
       pitch: 'r',

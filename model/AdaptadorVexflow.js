@@ -19,7 +19,7 @@ const notaAVexflow = (nota, duracion) => {
   if (nota.error > 0.025) {
     notaVexflow.setKeyStyle(0, { shadowColor: '#d32f2f', shadowBlur: 50 });
   }
-  
+
   return notaVexflow;
 }
 
@@ -70,7 +70,7 @@ export const melodiaAVexflow = (metro, notas) => (
 
 export const calcularEnlaces = (notas) => {
   return notas.reduce(([notaAnterior, enlaces, enlaceActual], nota) => {
-    if (!esSilencio(nota) && ([nota, notaAnterior].every(esCorchea) || [nota, notaAnterior].every(esSemi))) {
+    if ([nota, notaAnterior].every(n => !n.isRest()) && ([nota, notaAnterior].every(esCorchea) || [nota, notaAnterior].every(esSemi))) {
       enlaceActual.push(nota)
     } else if (isEmpty(enlaceActual) && esEnlazable(nota)) {
       enlaceActual.push(nota)
@@ -83,5 +83,5 @@ export const calcularEnlaces = (notas) => {
       enlaceActual = []
     }
     return [nota, enlaces, enlaceActual]
-  }, [{duration: ''}, [], []])[1]
+  }, [{duration: '', isRest: () => true}, [], []])[1]
 }
