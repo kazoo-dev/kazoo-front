@@ -51,7 +51,7 @@ class IngresoUsuario extends React.Component {
                 Router.push('/')
             })
             .catch(error => {
-                const detalleDelError = error.data && error.data.mensaje || 'Inténtelo nuevamente más tarde.';
+                const detalleDelError = error.response.data && error.response.data.message || 'Inténtelo nuevamente más tarde.';
                 const mensajeDeError = `Hubo un error al ingresar. ${detalleDelError}`;
                 this.setState({ ingresoConError: true, mensajeDeError });
             });
